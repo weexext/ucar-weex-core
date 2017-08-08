@@ -1,0 +1,48 @@
+# packager output bundles
+app_template_ios_mclient
+/example/
+
+# kdiff3 ignore
+*.orig
+
+# maven ignore
+target/
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+*~
+\#*\#
+.\#*
+
+# system ignore
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+*.log
+.nvm
+
+# OS X
+.DS_Store
+
+# package ignore (optional)
+# *.jar
+# *.war
+# *.zip
+# *.tar

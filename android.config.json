@@ -1,0 +1,6 @@
+{
+  "AppName":"Ucar-weex",
+  "AppId":"com.ucar.weex",
+  "SplashText":"你好",
+  "WeexBundle":"index.js"
+}

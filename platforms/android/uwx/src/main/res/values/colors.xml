@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="wx_color_write">#ffffffff</color>
+    <color name="pub_color_transparent">#00000000</color>
+    <color name="pub_color_blue">#ff0099cc</color>
+    <color name="pub_color_block">#ff333333</color>
+    <color name="pub_color_gray">#808080</color>
+    <color name="pub_color_bg">#f0f0f0</color>
+    <color name="pub_color_red">#FFAB1D1D</color>
+</resources>

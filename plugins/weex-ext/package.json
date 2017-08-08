@@ -1,0 +1,84 @@
+{
+  "_args": [
+    [
+      "@qnpm/react-native-ext@0.0.2",
+      "/Users/wenxiang.hu/react/flight_app/node_modules/react-native"
+    ]
+  ],
+  "_cnpm_publish_time": 1466490381042,
+  "_from": "@qnpm/react-native-ext@0.0.2",
+  "_id": "@qnpm/react-native-ext@0.0.2",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/@qnpm/react-native-ext",
+  "_nodeVersion": "4.4.2",
+  "_npmUser": {
+    "email": "minghao.yu@qunar.com",
+    "name": "minghao.yu"
+  },
+  "_npmVersion": "3.8.5",
+  "_phantomChildren": {},
+  "_publish_on_cnpm": true,
+  "_requested": {
+    "name": "@qnpm/react-native-ext",
+    "raw": "@qnpm/react-native-ext@0.0.2",
+    "rawSpec": "0.0.2",
+    "scope": "@qnpm",
+    "spec": "0.0.2",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "/react-native"
+  ],
+  "_resolved": "http://registry.npm.corp.qunar.com/@qnpm/react-native-ext/download/@qnpm/react-native-ext-0.0.2.tgz",
+  "_shasum": "36e618678548827c90867bae550be2c34157d1b7",
+  "_shrinkwrap": null,
+  "_spec": "@qnpm/react-native-ext@0.0.2",
+  "_where": "/Users/wenxiang.hu/react/flight_app/node_modules/react-native",
+  "dependencies": {
+    "babel-preset-qreact": "0.0.1"
+  },
+  "description": "React Native Extension",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.5.2",
+    "gulp-webserver": "^0.9.1",
+    "immutable": "^3.7.6",
+    "optimist": "^0.6.1",
+    "react-native": "git+ssh://git@gitlab.corp.qunar.com:react_native/qunar_react_native.git#update_0.20.0"
+  },
+  "dist": {
+    "key": "/@qnpm/react-native-ext/-/@qnpm/react-native-ext-0.0.2.tgz",
+    "shasum": "36e618678548827c90867bae550be2c34157d1b7",
+    "size": 37073,
+    "tarball": "http://registry.npm.corp.qunar.com/@qnpm/react-native-ext/download/@qnpm/react-native-ext-0.0.2.tgz"
+  },
+  "gitHead": "d1c350207ddcd46a98baa1b62c654d411200e144",
+  "main": "ext.js",
+  "maintainers": [
+    {
+      "email": "jiao.shen@qunar.com",
+      "name": "jiao.shen"
+    },
+    {
+      "email": "minghao.yu@qunar.com",
+      "name": "minghao.yu"
+    },
+    {
+      "email": "yayu.wang@qunar.com",
+      "name": "yayu.wang"
+    }
+  ],
+  "name": "@qnpm/react-native-ext",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "readmeFilename": "README.md",
+  "scripts": {
+    "redux": "node_modules/react-native/packager/packager.sh '--root' './example/redux'",
+    "router": "node_modules/react-native/packager/packager.sh '--root' './example/router'",
+    "start": "node_modules/react-native/packager/packager.sh",
+    "waimai": "node_modules/react-native/packager/packager.sh '--root' './example/waimai'",
+    "webx": "node_modules/react-native/packager/packager.sh '--root' './example/webx'"
+  },
+  "version": "0.0.2"
+}

@@ -1,0 +1,108 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.ucar.wxd"
+        minSdkVersion project.minSdkVersion
+        targetSdkVersion project.targetSdkVersion
+        versionCode 1
+        versionName "1.1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk{
+            abiFilters "x86"
+            abiFilters "armeabi"
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME :applicationId,
+                JPUSH_APPKEY : "88151d30044e75e5d4255525", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+    }
+    signingConfigs {
+        release {
+            storeFile file("tools/debug.keystore")
+                      storePassword "android"
+                      keyAlias "androiddebugkey"
+                      keyPassword "android"
+        }
+        debug {
+            storeFile file("tools/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+    buildTypes {
+        release {
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME : defaultConfig.applicationId,
+                    JPUSH_APPKEY : "8d3ac0df337a81defc7b4997", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+            ]
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME : defaultConfig.applicationId,
+                    JPUSH_APPKEY : "88151d30044e75e5d4255525", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+            ]
+            testCoverageEnabled true
+            signingConfig signingConfigs.debug
+        }
+    }
+    sourceSets {
+        main {
+            java {
+                srcDirs = ["src/main/java", "src/main/java_zxing"];
+                jniLibs.srcDirs = ['libs']
+            }
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
+    testOptions {
+        reportDir = "$project.buildDir/test/report"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.squareup.okhttp:okhttp-ws:2.3.0'
+    compile 'com.squareup.okio:okio:1.0.1'
+    compile "com.alibaba:fastjson:${project.fastjsonLibVersion}"
+    compile "com.android.support:recyclerview-v7:${project.supportLibVersion}"
+    compile "com.android.support:support-v4:${project.supportLibVersion}"
+    compile "com.android.support:appcompat-v7:${project.supportLibVersion}"
+    compile "com.android.support:design:${project.supportLibVersion}"
+    compile "com.android.support:support-annotations:${project.supportLibVersion}"
+    debugCompile 'com.taobao.android:weex_inspector:0.10.0.5'
+    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
+//    compile 'com.taobao.android:weex_sdk:0.10.0@aar'
+
+    compile project(':uwx')
+    compile project(':weex-sdk16')
+    //compile 'cn.jiguang.sdk:jpush:3.0.3'  // 此处以JPush 3.0.3 版本为例。
+    //compile 'cn.jiguang.sdk:jcore:1.1.1'  // 此处以JCore 1.1.1 版本为例。
+
+}
