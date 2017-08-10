@@ -87,6 +87,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.okhttp:okhttp-ws:2.3.0'
     compile 'com.squareup.okio:okio:1.0.1'
@@ -99,9 +100,10 @@ dependencies {
     debugCompile 'com.taobao.android:weex_inspector:0.10.0.5'
     compile 'com.journeyapps:zxing-android-embedded:3.4.0'
 //    compile 'com.taobao.android:weex_sdk:0.10.0@aar'
-
-    compile project(':ucar-weex-sdk')
-    compile project(':weex-sdk16')
+    compile 'com.ucar:weex:1.0.1@aar'
+//     compile 'com.ucar:bankcard:1.0.1@aar'
+//    compile project(':ucar-weex-sdk')
+//    compile project(':weex-sdk16')
     //compile 'cn.jiguang.sdk:jpush:3.0.3'  // 此处以JPush 3.0.3 版本为例。
     //compile 'cn.jiguang.sdk:jcore:1.1.1'  // 此处以JCore 1.1.1 版本为例。
 
