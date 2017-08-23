@@ -7,19 +7,19 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+         classpath 'com.android.tools.build:gradle:2.2.3'
     }
-    ext {
-        compileSdkVersion = 23
-        buildToolsVersion = "23.0.3"
-        minSdkVersion = 14
-        appMinSdkVersion = 15
-        targetSdkVersion = 23
-        supportLibVersion = "23.1.1"
-        fastjsonLibVersion = "1.1.46.android"
-        frescoLibVersion = "0.10.0"
-        picassoLibVersion = "2.5.2"
-    }
+     ext {
+            compileSdkVersion=23
+            buildToolsVersion="23.0.3"
+            minSdkVersion=14
+            appMinSdkVersion=15
+            targetSdkVersion=23
+            supportLibVersion="23.1.1"
+            fastjsonLibVersion="1.1.46.android"
+            frescoLibVersion="0.10.0"
+            picassoLibVersion="2.5.2"
+        }
 }
 
 plugins {
@@ -31,9 +31,6 @@ allprojects {
         mavenCentral()
         jcenter()
         maven { url 'https://raw.githubusercontent.com/weexext/sdklibs/master/repository' }
-//        maven { url 'https://raw.githubusercontent.com/ucarinc/sdk/master/repository' }
-//        maven { url 'https://raw.githubusercontent.com/cuichenxi/sdk/master/gitmaven/repository' }
-
     }
 }
 

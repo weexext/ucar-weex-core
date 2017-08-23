@@ -1,0 +1,74 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+repositories {
+  jcenter()
+}
+android {
+  compileSdkVersion project.compileSdkVersion
+  buildToolsVersion project.buildToolsVersion
+
+  defaultConfig {
+    minSdkVersion project.minSdkVersion
+    targetSdkVersion project.targetSdkVersion
+    versionCode 1
+    versionName "1.0.5"
+  }
+//  sourceSets {
+//    main {
+//      java {
+//        jniLibs.srcDirs = ['libs']
+//      }
+//    }
+//  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+/**
+ * 生成aar包方式
+ */
+ext {
+  PUBLISH_GROUP_ID = 'com.ucar'
+  PUBLISH_ARTIFACT_ID = 'weexext_sdk'
+  PUBLISH_VERSION = android.defaultConfig.versionName
+}
+
+uploadArchives {
+  repositories.mavenDeployer {
+    //def deployPath = file(getProperty('aar.deployPath'))
+    //repository(url: "file://${deployPath.absolutePath}")
+    repository(url: "file:///Users/dzc/que/ucar/weexext/sdklibs/repository")
+    pom.project {
+      groupId project.PUBLISH_GROUP_ID
+      artifactId project.PUBLISH_ARTIFACT_ID
+      version project.PUBLISH_VERSION
+    }
+  }
+}
+repositories{
+  flatDir{
+    dirs 'libs'
+  }
+}
+dependencies {
+  compile fileTree(include: ['*.jar'], dir: 'libs')
+  compile project(':weex-sdk16')
+//  compile(name:'weex-sdk16-debug',ext:'aar')
+//  compile 'com.taobao.android:weex_sdk:0.10.0@aar'
+  provided 'com.google.code.findbugs:jsr305:2.0.1'
+  provided 'com.journeyapps:zxing-android-embedded:3.4.0'
+  provided "com.squareup.picasso:picasso:${project.picassoLibVersion}"
+  provided "com.facebook.fresco:fresco:${project.frescoLibVersion}"
+  compile "com.android.support:appcompat-v7:${project.supportLibVersion}"
+  provided "com.android.support:recyclerview-v7:${project.supportLibVersion}"
+  provided "com.android.support:support-v4:${project.supportLibVersion}"
+  provided "com.alibaba:fastjson:${project.fastjsonLibVersion}"
+
+}

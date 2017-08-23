@@ -11,22 +11,22 @@ android {
         versionCode 1
         versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk{
+        ndk {
             abiFilters "x86"
             abiFilters "armeabi"
         }
         manifestPlaceholders = [
-                JPUSH_PKGNAME :applicationId,
+                JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "88151d30044e75e5d4255525", //JPush上注册的包名对应的appkey.
-                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
     signingConfigs {
         release {
             storeFile file("tools/debug.keystore")
-                      storePassword "android"
-                      keyAlias "androiddebugkey"
-                      keyPassword "android"
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
         }
         debug {
             storeFile file("tools/debug.keystore")
@@ -38,9 +38,9 @@ android {
     buildTypes {
         release {
             manifestPlaceholders = [
-                    JPUSH_PKGNAME : defaultConfig.applicationId,
+                    JPUSH_PKGNAME: defaultConfig.applicationId,
                     JPUSH_APPKEY : "8d3ac0df337a81defc7b4997", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                    JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
             ]
             signingConfig signingConfigs.release
             minifyEnabled false
@@ -48,9 +48,9 @@ android {
         }
         debug {
             manifestPlaceholders = [
-                    JPUSH_PKGNAME : defaultConfig.applicationId,
+                    JPUSH_PKGNAME: defaultConfig.applicationId,
                     JPUSH_APPKEY : "88151d30044e75e5d4255525", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                    JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
             ]
             testCoverageEnabled true
             signingConfig signingConfigs.debug
@@ -80,31 +80,36 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 }
+repositories{
+    dependencies {
+        compile fileTree(include: ['*.jar'], dir: 'libs')
+
+        //weex 依赖 Android SDK version > 23
+        compile "com.facebook.fresco:fresco:0.10.0"
+        compile "com.android.support:appcompat-v7:23.1.1"
+        compile "com.android.support:recyclerview-v7:23.1.1"
+        compile "com.android.support:support-v4:23.1.1"
+        compile "com.alibaba:fastjson:1.1.46.android"
+        //weex chrome 调试相关 debug引入
+        debugCompile 'com.google.code.findbugs:jsr305:2.0.1'
+        debugCompile 'com.squareup.okhttp:okhttp:2.3.0'
+        debugCompile 'com.squareup.okhttp:okhttp-ws:2.3.0'
+        debugCompile 'com.taobao.android:weex_inspector:0.10.0.5'
+        debugCompile 'com.journeyapps:zxing-android-embedded:3.4.0'
+//        //ucar weexsdk拓展
+        compile 'com.ucar:weexext_sdk:1.0.5@aar'
+        compile 'com.ucar:weex_sdk:1.6@aar'
+//        //taobao weexsdk
+//        compile 'com.taobao.android:weex_sdk:0.10.0@aar'
+
+//        compile project(':weex-sdk16')
+//        compile project(':uwx')
 
 
-dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
 
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'com.squareup.okhttp:okhttp-ws:2.3.0'
-    compile 'com.squareup.okio:okio:1.0.1'
-    compile "com.alibaba:fastjson:${project.fastjsonLibVersion}"
-    compile "com.android.support:recyclerview-v7:${project.supportLibVersion}"
-    compile "com.android.support:support-v4:${project.supportLibVersion}"
-    compile "com.android.support:appcompat-v7:${project.supportLibVersion}"
-    compile "com.android.support:design:${project.supportLibVersion}"
-    compile "com.android.support:support-annotations:${project.supportLibVersion}"
-    debugCompile 'com.taobao.android:weex_inspector:0.10.0.5'
-    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
-//    compile 'com.taobao.android:weex_sdk:0.10.0@aar'
-    compile 'com.ucar:weex:1.0.1@aar'
-//     compile 'com.ucar:bankcard:1.0.1@aar'
-//    compile project(':ucar-weex-sdk')
-//    compile project(':weex-sdk16')
-    //compile 'cn.jiguang.sdk:jpush:3.0.3'  // 此处以JPush 3.0.3 版本为例。
-    //compile 'cn.jiguang.sdk:jcore:1.1.1'  // 此处以JCore 1.1.1 版本为例。
-
+    }
+    flatDir{
+        dirs 'libs'
+    }
 }
+

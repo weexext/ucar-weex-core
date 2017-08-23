@@ -1,0 +1,33 @@
+<resources>
+
+    <style name="wx_theme_app" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--windowIsTranslucent schema 方式使用 影响activity动画  windowBackground 设置透明-->
+        <item name="android:windowBackground">@color/wx_color_write</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/wx_slideAnim</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="wx_theme_translucent" parent="wx_theme_app">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/pub_color_transparent</item>
+    </style>
+
+    <style name="wx_slideAnim">
+        <item name="android:activityOpenEnterAnimation">@anim/wx_start_right_in_show</item>
+        <item name="android:activityOpenExitAnimation">@anim/wx_start_left_out_dismiss</item>
+        <item name="android:activityCloseEnterAnimation">@anim/wx_back_left_in_show</item>
+        <item name="android:activityCloseExitAnimation">@anim/wx_back_right_out_dismiss</item>
+    </style>
+
+    <style name="pub_wx_DevEditText">
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:textColor">#808080</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:background">@drawable/pub_wx_round_edittext_bg</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+</resources>

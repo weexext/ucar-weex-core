@@ -1,0 +1,35 @@
+{
+  "name": "ucar-weex",
+  "version": "0.1.7",
+  "description": "Weex expand",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./tests/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weexext/ucarweexsdk-vue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/weexext/ucarweexsdk-vue/issues"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "keywords": [
+    "weex",
+    "weexpack",
+    "weex-expand",
+    "uweex",
+    "ucar-weex"
+  ],
+  "author": "",
+  "contributors": [
+    "chenxi.cui <chenxi.cui@ucarin.com>"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

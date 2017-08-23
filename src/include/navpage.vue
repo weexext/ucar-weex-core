@@ -39,7 +39,8 @@
 </style>
 
 <script>
-  const config = require("../config");
+  const config = require("../config/index")
+
   module.exports = {
     components: {
       navbar: require('./navbar.vue'),

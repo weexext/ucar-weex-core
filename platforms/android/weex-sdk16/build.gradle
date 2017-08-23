@@ -45,7 +45,7 @@ android {
         minSdkVersion 14
         targetSdkVersion project.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.6"
         ndk {
             abiFilters "armeabi","x86"
         }
@@ -87,6 +87,25 @@ android {
         unitTests.all {
             maxHeapSize = "1024m"
             jvmArgs += ['-XX:-UseSplitVerifier', '-noverify','-Xverify:none']/* fix VerifyError  */
+        }
+    }
+}
+apply plugin: 'maven'
+ext {
+    PUBLISH_GROUP_ID = 'com.ucar'
+    PUBLISH_ARTIFACT_ID = 'weex_sdk'
+    PUBLISH_VERSION = android.defaultConfig.versionName
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        //def deployPath = file(getProperty('aar.deployPath'))
+        //repository(url: "file://${deployPath.absolutePath}")
+        repository(url: "file:///Users/dzc/que/ucar/weexext/sdklibs/repository")
+        pom.project {
+            groupId project.PUBLISH_GROUP_ID
+            artifactId project.PUBLISH_ARTIFACT_ID
+            version project.PUBLISH_VERSION
         }
     }
 }

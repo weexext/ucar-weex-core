@@ -1,6 +1,0 @@
-[submodule "tools/weex-tools"]
-	path = tools/weex-tools
-	url = https://github.com/weexext/weextools.git
-[submodule "platforms/android/ucar-weex-sdk"]
-	path = platforms/android/ucar-weex-sdk
-	url = https://github.com/weexext/ucarweexsdk-adr.git

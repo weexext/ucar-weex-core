@@ -1,15 +1,5 @@
-# Created by https://www.gitignore.io/api/objective-c
-
-### Objective-C ###
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-assets/
-
-## Build generated
-build/
-_demo/
-DerivedData
+# OS X
+.DS_Store
 
 ## Various settings
 *.pbxuser
@@ -32,17 +22,17 @@ xcuserdata
 *.hmap
 *.ipa
 
-# CocoaPods
-#
+# Bundler
+.bundle
+Example/assets/
+Example/bundlejs/
+
+Carthage
 # We recommend against adding the Pods directory to your .gitignore. However
 # you should judge for yourself, the pros and cons are mentioned at:
-# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
+# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
+# 
+# Note: if you ignore the Pods directory, make sure to uncomment
+# `pod install` in .travis.yml
 #
-Pods/
-
-### Objective-C Patch ###
-*.xcscmblueprint
-
-## sdk
-
-
+Example/Pods/

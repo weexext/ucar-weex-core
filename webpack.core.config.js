@@ -57,10 +57,12 @@ function walk(dir) {
 }
 
 walk();
-// web need vue-loader
 const plugins = [
 	// new webpack.optimize.UglifyJsPlugin({
-	// 	minimize: true
+	// 	// minimize: true,
+	// 	compress: {
+	// 		warnings: false
+	// 	}
 	// }),
 	new webpack.BannerPlugin({
 		banner: '// { "framework": ' + (fileType === '.vue' ? '"Vue"' : '"Weex"') + '} \n',
@@ -68,43 +70,11 @@ const plugins = [
 		exclude: 'Vue'
 	})
 ];
-const webConfig = {
-	context: pathTo.join(__dirname, ''),
-	entry: entry,
-	output: {
-		path: pathTo.join(__dirname, 'dist', 'web'),
-		filename: '[name].web.js',
-	},
-	module: {
-		// webpack 2.0 
-		rules: [{
-				test: /\.js$/,
-				use: [{
-					loader: 'babel-loader'
-				}],
-				exclude: /node_modules/
-			},
-			{
-				test: /\.we(\?[^?]+)?$/,
-				use: [{
-					loader: 'weex-loader'
-				}]
-			},
-			{
-				test: /\.vue(\?[^?]+)?$/,
-				use: [{
-					loader: 'vue-loader'
-				}]
-			}
-		]
-	},
-	plugins: plugins
-};
+
 
 const weexConfig = {
 	entry: weexEntry,
 	output: {
-//		path: pathTo.join(__dirname, 'dist', 'native'),
 		path: pathTo.join(__dirname, 'dist', 'native'),
 		filename: '[name].js',
 	},
@@ -113,6 +83,9 @@ const weexConfig = {
 				test: /\.js$/,
 				use: [{
 					loader: 'babel-loader',
+					query: {
+						presets: ["es2015"]
+					}
 				}],
 				exclude: /node_modules/
 			},
@@ -133,6 +106,5 @@ const weexConfig = {
 	plugins: plugins,
 };
 module.exports = {
-	webConfig: webConfig,
 	weexConfig: weexConfig
 }
