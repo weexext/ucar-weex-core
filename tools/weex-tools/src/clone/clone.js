@@ -25,7 +25,7 @@ function rmgit(projectName) {
   try {
     const rootPath = process.cwd()
     process.chdir(path.join(rootPath, projectName))
-    child_process.execSync(process.platform === 'win32' ? 'rmdir .git' : 'rm -f -r .git', {
+    child_process.execSync(process.platform === 'win32' ? 'rmdir .git /s /q' : 'rm -f -r .git', {
       encoding: 'utf8',
       stdio: [0, 1, 2]
     })

@@ -32,12 +32,15 @@ function buildAndroid(options) {
     });
    })
     .then(()=> {
-      startJSServer()
+      // startJSServer()
       return {options}
     })
     .then(prepareAndroid)
     // .then(resolveConfig)
     .then(buildApp)
+    .then(()=>{
+      process.exit()
+    })
     .catch((err) => {
       if (err) {
         console.log(err)

@@ -197,7 +197,7 @@ function installApp(options) {
   // resolve({device, options})
   utils.buildJS()
     .then(()=> {
-      startJSServer()
+      // startJSServer()
       return {options}
     })
     .then(prepareAndroid)
@@ -213,7 +213,11 @@ function installApp(options) {
           reject()
         }
       });
-    }).catch((err) => {
+    })
+    .then(()=>{
+      process.exit()
+    })
+    .catch((err) => {
     if (err) {
       console.log(err)
     }
