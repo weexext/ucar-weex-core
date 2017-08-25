@@ -40,7 +40,6 @@
     //init sdk enviroment
     [WXSDKEngine initSDKEnvironment];
     //register custom module and component
-    //...
     [WXSDKEngine registerModule:@"UNavigator" withClass:[UCXNavigatorModule class]];
     [WXSDKEngine registerModule:@"UGlobalEvent" withClass:[UCXGlobalEventModule class]];
     
@@ -53,9 +52,9 @@
 #pragma mark - 
 + (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback
 {
-    UCXHotUpdate *hotUpdate = [[UCXHotUpdate alloc] init];
+//    UCXHotUpdate *hotUpdate = [[UCXHotUpdate alloc] init];
     //
-    [hotUpdate hotUpdate:UCXHotUpdateTypeFullDownload options:options callback:^(NSError *error) {
+    [UCXHotUpdate hotUpdate:UCXHotUpdateTypeFullDownload options:options callback:^(NSError *error) {
         callback(error);
     }];
 }

@@ -3,7 +3,7 @@
 //  Pods
 //
 //  Created by huyujin on 2017/8/11.
-//
+//  Copyright © 2017年 ucarinc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -14,10 +14,10 @@
 
 + (void)initUCarWeexService;
 
-#pragma mark - 
+#pragma mark - 热更新相关
 + (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback;
 
-#pragma mark - 
+#pragma mark - 注册模块相关
 /**
  *  @abstract Register a module for a given name
  *
@@ -48,7 +48,7 @@
  */
 + (void)registerHandler:(id)handler withProtocol:(Protocol *)protocol;
 
-#pragma mark -
+#pragma mark - 业务配置相关
 /**
  * @abstract Group or organization of your app, default value is nil.
  */
@@ -67,7 +67,7 @@
 + (NSString *)appVersion;
 + (void)setAppVersion:(NSString *)appVersion;
 
-#pragma mark -
+#pragma mark - 日志相关
 /**
  *  log level
  */

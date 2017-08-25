@@ -11,6 +11,7 @@
 // error def
 static NSString * const UCX_ERROR_OPTIONS = @"options error";
 static NSString * const UCX_ERROR_FILE_OPERATION = @"file operation error";
+static NSString * const UCX_ERROR_FILE_VALIDATE = @"file validate error";
 static NSString * const UCX_ERROR_JSON_PARSE = @"json parse error";
 
 typedef NS_ENUM(NSInteger, UCXHotUpdateType) {
@@ -45,7 +46,7 @@ typedef void(^UCXRequestFailure)(NSError *error);
  *  options:
         updateUrl:更新包下载地址
  */
-- (void)hotUpdate:(UCXHotUpdateType)type
++ (void)hotUpdate:(UCXHotUpdateType)type
           options:(NSDictionary *)options
          callback:(void (^)(NSError *error))callback;
 

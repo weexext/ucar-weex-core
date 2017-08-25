@@ -17,16 +17,47 @@
 @interface UCXHotUpdate ()
 
 @property (nonatomic, strong) UCXHotUpdateManager *fileManager;
+/**
+ * options 内部结构如下：
+ {
+    url:
+    packageInfo:
+    {
+         "appName": "ucarweex",
+         "versionCode": 2,
+         "versionName": "1.0",
+         "versionDes": "新版说明",
+         "androidMinVersion": 1,
+         "iosMinVersion": 1,
+         "groupId": "vid_001",
+         "md5": "b8751466a1994c61a00d77d5307a481d",
+         "length": 577705,
+         "time": "20170825101245",
+         "path": "ucarweex_2_20170825101245"
+    }
+ }
+ */
+@property (nonatomic, strong) NSMutableDictionary *options;  //配置信息参数：
 
 @end
 
 @implementation UCXHotUpdate
+
++ (instancetype)shared {
+    static dispatch_once_t once = 0;
+    static UCXHotUpdate *instance;
+    dispatch_once(&once, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
+}
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         _fileManager = [[UCXHotUpdateManager alloc] init];
+        _options = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -87,10 +118,18 @@
     return dataTask;
 }
 
+#pragma mark - 下载更新包
++ (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback
+{
+    UCXHotUpdate *instance = [UCXHotUpdate shared];
+    [instance hotUpdate:type options:options callback:callback];
+}
 
 - (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback
 {
     __weak typeof(self) weakSelf = self;
+    //
+    self.options = [options mutableCopy];
     //
     NSString *updateUrl = [WXConvert NSString:options[@"updateUrl"]];
     if (updateUrl.length<=0) {
@@ -113,7 +152,6 @@
         return;
     }
     
-    
     NSString *zipFilePath = [dir stringByAppendingPathComponent:lastPathComponent];
     NSString *unzipFilePath = [dir stringByAppendingPathComponent:fileName];
     
@@ -124,40 +162,98 @@
         if (error) {
             callback(error);
         } else {
-            WXLog(@"HotUpdate -- unzip file %@", zipFilePath);
+            WXLog(@"HotUpdate -- unzip file %@", path);
             //校验文件
-            
-            //
-            [self.fileManager unzipFileAtPath:zipFilePath toDestination:unzipFilePath progressHandler:^(NSString *entry,long entryNumber, long total) {
-                //压缩进度设置...
-            } completionHandler:^(NSString *path, BOOL succeeded, NSError *error) {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    if (error) {
-                        callback(error);
-                    } else {
-                        switch (type) {
-                            case UCXHotUpdateTypeFullDownload:
-                            {
-                                //解压完成
-                                //...
-                                callback(nil);
+            BOOL flag = [weakSelf isLegalFile:path];
+            if (flag) { //文件合法
+                //解压缩
+                [self.fileManager unzipFileAtPath:path toDestination:unzipFilePath progressHandler:^(NSString *entry,long entryNumber, long total) {
+                    //压缩进度设置...
+                } completionHandler:^(NSString *path, BOOL succeeded, NSError *error) {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        if (error) {
+                            callback(error);
+                        } else {
+                            switch (type) {
+                                    case UCXHotUpdateTypeFullDownload:
+                                {
+                                    //解压完成，保存本次更新的必要信息到本地存储
+                                    
+                                    
+                                    callback(nil);
+                                }
+                                    break;
+                                    case UCXHotUpdateTypePatchFromPackage:
+                                {
+                                    //...
+                                }
+                                    break;
+                                default:
+                                    callback(nil);
+                                    break;
                             }
-                                break;
-                            case UCXHotUpdateTypePatchFromPackage:
-                            {
-                                //...
-                            }
-                                break;
-                            default:
-                                callback(nil);
-                                break;
                         }
-                    }
-                });
-            }];
+                    });
+                }];
+            }else {
+                //文件校验不通过
+                callback([weakSelf errorWithMessage:UCX_ERROR_FILE_VALIDATE]);
+            }
         }
     }];
 }
+
+/**
+ * 保存本次更新的必要信息到本地存储
+  ucar_weex:
+    [
+         "appName": "ucarweex",
+         "versionCode": 2,
+         "versionName": "1.0",
+         "versionDes": "新版说明",
+         "androidMinVersion": 1,
+         "iosMinVersion": 1,
+         "groupId": "vid_001",
+         "md5": "b8751466a1994c61a00d77d5307a481d",
+         "length": 577705,
+         "time": "20170825101245",
+         "path": "ucarweex_2_20170825101245"
+         "url": "http://10.99.44.46:3000/file/ucarweex_2_20170825101245.so"
+    ]
+ 
+ */
+- (void)savePackageInfo:(NSString *)unzipFilePath {
+    if ([self.options count]>0 && unzipFilePath) {
+        //
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSArray *weexDataArr = [userDefaults objectForKey:@"ucar_weex"];
+        //
+        if (weexDataArr && weexDataArr.count>0) {
+            NSMutableArray *newDataArr = [NSMutableArray arrayWithArray:weexDataArr];
+            [newDataArr addObject:self.options];
+        }
+    }
+}
+
+/**
+ * 校验文件是否合法
+ */
+- (BOOL)isLegalFile:(NSString *)path {
+    BOOL flag = NO;
+    NSString *computedFileMD5 = [UCXUtil fileMD5:path];
+    if ([self.options count]>0) {
+        NSDictionary *packageInfo = [self.options objectForKey:@"packageInfo"];
+        if ([packageInfo count]>0) {
+            NSString *originMD5 = [packageInfo objectForKey:@"md5"];
+            if (computedFileMD5 && originMD5 && [computedFileMD5 isEqualToString:originMD5]) {
+                flag = YES;
+            }
+        }
+    }
+    return flag;
+}
+
+#pragma mark - private method
 
 - (NSError *)errorWithMessage:(NSString *)errorMessage
 {
