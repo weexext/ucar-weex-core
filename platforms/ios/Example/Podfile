@@ -14,8 +14,10 @@ target 'UCarWeex_Example' do
   # color category
   pod 'UIColor-HexString'
   
+  # UCarWeex依赖库
   pod 'UCarWeex',  :path => '../../../'
   pod 'WXDevtool', '~>0.15.3', :configurations => ['Debug']
+  pod 'SSZipArchive', '~>2.0.3'
   
 #  pod 'WeexGcanvas'
   

@@ -22,6 +22,9 @@
 #import "UCXBaseViewController.h"
 #import "UCXNavigatorModule.h"
 #import "UCarWeexService.h"
+#import "UCXHotUpdate.h"
+#import "UCXUtil.h"
+
 #import <WeexSDK/WeexSDK.h>
 
 #endif /* __OBJC__ */

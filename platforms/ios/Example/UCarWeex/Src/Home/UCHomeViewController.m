@@ -69,7 +69,8 @@
     
     UCXBaseViewController *vc = [[UCXBaseViewController alloc] initWithSourceURL:url];
     NSDictionary *dict = @{@"height":@"64",@"backgroundColor":@"#3e50b5"};
-    vc.dict = dict;
+    NSDictionary *options = @{@"navBar":dict};
+    vc.options = options;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -80,7 +81,8 @@
     if (UC_JS_LOAD_TYPE) {
         urlStr = [NSString stringWithFormat:@"http://%@:12588/dist/native/views/%@",LOCAL_IP, relativePath];
     }else {
-        urlStr = [NSString stringWithFormat:@"file://%@/bundlejs/views/%@",[NSBundle mainBundle].bundlePath, relativePath];
+//        urlStr = [NSString stringWithFormat:@"file://%@/bundlejs/views/%@",[NSBundle mainBundle].bundlePath, relativePath];
+        urlStr = [NSString stringWithFormat:@"file://%@/%@/jsBundle/views/%@",UCXDownloadDir,@"ucar-weex_1_20170824151141", relativePath];
     }
     return urlStr;
 }

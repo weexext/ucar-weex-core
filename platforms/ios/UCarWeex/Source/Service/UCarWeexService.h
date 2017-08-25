@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import <UCarWeex/UCarWeex.h>
 #import <WeexSDK/WXLog.h>
+#import "UCXHotUpdate.h"
 
 @interface UCarWeexService : NSObject
 
 + (void)initUCarWeexService;
+
+#pragma mark - 
++ (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback;
 
 #pragma mark - 
 /**
