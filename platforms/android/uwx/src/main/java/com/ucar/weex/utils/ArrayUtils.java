@@ -1573,7 +1573,7 @@ public class ArrayUtils {
             } catch (ArrayStoreException var6) {
                 Class type2 = array2.getClass().getComponentType();
                 if (!type1.isAssignableFrom(type2)) {
-                    throw new IllegalArgumentException("Cannot store " + type2.getName() + " in an array of " + type1.getName(), var6);
+                    throw new IllegalArgumentException("Cannot Storage " + type2.getName() + " in an array of " + type1.getName(), var6);
                 } else {
                     throw var6;
                 }

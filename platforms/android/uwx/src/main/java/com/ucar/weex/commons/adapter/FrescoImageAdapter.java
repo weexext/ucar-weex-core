@@ -235,6 +235,8 @@ import com.taobao.weex.WXSDKManager;
 import com.taobao.weex.adapter.IWXImgLoaderAdapter;
 import com.taobao.weex.common.WXImageStrategy;
 import com.taobao.weex.dom.WXImageQuality;
+import com.ucar.weex.devsup.UWXEnvManager;
+import com.ucar.weex.update.UWXResManager;
 
 /**
  * 远程图片	http://, https://	HttpURLConnection
@@ -268,7 +270,9 @@ public class FrescoImageAdapter implements IWXImgLoaderAdapter {
                     temp = "http:" + url;
                 }
                 if (url.startsWith("assets:///")) {
-                    temp = temp.replace("assets://", "asset:///weex/res");
+//                    temp = temp.replace("assets://", "asset:///weex/res");
+                    temp = temp.replace("assets://", UWXEnvManager.getWXResHost());
+
                 }
                 if (view.getLayoutParams().width <= 0 || view.getLayoutParams().height <= 0) {
                     return;

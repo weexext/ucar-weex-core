@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.taobao.weex.WXEnvironment;
 import com.ucar.weex.UWXEnvironment;
+import com.ucar.weex.update.UWXResManager;
 
 /**
  * Created by chenxi.cui on 2017/6/29.
@@ -11,12 +12,16 @@ import com.ucar.weex.UWXEnvironment;
 
 public class UWXEnvManager {
 
-    public static String getWXHost() {
+    public static String getJSBundleHost() {
         WXEnvDetailHelper instance = WXEnvDetailHelper.getInstance();
         if (instance.isLocalServer() || !UWXEnvironment.isDebug()) {
-            return "file://assets/weex/jsbundle/views/";
+            return "file://"+UWXResManager.getInstance().getWXResPath()+"jsBundle/views/";
+//            return "file://assets/weex/jsbundle/views/";
         }
         return "http://" + instance.getHost() + ":" + instance.getPort() + "/dist/native/views/";
+    }
+    public static String getWXResHost() {
+        return "file://" + UWXResManager.getInstance().getWXResPath() + "res";
     }
 
     public static void initDebugEnvironment(Context context) {
