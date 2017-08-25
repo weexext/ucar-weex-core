@@ -58,7 +58,7 @@ public class UWXPageManger {
         if (bundle != null) {
             jsonObject = ArgumentsUtil.fromBundle(bundle);
         }
-        openPageByUrl(context, UWXEnvManager.getWXHost() + jsBundle, jsonObject);
+        openPageByUrl(context, UWXEnvManager.getJSBundleHost() + jsBundle, jsonObject);
     }
 
     /**
@@ -79,7 +79,7 @@ public class UWXPageManger {
         if (bundle == null) {
             bundle = new Bundle();
         }
-        bundle.putString("_jsBundle", UWXEnvManager.getWXHost() + jsBundle);
+        bundle.putString("_jsBundle", UWXEnvManager.getJSBundleHost() + jsBundle);
         FragmentManager fm = context.getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         Fragment instantiate = Fragment.instantiate(context, UWXBaseFragment.class.getName(), bundle);

@@ -97,13 +97,15 @@ repositories{
         debugCompile 'com.taobao.android:weex_inspector:0.10.0.5'
         debugCompile 'com.journeyapps:zxing-android-embedded:3.4.0'
 //        //ucar weexsdk拓展
-        compile 'com.ucar:weexext_sdk:1.0.5@aar'
-        compile 'com.ucar:weex_sdk:1.6@aar'
+//        compile 'com.ucar:weexext_sdk:1.0.5@aar'
+//        compile 'com.ucar:weex_sdk:1.6@aar'
 //        //taobao weexsdk
 //        compile 'com.taobao.android:weex_sdk:0.10.0@aar'
 
-//        compile project(':weex-sdk16')
-//        compile project(':uwx')
+
+        compile 'com.squareup.okhttp3:okhttp:3.8.1'
+        compile project(':weex-sdk16')
+        compile project(':uwx')
 
 
 

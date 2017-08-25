@@ -31,7 +31,7 @@ console.log('manifast= '+manifast.appName)
 
 var fileName = manifast.appName + "_" + manifast.versionCode + "_" + currentdate;
 
-var zipFile = rootpath+'/dist/'+fileName +".zip";
+var zipFile = rootpath+'/dist/'+fileName +".so";
 
 var output = fs.createWriteStream(zipFile);
 var archive = archiver('zip');
@@ -101,6 +101,8 @@ function buildManiFast() {
 
         manifast.md5 = zipFilemd5;
         manifast.length =zipFileSize;
+        manifast.time =currentdate;
+        manifast.path = fileName;
 
         fs.writeFile(manifseFile, JSON.stringify(manifast), {flag: 'w', encoding: 'utf-8', mode: '0666'}, function (err) {
             if (err) {

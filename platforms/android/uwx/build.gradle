@@ -64,6 +64,7 @@ dependencies {
 //  compile 'com.taobao.android:weex_sdk:0.10.0@aar'
   provided 'com.google.code.findbugs:jsr305:2.0.1'
   provided 'com.journeyapps:zxing-android-embedded:3.4.0'
+  provided 'com.squareup.okhttp3:okhttp:3.8.1'
   provided "com.squareup.picasso:picasso:${project.picassoLibVersion}"
   provided "com.facebook.fresco:fresco:${project.frescoLibVersion}"
   compile "com.android.support:appcompat-v7:${project.supportLibVersion}"
