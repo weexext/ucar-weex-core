@@ -1,10 +1,12 @@
 {
   "name": "ucar-weex",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Weex expand",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "mocha ./tests/*.test.js"
+    "test": "mocha ./tests/*.test.js",
+    "build": "babel src -d lib",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,8 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

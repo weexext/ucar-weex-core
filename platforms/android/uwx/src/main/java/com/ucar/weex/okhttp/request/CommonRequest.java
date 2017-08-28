@@ -40,7 +40,9 @@ public class CommonRequest {
         FormBody.Builder builder = new FormBody.Builder();
         if (params != null) {
             for (Map.Entry<String, String> entry: params.urlParams.entrySet()) {
-                builder.add(entry.getKey(), entry.getValue());
+                if (entry.getValue() != null) {
+                    builder.add(entry.getKey(), entry.getValue());
+                }
             }
         }
         FormBody body = builder.build();

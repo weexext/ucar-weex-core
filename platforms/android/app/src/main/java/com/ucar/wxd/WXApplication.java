@@ -16,12 +16,15 @@ import java.io.IOException;
  * weex 初始化
  */
 public class WXApplication extends Application {
+    public static Application instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
 
         UWXInit.init(this);
-        UWXResManager.getInstance().addWXResFromAssert(this, getWXPackageFileName("weex"));
+//        UWXResManager.getInstance().addWXResFromAssert(this, getWXPackageFileName("weex"));
 //        UWXResManager.getInstance().checkUpdate(new UWXResManager.CheckUpdateCallback() {
 //            @Override
 //            public void callback(int code, String msg, WXPackageInfo info) {
@@ -33,9 +36,9 @@ public class WXApplication extends Application {
     }
 
     @NonNull
-    private String getWXPackageFileName(String weexFileName) {
+    public static String getWXPackageFileName(String weexFileName) {
         try {
-            String[] assets = this.getAssets().list(weexFileName);
+            String[] assets = instance.getAssets().list(weexFileName);
             if (!ArrayUtils.isEmpty(assets)) {
                 String asset = assets[0];
                 int i = asset.indexOf(".");

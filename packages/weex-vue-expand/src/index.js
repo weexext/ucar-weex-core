@@ -1,4 +1,4 @@
-import uweex from './src/uweex'
+import uweex from './uweex'
 import utils from './lib/utils'
 
 import router from './plugins/router'

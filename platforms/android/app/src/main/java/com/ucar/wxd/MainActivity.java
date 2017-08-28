@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ucar.weex.UWXPageManger;
+import com.ucar.weex.init.manager.WXActivityManager;
 import com.ucar.weex.init.utils.UWLog;
 import com.ucar.weex.update.UWXResManager;
 import com.ucar.weex.update.WXPackageInfo;
@@ -46,6 +47,7 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UWXResManager.getInstance().addWXResFromAssert(MainActivity.this, WXApplication.getWXPackageFileName("weex"));
                 startWeexPage();
             }
         });
