@@ -2,7 +2,6 @@ package com.ucar.weex.update;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -15,12 +14,15 @@ import com.ucar.weex.okhttp.listerner.DisposeDataListener;
 import com.ucar.weex.okhttp.request.CommonRequest;
 import com.ucar.weex.okhttp.request.RequestParams;
 import com.ucar.weex.utils.AppUtil;
+import com.ucar.weex.utils.ArrayUtils;
 import com.ucar.weex.utils.Storage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -29,14 +31,21 @@ import java.io.InputStream;
 
 public class UWXResManager {
     public static final String TAG = UWXResManager.class.getSimpleName();
-    private static final String ZIP_FILE_CONTENT_LENGTH = "ZIP_FILE_CONTENT_LENGTH";
-    private String WEEX_DATA_PATH = "";
+    private String WX_DATA_PATH = "";
     private static UWXResManager instance;
-    private WXPackageInfo wxPackageInfo;
+    private WXPackageInfo lastPackageInfo;
     private SharedPreferences preferences;
-    private CheckUpdateCallback callBack;
-    private WXPackageInfo _weexPackageinfo;
+    private WXPackageInfo newPackageinfo;
     private String server_url = "http://10.99.23.142:3000/ucarweex/";
+    private List<WXPackageInfo> packageInfos;
+
+    public void setServerUrl(String server_url) {
+        this.server_url = server_url;
+    }
+
+    public String getServerUrl() {
+        return server_url;
+    }
 
     public static UWXResManager getInstance() {
         if (instance == null) {
@@ -46,9 +55,9 @@ public class UWXResManager {
     }
 
     private void initManager() {
-        if (TextUtils.isEmpty(this.WEEX_DATA_PATH)) {
-            this.WEEX_DATA_PATH = Storage.getAppFileDir(UWXEnvironment.getsApplication()) + "/weexfile/";
-            File f = new File(this.WEEX_DATA_PATH);
+        if (TextUtils.isEmpty(this.WX_DATA_PATH)) {
+            this.WX_DATA_PATH = Storage.getAppFileDir(UWXEnvironment.getsApplication()) + "/weexfile/";
+            File f = new File(this.WX_DATA_PATH);
             if (!f.exists()) {
                 f.mkdirs();
             }
@@ -60,23 +69,29 @@ public class UWXResManager {
     private void iniWXInfo() {
         String packageJson = preferences.getString("wx_res_info", "");
         try {
-            this.wxPackageInfo = JSON.parseObject(packageJson, WXPackageInfo.class);
+            packageInfos = JSON.parseArray(packageJson, WXPackageInfo.class);
+            this.lastPackageInfo = !ArrayUtils.isEmpty(packageInfos) ? packageInfos.get(0) : null;
         } catch (JSONException e) {
+            packageInfos = null;
             UWLog.e(TAG, e.getMessage());
         }
     }
 
     private void saveWXInfo(WXPackageInfo info) {
+        if (packageInfos == null) {
+            packageInfos = new ArrayList<>();
+        }
+        packageInfos.add(0, info);
         SharedPreferences.Editor e1 = this.preferences.edit();
-        e1.putString("wx_res_info", JSON.toJSONString(info));
+        e1.putString("wx_res_info", JSON.toJSONString(packageInfos));
         e1.apply();
     }
 
     public String getWXResPath() {
-        if (wxPackageInfo != null) {
-            return WEEX_DATA_PATH + wxPackageInfo.path + "/";
+        if (lastPackageInfo != null) {
+            return WX_DATA_PATH + lastPackageInfo.path + "/";
         }
-        return WEEX_DATA_PATH;
+        return WX_DATA_PATH;
     }
 
     private UWXResManager() {
@@ -91,18 +106,18 @@ public class UWXResManager {
         if (!TextUtils.isEmpty(assetFileName)) {
             UWLog.d(TAG, "assetFileName" + assetFileName);
             if (check(context, assetFileName)) {
-                if (_weexPackageinfo == null) {
+                if (newPackageinfo == null) {
                     String assetFileToStr = FileUtils.getAssetFileToStr(context.getAssets(), assetFileName + ".json");
                     if (TextUtils.isEmpty(assetFileToStr)) {
                         UWLog.e(TAG, "up包解析有问题");
                         return;
                     }
-                    _weexPackageinfo = JSON.parseObject(assetFileToStr, WXPackageInfo.class);
+                    newPackageinfo = JSON.parseObject(assetFileToStr, WXPackageInfo.class);
                 }
                 if (this.unzipAssetsZip(context, assetFileName)) {
                     UWLog.d(TAG, "解压Assets文件成功");
-                    this.wxPackageInfo = _weexPackageinfo;
-                    saveWXInfo(_weexPackageinfo);
+                    this.lastPackageInfo = newPackageinfo;
+                    saveWXInfo(newPackageinfo);
                 } else {
                     UWLog.e(TAG, "解压Assets失败");
                 }
@@ -117,9 +132,32 @@ public class UWXResManager {
      * 保留最近两个
      */
     private void delOldPackage() {
-
+        if (!ArrayUtils.isEmpty(packageInfos) || packageInfos.size() > 2) {
+            int size = packageInfos.size();
+            for (int i = 2; i < size; i++) {
+                WXPackageInfo info = packageInfos.get(i);
+                delPackageByName(info.path);
+            }
+        }
     }
 
+    private void delPackageByName(String path) {
+        File dir = new File(WX_DATA_PATH + path);
+        if (dir.exists()) {
+            deleteFile(dir);
+            UWLog.d(TAG ,"del old assets");
+        }
+    }
+
+    private void deleteFile(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                deleteFile(files[i]);
+            }
+        }
+        file.delete();
+    }
 
     /**
      * name  id_version_time.zip
@@ -131,7 +169,7 @@ public class UWXResManager {
     private boolean check(Context context, String weexFileName) {
 
         //首次拷贝
-        if (this.wxPackageInfo == null || this.wxPackageInfo.path == null) {
+        if (this.lastPackageInfo == null || this.lastPackageInfo.path == null) {
             UWLog.e(TAG, "第一次copy asset2sdcard");
             return true;
         }
@@ -140,19 +178,19 @@ public class UWXResManager {
             UWLog.e(TAG, "up包解析有问题");
             return false;
         }
-        _weexPackageinfo = JSON.parseObject(assetFileToStr, WXPackageInfo.class);
+        newPackageinfo = JSON.parseObject(assetFileToStr, WXPackageInfo.class);
 
-        if (_weexPackageinfo == null) {
+        if (newPackageinfo == null) {
             UWLog.e(TAG, "up包解析有问题");
             return false;
         }
 
-        if (_weexPackageinfo.versionCode > this.wxPackageInfo.versionCode) {
+        if (newPackageinfo.versionCode > this.lastPackageInfo.versionCode) {
             UWLog.e(TAG, "asset ver >sdcard ver");
             return true;
         }
-        if (Long.parseLong(_weexPackageinfo.time) > Long.parseLong(this.wxPackageInfo.time) &&
-                !TextUtils.equals(_weexPackageinfo.md5, this.wxPackageInfo.md5)
+        if (Long.parseLong(newPackageinfo.time) > Long.parseLong(this.lastPackageInfo.time) &&
+                !TextUtils.equals(newPackageinfo.md5, this.lastPackageInfo.md5)
                 ) {
             UWLog.e(TAG, "asset文件有变化且时间最新");
             return true;
@@ -167,7 +205,7 @@ public class UWXResManager {
      * @return
      */
     private boolean unzipAssetsZip(Context context, String assertName) {
-        File file = new File(WEEX_DATA_PATH, _weexPackageinfo.path);
+        File file = new File(WX_DATA_PATH, newPackageinfo.path);
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -190,7 +228,7 @@ public class UWXResManager {
      * @return
      */
     private boolean unzipSdcardZip(String inFile, String path) {
-        File outfile = new File(WEEX_DATA_PATH, path);
+        File outfile = new File(WX_DATA_PATH, path);
         if (!outfile.exists()) {
             try {
                 outfile.createNewFile();
@@ -213,12 +251,11 @@ public class UWXResManager {
     }
 
     public void checkUpdate(final CheckUpdateCallback callBack) {
-        this.callBack = callBack;
-        if (wxPackageInfo != null) {
+        if (this.lastPackageInfo != null) {
             RequestParams params = new RequestParams();
-            params.put("appName", wxPackageInfo.appName);
-            params.put("versionCode", "" + wxPackageInfo.versionCode);
-            params.put("groupId", wxPackageInfo.groupId);
+            params.put("appName", lastPackageInfo.appName);
+            params.put("versionCode", "" + lastPackageInfo.versionCode);
+            params.put("groupId", lastPackageInfo.groupId);
             params.put("platform", "android");
             params.put("nativeVer", AppUtil.getAppVersionCode(UWXEnvironment.getsApplication()) + "");
             CommonOkHttpClient.post(CommonRequest.createPostRequest(server_url, params),
@@ -241,10 +278,10 @@ public class UWXResManager {
                             final WXPackageInfo _updateInfo = result.data.packageInfo;
 
                             //更新
-                            final String updateFile = WEEX_DATA_PATH + _updateInfo.path + ".so";
-                            UWLog.d(TAG, "updateInfo" + JSON.toJSONString(result.data.packageInfo));
+                            final String updateFile = WX_DATA_PATH + _updateInfo.path + ".so";
+                            UWLog.d(TAG, "updateInfo=" + JSON.toJSONString(result.data.packageInfo));
                             UWLog.d(TAG, "updateFile=" + updateFile);
-                            UWLog.d(TAG, "updateUrl=" + result.data.url);
+                            UWLog.d(TAG, "updateUrl =" + result.data.url);
 
                             CommonOkHttpClient.downloadFile(CommonRequest.createGetRequest(result.data.url, null), new DisposeDataHandle(new DisposeDataListener() {
                                 @Override

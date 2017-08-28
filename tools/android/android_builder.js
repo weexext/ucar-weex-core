@@ -60,14 +60,17 @@ function build(src,target) {
 
 module.exports = build
 
-//图片资源文件
-const imgSrc ='src/assets/*'
-const imgTarget = 'platforms/android/app/src/main/assets/weex/res'
-build(imgSrc,imgTarget)
+// //图片资源文件
+// const imgSrc ='src/assets/*'
+// const imgTarget = 'platforms/android/app/src/main/assets/weex/res'
+// build(imgSrc,imgTarget)
+//
+// //JS文件
+// const jsSrc ='dist/native/*'
+// const jsTarget = 'platforms/android/app/src/main/assets/weex/jsbundle'
+// build(jsSrc,jsTarget)
 
 //JS文件
-const jsSrc ='dist/native/*'
-const jsTarget = 'platforms/android/app/src/main/assets/weex/jsbundle'
+const jsSrc ='dist/package/*'
+const jsTarget = 'platforms/android/app/src/main/assets/weex'
 build(jsSrc,jsTarget)
-
-
