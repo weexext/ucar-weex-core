@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.ucar.weex.UWXEnvironment;
+import com.ucar.weex.UWXApplication;
 import com.ucar.weex.init.utils.UWLog;
 import com.ucar.weex.okhttp.CommonOkHttpClient;
 import com.ucar.weex.okhttp.listerner.DisposeDataHandle;
@@ -56,13 +56,13 @@ public class UWXResManager {
 
     private void initManager() {
         if (TextUtils.isEmpty(this.WX_DATA_PATH)) {
-            this.WX_DATA_PATH = Storage.getAppFileDir(UWXEnvironment.getsApplication()) + "/weexfile/";
+            this.WX_DATA_PATH = Storage.getAppFileDir(UWXApplication.getsApplication()) + "/weexfile/";
             File f = new File(this.WX_DATA_PATH);
             if (!f.exists()) {
                 f.mkdirs();
             }
         }
-        this.preferences = UWXEnvironment.getsApplication().getSharedPreferences("ucar_wx_res", 0);
+        this.preferences = UWXApplication.getsApplication().getSharedPreferences("ucar_wx_res", 0);
         this.iniWXInfo();
     }
 
@@ -257,7 +257,7 @@ public class UWXResManager {
             params.put("versionCode", "" + lastPackageInfo.versionCode);
             params.put("groupId", lastPackageInfo.groupId);
             params.put("platform", "android");
-            params.put("nativeVer", AppUtil.getAppVersionCode(UWXEnvironment.getsApplication()) + "");
+            params.put("nativeVer", AppUtil.getAppVersionCode(UWXApplication.getsApplication()) + "");
             CommonOkHttpClient.post(CommonRequest.createPostRequest(server_url, params),
                     new DisposeDataHandle(new DisposeDataListener() {
                         @Override
