@@ -21,7 +21,8 @@ allprojects {
  compile "com.android.support:recyclerview-v7:23.1.1"
  compile "com.android.support:support-v4:23.1.1"
  compile "com.alibaba:fastjson:1.1.46.android"
-
+//更新需要
+ compile 'com.squareup.okhttp3:okhttp:3.8.1'
  //weex chrome 调试相关 debug 引入
  debugCompile 'com.google.code.findbugs:jsr305:2.0.1'
  debugCompile 'com.squareup.okhttp:okhttp:2.3.0'
@@ -33,30 +34,69 @@ allprojects {
 compile 'com.ucar:weex_sdk:1.6@aar'
 
 // ucar weexsdk 拓展
-compile 'com.ucar:weexext_sdk:1.0.5@aar'
+compile 'com.ucar:weexext_sdk:1.0.8@aar'
 
 ```
+最后，还需要在 app 的 build.gradle 中对 ndk 进行配置：
 
+```
+defaultConfig {
+    ...
+    ndk {
+        abiFilters "x86"
+        abiFilters "armeabi"
+    }
+}
+```
+添加该 ndk 配置可解决部分手机架构无法加载到 weex 所需 .so 文件的问题。
 ## 初始化
 
 ```
-package com.ucar.wxd;
-
-import android.app.Application;
-
-import com.ucar.weex.UWXInit;
-
 /**
-* weex 初始化
-*/
+ * weex 初始化
+ */
 public class WXApplication extends Application {
- @Override
- public void onCreate() {
-     super.onCreate();
-     //ucar weex 初始化
-     UWXInit.init(this);
- }
+    public static Application instance;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+
+        UWXInit.init(this);
+        /**
+         * assets/weex/ucar-weex_3_20170828123442
+         */
+        UWXResManager.getInstance().addWXResFromAssert(this, getWXPackageFileName("weex"));
+//        UWXResManager.getInstance().setServerUrl("");
+        UWXResManager.getInstance().checkUpdate(new UWXResManager.CheckUpdateCallback() {
+            @Override
+            public void callback(int code, String msg, WXPackageInfo info) {
+                Toast.makeText(WXApplication.this, msg, Toast.LENGTH_LONG).show();
+                UWLog.d("WXApp", msg);
+                //重启 提示
+            }
+        });
+    }
+
+    @NonNull
+    public static String getWXPackageFileName(String weexFileName) {
+        try {
+            String[] assets = instance.getAssets().list(weexFileName);
+            if (!ArrayUtils.isEmpty(assets)) {
+                String asset = assets[0];
+                int i = asset.indexOf(".");
+                String rnName = asset.substring(0, i);
+                weexFileName = weexFileName + "/" + rnName;
+                UWLog.v("Weex", "Weex=" + weexFileName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return weexFileName;
+    }
 }
+
 ```
 
 ### 源码依赖
