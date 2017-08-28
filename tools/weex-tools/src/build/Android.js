@@ -18,19 +18,20 @@ function buildAndroid(options) {
   utils.buildJS()
     .then(()=> {
       return new Promise((resolve, reject)=> {
-        copy('./dist/native', 'platforms/android/app/src/main/assets/weex/jsbundle', {overwrite: true}, function (err) {
+        copy('./dist/package', 'platforms/android/app/src/main/assets/weex', {overwrite: true}, function (err) {
           if (err) return reject(err);
           else resolve();
         })
       });
-    }).then(()=> {
-    return new Promise((resolve, reject)=> {
-      copy('./src/assets', 'platforms/android/app/src/main/assets/weex/res', {overwrite: true}, function (err) {
-        if (err) return reject(err);
-        else resolve();
-      })
-    });
-   })
+    })
+   //  .then(()=> {
+   //  return new Promise((resolve, reject)=> {
+   //    copy('./src/assets', 'platforms/android/app/src/main/assets/weex/res', {overwrite: true}, function (err) {
+   //      if (err) return reject(err);
+   //      else resolve();
+   //    })
+   //  });
+   // })
     .then(()=> {
       // startJSServer()
       return {options}

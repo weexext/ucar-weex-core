@@ -52,6 +52,7 @@
             }
         },
         created () {
+
           console.log('views/index.vue created')
             uweex.bridge.addEventListener('test',(e)=>{
                 console.log('registerBroadcast='+JSON.stringify(e));

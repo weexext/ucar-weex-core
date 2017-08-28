@@ -10,7 +10,7 @@ const path = require('path');
 program.usage('[options] [project-name]').option('-c, --config [path]', 'specify the configuration file').on('--help', () => {
     console.log('  Examples:\n');
     console.log(chalk.grey('    # create a standard weex project'));
-    console.log('    $ ' + chalk.blue('weexpack init myProject'));
+    console.log('    $ ' + chalk.blue('weextools init myProject'));
     console.log();
   }).parse(process.argv)
   // check if project name exist

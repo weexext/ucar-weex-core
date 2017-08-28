@@ -8,10 +8,10 @@
         "build_plugin": "webpack --config ./tools/webpack.config.plugin.js --color",
         "dev": "webpack -w --config webpack.native.config.js & serve -p 12588",
         "serve": "serve -p 12588",
+        "packzip": "node tools/packzip.js",
         "copy:android": "node tools/android/android_builder.js",
         "copy:ios": "node tools/ios/ios_builder.js",
-        "copy": "npm run copy:android && npm run copy:ios",
-        "packzip": "npm run packzip.js"
+        "copy": "npm run copy:android && npm run copy:ios"
     },
     "keywords": [
         "weex"
@@ -23,7 +23,7 @@
         "react-native-linear-gradient": "^1.6.2",
         "save": "^2.3.1",
         "serve": "^5.2.4",
-        "ucar-weex": "^0.1.7",
+        "ucar-weex": "^0.2.0",
         "vue": "^2.1.8",
         "vue-router": "^2.1.1",
         "vuex": "^2.1.1",

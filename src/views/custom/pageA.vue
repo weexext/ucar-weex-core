@@ -34,6 +34,7 @@
     import config from '../../config/index'
     import uString from '../../utils/UString'
     import uweex from 'ucar-weex'
+//    import uweex from '../../../packages/weex-vue-expand';
 
     export default {
         components: {

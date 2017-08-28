@@ -1,58 +1,28 @@
-function js(jsURL) {
-    let bundleUrl = weex.config.bundleUrl
-    let baseURL = bundleUrl.substring(0, bundleUrl.lastIndexOf("/"))
-    //是否在同级目录，若不在，则需要以下处理
-    let flag = jsURL.indexOf('../') !== -1
-    if (flag) {
-      let arr = jsURL.split('../')
-      for (let index = 0; index < arr.length - 1; index++) {
-          baseURL = baseURL.substring(0, baseURL.lastIndexOf('/'))
-      }
-      jsURL = arr[arr.length - 1]
-    }
-    return baseURL + '/' + jsURL
-}
+'use strict';
 
-function params(key) {
-    let bundleUrl = weex.config.bundleUrl;
-    let reg = new RegExp('[?|&]' + key + '=([^&]+)')
-    let match = bundleUrl.match(reg)
-    return match && match[1]
-}
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-function getParams() {
-    let paramsJson = params('params');
-    if (paramsJson) {
-        return JSON.parse(paramsJson);
-    }
-    return ''
-}
-function toParams(obj) {
-    let param = ""
-    for (const name in obj) {
-        if (typeof obj[name] != 'function') {
-            param += "&" + name + "=" + encodeURI(obj[name])
-        }
-    }
-    return param.substring(1)
-}
+var _uweex = require('./uweex');
 
-/**
- *
- * */
-export function image(imgURL) {
-    // if (weex.config.env.platform == 'android') {
-    //     return "assets:///image/" + imgURL;
-    // } else {
-    //     return "assets:///image/" + imgURL
-    // }
-    return "assets:///image/" + imgURL
-}
+var _uweex2 = _interopRequireDefault(_uweex);
 
-export default {
-    js,
-    image,
-    params,
-    toParams,
-    getParams
-}
+var _utils = require('./lib/utils');
+
+var _utils2 = _interopRequireDefault(_utils);
+
+var _router = require('./plugins/router');
+
+var _router2 = _interopRequireDefault(_router);
+
+var _bridge = require('./plugins/router/bridge');
+
+var _bridge2 = _interopRequireDefault(_bridge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_uweex2.default.router = _router2.default;
+_uweex2.default.bridge = _bridge2.default;
+_uweex2.default.utils = _utils2.default;
+exports.default = _uweex2.default;

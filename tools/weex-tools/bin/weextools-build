@@ -14,13 +14,13 @@ function printExample() {
   console.log('  Examples:')
   console.log()
   console.log(chalk.grey('    # build weex Android project'))
-  console.log('    $ ' + chalk.blue('weexpack build android'))
+  console.log('    $ ' + chalk.blue('weextools build android'))
   console.log()
   console.log(chalk.grey('    # build weex iOS project'))
-  console.log('    $ ' + chalk.blue('weexpack build ios'))
+  console.log('    $ ' + chalk.blue('weextools build ios'))
   console.log()
   console.log(chalk.grey('    # build weex web project'))
-  console.log('    $ ' + chalk.blue('weexpack build web'))
+  console.log('    $ ' + chalk.blue('weextools build web'))
   console.log()
 }
 
