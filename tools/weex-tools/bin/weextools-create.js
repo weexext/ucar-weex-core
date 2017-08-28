@@ -10,7 +10,7 @@ const publish = require('../src/publish/publish');
 program.usage('[project-name] [options]').on('--help', () => {
   console.log('  Examples:\n');
   console.log(chalk.grey('    # create a standard weex project'));
-  console.log('    $ ' + chalk.blue('weexpack create myProject'));
+  console.log('    $ ' + chalk.blue('weextools create myProject'));
   console.log();
 }).parse(process.argv)
 

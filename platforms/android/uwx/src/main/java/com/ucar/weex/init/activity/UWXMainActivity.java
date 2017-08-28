@@ -32,7 +32,7 @@ public class UWXMainActivity extends Activity {
                 String scheme = uri.getScheme();
                 String host = uri.getHost();
                 UWLog.v("url=" + uri.toString());
-                if (!TextUtils.isEmpty(scheme) && !TextUtils.isEmpty(host)) {
+                if (!TextUtils.isEmpty(scheme)) {
                     UWXPageManger.openPageByUrl(this, uri.toString(), null);
                 } else {
                     Toast.makeText(this, "scheme err!", Toast.LENGTH_SHORT).show();

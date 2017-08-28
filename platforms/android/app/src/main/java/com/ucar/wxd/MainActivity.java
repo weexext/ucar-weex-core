@@ -27,7 +27,7 @@ public class MainActivity extends FragmentActivity {
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-//                startWeexPage();
+                startWeexPage();
             }
         }, 1000);
         findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {

@@ -24,15 +24,19 @@ public class WXApplication extends Application {
         instance = this;
 
         UWXInit.init(this);
-//        UWXResManager.getInstance().addWXResFromAssert(this, getWXPackageFileName("weex"));
-//        UWXResManager.getInstance().checkUpdate(new UWXResManager.CheckUpdateCallback() {
-//            @Override
-//            public void callback(int code, String msg, WXPackageInfo info) {
-//                Toast.makeText(WXApplication.this, msg, Toast.LENGTH_LONG).show();
-//                UWLog.d("WXApp", msg);
-//                //重启 提示
-//            }
-//        });
+        /**
+         * assets/weex/ucar-weex_3_20170828123442
+         */
+        UWXResManager.getInstance().addWXResFromAssert(this, getWXPackageFileName("weex"));
+//        UWXResManager.getInstance().setServerUrl("");
+        UWXResManager.getInstance().checkUpdate(new UWXResManager.CheckUpdateCallback() {
+            @Override
+            public void callback(int code, String msg, WXPackageInfo info) {
+                Toast.makeText(WXApplication.this, msg, Toast.LENGTH_LONG).show();
+                UWLog.d("WXApp", msg);
+                //重启 提示
+            }
+        });
     }
 
     @NonNull
