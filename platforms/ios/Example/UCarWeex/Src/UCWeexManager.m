@@ -38,10 +38,15 @@
     //
     [UCarWeexService registerHandler:[UCImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
     
-    //热更新,当从本地加载时拉取最新包
-    if(UC_JS_LOAD_TYPE == 0) {
-        NSDictionary *options = @{@"updateUrl":@"http://10.99.21.32:12588/dist/ucar-weex_1_20170824151141.zip"};
-        [UCarWeexService hotUpdate:UCXHotUpdateTypeFullDownload options:options callback:^(NSError *error) {
+    //从远程拉取
+    if (UC_JS_LOAD_TYPE==0) {
+        [UCarWeexService hotUpdate:UCXHotUpdateTypeLocal options:@{} callback:^(NSError *error) {
+            //解压回调...
+            NSLog(@"error:::%@",[error localizedDescription]);
+        }];
+    } else {
+        NSDictionary *options = @{@"url":@"http://10.99.21.32:12588/dist/ucar-weex_1_20170824151141.zip"};
+        [UCarWeexService hotUpdate:UCXHotUpdateTypeRemote options:options callback:^(NSError *error) {
             //下载解压回调...
             NSLog(@"error:::%@",[error localizedDescription]);
         }];

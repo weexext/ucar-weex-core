@@ -20,6 +20,8 @@
 #ifndef __UCX_DEFINE_H__
 #define __UCX_DEFINE_H__
 
-
+// userdefauts 存储 ucarweex 每次更新包信息 key
+#define UCX_US_UCAR_WEEX_KEY @"UCX_US_UCAR_WEEX_KEY"
+#define UCX_UNZIP_FILE_PATH  @"unzipFilePath"
 
 #endif

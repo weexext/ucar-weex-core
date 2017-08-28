@@ -42,19 +42,33 @@
     //register custom module and component
     [WXSDKEngine registerModule:@"UNavigator" withClass:[UCXNavigatorModule class]];
     [WXSDKEngine registerModule:@"UGlobalEvent" withClass:[UCXGlobalEventModule class]];
-    
     //register the implementation of protocol
     
     //set the log level
     [WXLog setLogLevel:[UCarWeexService shared].logLevel];
+    
 }
 
 #pragma mark - 
++ (void)hotUpdate {
+    //
+    NSString *urlStr = @"xxx";
+    NSDictionary *parameters = @{};
+    [UCXHotUpdate POST:urlStr parameters:parameters success:^(NSDictionary *responseObj) {
+        NSLog(@"%@",responseObj);
+        [UCXHotUpdate hotUpdate:UCXHotUpdateTypeRemote options:responseObj callback:^(NSError *error) {
+            //...
+        }];
+    } failure:^(NSError *error) {
+        NSLog(@"%@",[error localizedDescription]);
+    }];
+}
+
 + (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback
 {
-//    UCXHotUpdate *hotUpdate = [[UCXHotUpdate alloc] init];
     //
-    [UCXHotUpdate hotUpdate:UCXHotUpdateTypeFullDownload options:options callback:^(NSError *error) {
+    [UCXHotUpdate hotUpdate:type options:options callback:^(NSError *error) {
+        NSLog(@"%@",[error localizedDescription]);
         callback(error);
     }];
 }
