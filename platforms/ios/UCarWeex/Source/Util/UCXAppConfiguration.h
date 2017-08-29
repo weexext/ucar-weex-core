@@ -10,9 +10,24 @@
 
 @interface UCXAppConfiguration : NSObject
 
+
 /**
- * @abstract "../../jsBundle/"
+ * cache path
+    "../../"
+ */
++ (NSString *)cachePath;
+
+/**
+ * @abstract  bundlejs path...
+    
+    "../../jsBundle/"
  */
 + (NSString *)jsBundlePath;
+
+/**
+ * "../../res/image/"
+ */
++ (NSString *)imagePath;
+
 
 @end

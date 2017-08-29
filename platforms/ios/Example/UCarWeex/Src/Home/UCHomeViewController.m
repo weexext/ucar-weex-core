@@ -64,7 +64,7 @@
 - (void)btnClicked {
     NSLog(@"btn clicked");
     //
-    NSString *relativePath = @"index.js";
+    NSString *relativePath = @"views/index.js";
     NSURL *url = [NSURL URLWithString:[self routerWithRelativePath:relativePath]];
     
     UCXBaseViewController *vc = [[UCXBaseViewController alloc] initWithSourceURL:url];
@@ -79,10 +79,10 @@
     // 1:远程 0：本地
     NSString *urlStr = relativePath;
     if (UC_JS_LOAD_TYPE) {
-        urlStr = [NSString stringWithFormat:@"http://%@:12588/dist/native/views/%@",LOCAL_IP, relativePath];
+        urlStr = [NSString stringWithFormat:@"http://%@:12588/dist/native/%@",LOCAL_IP, relativePath];
     }else {
 //        urlStr = [NSString stringWithFormat:@"file://%@/bundlejs/views/%@",[NSBundle mainBundle].bundlePath, relativePath];
-        urlStr = [NSString stringWithFormat:@"file://%@/%@/jsBundle/views/%@",UCXDownloadDir,@"ucar-weex_1_20170824151141", relativePath];
+        urlStr = [NSString stringWithFormat:@"file://%@/%@",[UCXAppConfiguration jsBundlePath], relativePath];
     }
     return urlStr;
 }

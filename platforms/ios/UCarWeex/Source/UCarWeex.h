@@ -24,6 +24,7 @@
 #import "UCarWeexService.h"
 #import "UCXHotUpdate.h"
 #import "UCXUtil.h"
+#import "UCXAppConfiguration.h"
 
 #import <WeexSDK/WeexSDK.h>
 

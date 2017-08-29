@@ -15,8 +15,8 @@ static NSString * const UCX_ERROR_FILE_VALIDATE = @"file validate error";
 static NSString * const UCX_ERROR_JSON_PARSE = @"json parse error";
 
 typedef NS_ENUM(NSInteger, UCXHotUpdateType) {
-    UCXHotUpdateTypeFullDownload = 1,      //全量
-    UCXHotUpdateTypePatchFromPackage = 2,  //部分,暂不支持.
+    UCXHotUpdateTypeRemote = 1,  // 远程下载
+    UCXHotUpdateTypeLocal = 2,   // 本地获取
 };
 
 /** 请求成功的Block */
@@ -37,14 +37,14 @@ typedef void(^UCXRequestFailure)(NSError *error);
  *
  *  @return NSURLSessionTask
  */
-- (__kindof NSURLSessionTask *)POST:(NSString *)URL
++ (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(id)parameters
                             success:(UCXRequestSuccess)success
                             failure:(UCXRequestFailure)failure;
 
 /** 更新包下载解压校验
  *  options:
-        updateUrl:更新包下载地址
+        url:更新包下载地址
  */
 + (void)hotUpdate:(UCXHotUpdateType)type
           options:(NSDictionary *)options

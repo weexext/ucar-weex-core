@@ -12,6 +12,7 @@
 #import "UCXHotUpdateManager.h"
 #import "UCXHotUpdateDownloader.h"
 #import "UCXUtil.h"
+#import "UCXAppConfiguration.h"
 
 
 @interface UCXHotUpdate ()
@@ -64,6 +65,20 @@
 
 - (void)dealloc {
     NSLog(@"UCXHotUpdate dealloc");
+}
+
+#pragma mark -
++ (__kindof NSURLSessionTask *)POST:(NSString *)URL
+                         parameters:(id)parameters
+                            success:(UCXRequestSuccess)success
+                            failure:(UCXRequestFailure)failure
+{
+    UCXHotUpdate *hotUpdate = [UCXHotUpdate shared];
+    [hotUpdate POST:URL parameters:parameters success:^(NSDictionary *responseObj) {
+        success(responseObj);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
 }
 
 /**
@@ -128,79 +143,121 @@
 - (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback
 {
     __weak typeof(self) weakSelf = self;
-    //
-    self.options = [options mutableCopy];
-    //
-    NSString *updateUrl = [WXConvert NSString:options[@"updateUrl"]];
-    if (updateUrl.length<=0) {
-        callback([weakSelf errorWithMessage:UCX_ERROR_OPTIONS]);
-        return;
-    }
-    //
-    NSString *lastPathComponent = [updateUrl lastPathComponent];
-    //
-    NSString *fileName = lastPathComponent;
-    NSRange range = [lastPathComponent rangeOfString:@"." options:NSBackwardsSearch];
-    if(range.location !=NSNotFound) {
-        fileName = [lastPathComponent substringToIndex:range.location];
-    }
-    
-    NSString *dir = UCXDownloadDir;
-    BOOL success = [self.fileManager createDir:dir];
-    if (!success) {
-        callback([weakSelf errorWithMessage:UCX_ERROR_FILE_OPERATION]);
-        return;
-    }
-    
-    NSString *zipFilePath = [dir stringByAppendingPathComponent:lastPathComponent];
-    NSString *unzipFilePath = [dir stringByAppendingPathComponent:fileName];
-    
-    WXLog(@"HotUpdate -- download file %@", updateUrl);
-    [UCXHotUpdateDownloader download:updateUrl savePath:zipFilePath progressHandler:^(long long receivedBytes, long long totalBytes) {
-        //下载进度设置...
-    } completionHandler:^(NSString *path, NSError *error) {
-        if (error) {
-            callback(error);
-        } else {
-            WXLog(@"HotUpdate -- unzip file %@", path);
-            //校验文件
-            BOOL flag = [weakSelf isLegalFile:path];
-            if (flag) { //文件合法
-                //解压缩
-                [self.fileManager unzipFileAtPath:path toDestination:unzipFilePath progressHandler:^(NSString *entry,long entryNumber, long total) {
-                    //压缩进度设置...
-                } completionHandler:^(NSString *path, BOOL succeeded, NSError *error) {
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                        if (error) {
-                            callback(error);
-                        } else {
-                            switch (type) {
-                                    case UCXHotUpdateTypeFullDownload:
-                                {
-                                    //解压完成，保存本次更新的必要信息到本地存储
-                                    
-                                    
-                                    callback(nil);
-                                }
-                                    break;
-                                    case UCXHotUpdateTypePatchFromPackage:
-                                {
-                                    //...
-                                }
-                                    break;
-                                default:
-                                    callback(nil);
-                                    break;
+    if (type==UCXHotUpdateTypeRemote) { //从远程加载
+        
+        self.options = [options mutableCopy];
+        //
+        NSString *updateUrl = [WXConvert NSString:options[@"url"]];
+        if (updateUrl.length<=0) {
+            callback([weakSelf errorWithMessage:UCX_ERROR_OPTIONS]);
+            return;
+        }
+        //
+        NSString *lastPathComponent = [updateUrl lastPathComponent];
+        //
+        NSString *fileName = lastPathComponent;
+        NSRange range = [lastPathComponent rangeOfString:@"." options:NSBackwardsSearch];
+        if(range.location !=NSNotFound) {
+            fileName = [lastPathComponent substringToIndex:range.location];
+        }
+        
+        NSString *dir = UCXDownloadDir;
+        BOOL success = [self.fileManager createDir:dir];
+        if (!success) {
+            callback([weakSelf errorWithMessage:UCX_ERROR_FILE_OPERATION]);
+            return;
+        }
+        NSString *unzipFilePath = [dir stringByAppendingPathComponent:fileName];
+        NSString *zipFilePath = [dir stringByAppendingPathComponent:lastPathComponent];
+        
+        
+        WXLog(@"HotUpdate -- download file %@", updateUrl);
+        [UCXHotUpdateDownloader download:updateUrl savePath:zipFilePath progressHandler:^(long long receivedBytes, long long totalBytes) {
+            //下载进度设置...
+        } completionHandler:^(NSString *path, NSError *error) {
+            if (error) {
+                callback(error);
+            } else {
+                WXLog(@"HotUpdate -- unzip file %@", path);
+                //校验文件md5
+                BOOL flag = [weakSelf isLegalFile:path];
+                if (flag) { //文件合法
+                    //解压缩
+                    [self.fileManager unzipFileAtPath:path toDestination:unzipFilePath progressHandler:^(NSString *entry,long entryNumber, long total) {
+                        //压缩进度设置...
+                    } completionHandler:^(NSString *path, BOOL succeeded, NSError *error) {
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                            if (error) {
+                                callback(error);
+                            } else {
+                                //解压完成，保存本次更新的必要信息到本地存储
+                                [weakSelf savePackageInfo:path];
+                                callback(nil);
                             }
-                        }
-                    });
-                }];
-            }else {
-                //文件校验不通过
-                callback([weakSelf errorWithMessage:UCX_ERROR_FILE_VALIDATE]);
+                        });
+                    }];
+                }else {
+                    //文件校验不通过
+                    callback([weakSelf errorWithMessage:UCX_ERROR_FILE_VALIDATE]);
+                }
+            }
+        }];
+    }else if (type==UCXHotUpdateTypeLocal) {
+        //同步方式解压文件 & 解析配置
+        //找到压缩文件 & 配置文件
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *assetsPath = [NSString stringWithFormat:@"%@/%@",[[NSBundle mainBundle] resourcePath],@"assets"];
+        NSDirectoryEnumerator *myDirectoryEnumerator = [fileManager enumeratorAtPath:assetsPath];  //assetsPath
+        
+        NSString *fileName;
+        NSString *jsonFilePath;
+        NSString *zipFilePath;
+        NSString *tmpName;
+        while((tmpName= [myDirectoryEnumerator nextObject])) {    //遍历当前目录
+            if([[tmpName pathExtension] isEqualToString:@"json"]) { //取得后缀名为.json的文件名
+                jsonFilePath = [assetsPath stringByAppendingPathComponent:tmpName];
+            }else if ([[tmpName pathExtension] isEqualToString:@"zip"]) {//取得后缀名为.zip的文件名
+                zipFilePath = [assetsPath stringByAppendingPathComponent:tmpName];
+                //
+                NSRange range = [tmpName rangeOfString:@"." options:NSBackwardsSearch];
+                fileName = [tmpName substringToIndex:range.location];
             }
         }
-    }];
+        //解析配置文件
+        NSData *jsonData = [NSData dataWithContentsOfFile:jsonFilePath];
+        NSError *jsonError;
+        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&jsonError];
+        if (jsonError) {
+            callback([weakSelf errorWithMessage:UCX_ERROR_JSON_PARSE]);
+            return;
+        }
+        //
+        self.options = [jsonDict mutableCopy];
+        //
+        NSString *dir = UCXDownloadDir;
+        BOOL success = [self.fileManager createDir:dir];
+        if (!success) { //json配置文件解析失败
+            callback([weakSelf errorWithMessage:UCX_ERROR_FILE_OPERATION]);
+            return;
+        }
+        NSString *unzipFilePath = [dir stringByAppendingPathComponent:fileName];
+        //解压文件,同步解压
+        __block NSError *zipError;
+        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+        [self.fileManager unzipFileAtPath:zipFilePath toDestination:unzipFilePath progressHandler:^(NSString *entry,long entryNumber, long total) {
+            //压缩进度设置...
+        } completionHandler:^(NSString *path, BOOL succeeded, NSError *error) {
+            zipError = error;
+            dispatch_semaphore_signal(sema);
+        }];
+        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+        if (zipError) { //解压文件失败
+            callback(zipError);
+            return;
+        }
+        //解压完成，保存本次更新的必要信息到本地存储
+        [weakSelf savePackageInfo:unzipFilePath];
+    }
 }
 
 /**
@@ -218,20 +275,38 @@
          "length": 577705,
          "time": "20170825101245",
          "path": "ucarweex_2_20170825101245"
-         "url": "http://10.99.44.46:3000/file/ucarweex_2_20170825101245.so"
+ 
+         "url": "http://10.99.44.46:3000/file/ucarweex_2_20170825101245.so",
+         "unzipFilePath":""
     ]
  
  */
 - (void)savePackageInfo:(NSString *)unzipFilePath {
     if ([self.options count]>0 && unzipFilePath) {
         //
+        NSString *url = [self.options objectForKey:@"url"];
+        NSDictionary *originPackageInfo = [self.options objectForKey:@"packageInfo"];
+        //重组新的数据结构:结构如上注释
+        NSMutableDictionary *newPackageInfo = [NSMutableDictionary dictionaryWithDictionary:originPackageInfo];
+        if (url) {
+            [newPackageInfo setObject:url forKey:@"url"];
+        }
+        if (unzipFilePath) {
+            [newPackageInfo setObject:unzipFilePath forKey:@"unzipFilePath"];
+        }
+        //
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSArray *weexDataArr = [userDefaults objectForKey:@"ucar_weex"];
+        NSArray *weexDataArr = [userDefaults objectForKey:UCX_US_UCAR_WEEX_KEY];
+        NSMutableArray *newDataArr = [NSMutableArray array];
         //
         if (weexDataArr && weexDataArr.count>0) {
-            NSMutableArray *newDataArr = [NSMutableArray arrayWithArray:weexDataArr];
-            [newDataArr addObject:self.options];
+            [newDataArr addObjectsFromArray:weexDataArr];
         }
+        [newDataArr addObject:newPackageInfo];
+        [userDefaults setObject:newDataArr forKey:UCX_US_UCAR_WEEX_KEY];
+        [userDefaults synchronize];
+        //set cache path into memory
+        [UCXAppConfiguration cachePath];
     }
 }
 
@@ -266,9 +341,9 @@
 - (NSString *)zipExtension:(UCXHotUpdateType)type
 {
     switch (type) {
-        case UCXHotUpdateTypeFullDownload:
+        case UCXHotUpdateTypeRemote:
             return @".zip";
-        case UCXHotUpdateTypePatchFromPackage:
+        case UCXHotUpdateTypeLocal:
             return @".zip";
         default:
             return @".zip";
