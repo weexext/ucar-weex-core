@@ -29,7 +29,7 @@
     [UCarWeexService setAppVersion:APP_VERSION];
 #ifdef DEBUG
     [UCarWeexService setLogLevel:WXLogLevelLog];
-    [WXDevTool setDebug:YES];
+    [WXDevTool setDebug:UC_WEEX_DEBUG_MODE];
     [WXDevTool launchDevToolDebugWithUrl:[NSString stringWithFormat:@"ws://%@:8088/debugProxy/native",LOCAL_IP]];
 #else
     [UCarWeexService setLogLevel:WXLogLevelError];
@@ -37,11 +37,10 @@
     [UCarWeexService initUCarWeexService];
     //
     [UCarWeexService registerHandler:[UCImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
-    
     //从远程拉取
     if (UC_JS_LOAD_TYPE==0) {
         // 从本地直接读取
-        [UCarWeexService hotUpdate:UCXHotUpdateTypeLocal options:@{} callback:^(NSError *error) {
+        [UCXHotUpdate hotUpdate:UCXHotUpdateTypeLocal options:@{} callback:^(NSError *error) {
             //解压回调...
             NSLog(@"error:::%@",[error localizedDescription]);
         }];

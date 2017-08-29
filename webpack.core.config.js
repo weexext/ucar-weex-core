@@ -64,11 +64,11 @@ const plugins = [
     //         warnings: false
     //     }
     // }),
-    // new webpack.BannerPlugin({
-    //     banner: '// { "framework": ' + (fileType === '.vue' ? '"Vue"' : '"Weex"') + '} \n',
-    //     raw: true,
-    //     exclude: 'Vue'
-    // })
+    new webpack.BannerPlugin({
+        banner: '// { "framework": ' + (fileType === '.vue' ? '"Vue"' : '"Weex"') + '} \n',
+        raw: true,
+        exclude: 'Vue'
+    })
 ];
 
 
