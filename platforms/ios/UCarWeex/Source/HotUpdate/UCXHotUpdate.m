@@ -206,7 +206,7 @@
         //同步方式解压文件 & 解析配置
         //找到压缩文件 & 配置文件
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSString *assetsPath = [NSString stringWithFormat:@"%@/%@",[[NSBundle mainBundle] resourcePath],@"assets"];
+        NSString *assetsPath = [NSString stringWithFormat:@"%@/%@/%@",[[NSBundle mainBundle] resourcePath],@"assets",@"weex"];
         NSDirectoryEnumerator *myDirectoryEnumerator = [fileManager enumeratorAtPath:assetsPath];  //assetsPath
         
         NSString *fileName;
@@ -216,11 +216,13 @@
         while((tmpName= [myDirectoryEnumerator nextObject])) {    //遍历当前目录
             if([[tmpName pathExtension] isEqualToString:@"json"]) { //取得后缀名为.json的文件名
                 jsonFilePath = [assetsPath stringByAppendingPathComponent:tmpName];
-            }else if ([[tmpName pathExtension] isEqualToString:@"zip"]) {//取得后缀名为.zip的文件名
+            }else if ([[tmpName pathExtension] isEqualToString:@"so"]) {//取得后缀名为.zip的文件名
                 zipFilePath = [assetsPath stringByAppendingPathComponent:tmpName];
                 //
                 NSRange range = [tmpName rangeOfString:@"." options:NSBackwardsSearch];
                 fileName = [tmpName substringToIndex:range.location];
+                fileName = [fileName stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                fileName = [fileName stringByReplacingOccurrencesOfString:@"_" withString:@""];
             }
         }
         //解析配置文件

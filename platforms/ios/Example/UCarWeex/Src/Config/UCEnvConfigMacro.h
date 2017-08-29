@@ -25,8 +25,8 @@
 #endif
 
 //==========================WEEX DEBUG模式：是否开启 ==============================================
-#define UC_WEEX_DEBUG_MODE 1 //开启weex debug调试
-//#define UC_WEEX_DEBUG_MODE 0 //关闭weex debug调试
+//#define UC_WEEX_DEBUG_MODE 1 //开启weex debug调试
+#define UC_WEEX_DEBUG_MODE 0 //关闭weex debug调试
 
 
 

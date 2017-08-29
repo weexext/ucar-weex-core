@@ -29,7 +29,7 @@
     [UCarWeexService setAppVersion:APP_VERSION];
 #ifdef DEBUG
     [UCarWeexService setLogLevel:WXLogLevelLog];
-    [WXDevTool setDebug:YES];
+    [WXDevTool setDebug:UC_WEEX_DEBUG_MODE];
     [WXDevTool launchDevToolDebugWithUrl:[NSString stringWithFormat:@"ws://%@:8088/debugProxy/native",LOCAL_IP]];
 #else
     [UCarWeexService setLogLevel:WXLogLevelError];
@@ -37,19 +37,20 @@
     [UCarWeexService initUCarWeexService];
     //
     [UCarWeexService registerHandler:[UCImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
-    
     //从远程拉取
     if (UC_JS_LOAD_TYPE==0) {
-        [UCarWeexService hotUpdate:UCXHotUpdateTypeLocal options:@{} callback:^(NSError *error) {
+        // 从本地直接读取
+        [UCXHotUpdate hotUpdate:UCXHotUpdateTypeLocal options:@{} callback:^(NSError *error) {
             //解压回调...
             NSLog(@"error:::%@",[error localizedDescription]);
         }];
     } else {
-        NSDictionary *options = @{@"url":@"http://10.99.21.32:12588/dist/ucar-weex_1_20170824151141.zip"};
-        [UCarWeexService hotUpdate:UCXHotUpdateTypeRemote options:options callback:^(NSError *error) {
-            //下载解压回调...
-            NSLog(@"error:::%@",[error localizedDescription]);
-        }];
+//        // 从远程地址读取
+//        NSDictionary *options = @{@"url":@"http://10.99.21.32:12588/dist/ucar-weex_1_20170824151141.zip"};
+//        [UCarWeexService hotUpdate:UCXHotUpdateTypeRemote options:options callback:^(NSError *error) {
+//            //下载解压回调...
+//            NSLog(@"error:::%@",[error localizedDescription]);
+//        }];
     }
 }
 

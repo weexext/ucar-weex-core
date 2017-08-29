@@ -16,15 +16,6 @@
 
 #pragma mark - 热更新相关
 
-/**
- * 默认配置下热更新
- */
-+ (void)hotUpdate;
-/**
- *
- */
-+ (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback;
-
 #pragma mark - 注册模块相关
 /**
  *  @abstract Register a module for a given name

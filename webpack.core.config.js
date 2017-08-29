@@ -58,12 +58,12 @@ function walk(dir) {
 
 walk();
 const plugins = [
-    new webpack.optimize.UglifyJsPlugin({
-        minimize: true,
-        compress: {
-            warnings: false
-        }
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //     minimize: true,
+    //     compress: {
+    //         warnings: false
+    //     }
+    // }),
     new webpack.BannerPlugin({
         banner: '// { "framework": ' + (fileType === '.vue' ? '"Vue"' : '"Weex"') + '} \n',
         raw: true,
