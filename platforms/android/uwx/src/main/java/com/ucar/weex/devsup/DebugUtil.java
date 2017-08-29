@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 
-import com.ucar.weex.UWXEnvironment;
+import com.ucar.weex.UWXApplication;
 import com.ucar.weex.devsup.view.FloatView;
 import com.ucar.weex.utils.permission.PermissionHelper;
 
@@ -20,7 +20,7 @@ public class DebugUtil {
     private static PermissionHelper permissionHelper;
 
     public static void onPause(Activity activity) {
-        if (UWXEnvironment.isDebug()) {
+        if (UWXApplication.isDebug()) {
             if (floatView != null) {
                 floatView.hide();
             }
@@ -28,7 +28,7 @@ public class DebugUtil {
     }
 
     public static void onResume(final Activity activity) {
-        if (UWXEnvironment.isDebug()) {
+        if (UWXApplication.isDebug()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (permissionHelper == null) {
                     permissionHelper = new PermissionHelper();

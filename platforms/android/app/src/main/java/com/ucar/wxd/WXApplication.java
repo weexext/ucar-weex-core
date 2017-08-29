@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.ucar.weex.UWXInit;
+import com.ucar.weex.UWXSDKManager;
 import com.ucar.weex.init.utils.UWLog;
 import com.ucar.weex.update.FileUtils;
 import com.ucar.weex.update.UWXResManager;
@@ -25,6 +26,7 @@ public class WXApplication extends Application {
         instance = this;
 
         UWXInit.init(this);
+//        UWXSDKManager.initialize(this ,);
         /**
          * assets/weex/ucar-weex_3_20170828123442
          */

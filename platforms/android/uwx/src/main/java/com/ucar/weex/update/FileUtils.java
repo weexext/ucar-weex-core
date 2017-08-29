@@ -1,9 +1,11 @@
 package com.ucar.weex.update;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
 
 import com.ucar.weex.init.utils.UWLog;
+import com.ucar.weex.utils.ArrayUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -121,5 +123,24 @@ public class FileUtils {
         }
         UWLog.d(TAG, "解压文件成功:" + outputDir.getAbsolutePath());
         return true;
+    }
+    public static String getWXPackageFileName(Context context , String weexRoot) {
+        try {
+            String[] assets = context.getResources().getAssets().list(weexRoot);
+            if (!ArrayUtils.isEmpty(assets)) {
+                String asset = assets[0];
+                int i = asset.indexOf(".");
+                if (i > 0) {
+                    String rnName = asset.substring(0, i);
+                    weexRoot = weexRoot + "/" + rnName;
+                }else{
+                    UWLog.e("weex文件不对");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            UWLog.e("weex文件不对");
+        }
+        return weexRoot;
     }
 }

@@ -13,7 +13,7 @@ import com.ucar.weex.init.manager.WXActivityManagerHelper;
 
 public class UWXSDKManager {
     private static UWXSDKManager sManager;
-    private static UWXActivityNavBarSetter activityNavBarSetter;
+    private UWXActivityNavBarSetter activityNavBarSetter;
 
     public static UWXSDKManager getInstance() {
         if (sManager == null) {
@@ -27,15 +27,23 @@ public class UWXSDKManager {
     }
 
     public static UWXActivityNavBarSetter getActivityNavBarSetter() {
-        return activityNavBarSetter;
+        return UWXSDKManager.getInstance().activityNavBarSetter;
     }
 
     public static void setActivityNavBarSetter(UWXActivityNavBarSetter activityNavBarSetter) {
-        UWXSDKManager.activityNavBarSetter = activityNavBarSetter;
+        UWXSDKManager.getInstance().activityNavBarSetter = activityNavBarSetter;
     }
 
     public static void initialize(Application context) {
-        UWXEnvironment.init(context);
+        UWXApplication.init(context);
+        ActivityListenerInit.init(context);
+        WXActivityManagerHelper.init(context);
+        UWXSDKManager.setActivityNavBarSetter(new ActivityNavBarSetterImpl());
+        UWXEnvManager.initDebugEnvironment(context);
+    }
+
+    public static void initialize(Application context, UInitConfig config) {
+        UWXApplication.init(context);
         ActivityListenerInit.init(context);
         WXActivityManagerHelper.init(context);
         UWXSDKManager.setActivityNavBarSetter(new ActivityNavBarSetterImpl());

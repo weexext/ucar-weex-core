@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">portal</string>
+    <string name="icon_back">&#xe669;</string>
+
 </resources>

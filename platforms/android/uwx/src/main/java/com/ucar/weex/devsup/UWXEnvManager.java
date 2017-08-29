@@ -3,7 +3,7 @@ package com.ucar.weex.devsup;
 import android.content.Context;
 
 import com.taobao.weex.WXEnvironment;
-import com.ucar.weex.UWXEnvironment;
+import com.ucar.weex.UWXApplication;
 import com.ucar.weex.update.UWXResManager;
 
 /**
@@ -14,7 +14,7 @@ public class UWXEnvManager {
 
     public static String getJSBundleHost() {
         WXEnvDetailHelper instance = WXEnvDetailHelper.getInstance();
-        if (instance.isLocalServer() || !UWXEnvironment.isDebug()) {
+        if (instance.isLocalServer() || !UWXApplication.isDebug()) {
             return "file://"+UWXResManager.getInstance().getWXResPath()+"jsBundle/views/";
 //            return "file://assets/weex/jsbundle/views/";
         }
@@ -25,7 +25,7 @@ public class UWXEnvManager {
     }
 
     public static void initDebugEnvironment(Context context) {
-        if (UWXEnvironment.isDebug()) {
+        if (UWXApplication.isDebug()) {
             WXEnvDetailHelper instance = WXEnvDetailHelper.getInstance();
             WXEnvironment.sDebugServerConnectable = WXEnvDetailHelper.getInstance().debugInChrome();
             WXEnvironment.sRemoteDebugMode = WXEnvDetailHelper.getInstance().debugRemote();

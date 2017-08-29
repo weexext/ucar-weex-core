@@ -1,7 +1,7 @@
 package com.ucar.weex.devsup;
 
 import com.taobao.weex.utils.LogLevel;
-import com.ucar.weex.UWXEnvironment;
+import com.ucar.weex.UWXApplication;
 import com.ucar.weex.utils.SharedUtil;
 
 /**
@@ -25,7 +25,7 @@ public class WXEnvDetailHelper {
 
     public WXEnvDetail getWXEnvDetail() {
         if (wxEnvDetail == null) {
-            wxEnvDetail = SharedUtil.instance(UWXEnvironment.getsApplication()).getObject("key_wx_env_detail", WXEnvDetail.class);
+            wxEnvDetail = SharedUtil.instance(UWXApplication.getsApplication()).getObject("key_wx_env_detail", WXEnvDetail.class);
         }
         if (wxEnvDetail == null) {
             wxEnvDetail = new WXEnvDetail();
@@ -35,7 +35,7 @@ public class WXEnvDetailHelper {
 
     public void saveWXEnvDetail(WXEnvDetail wxEnvDetail) {
         this.wxEnvDetail = wxEnvDetail;
-        SharedUtil.instance(UWXEnvironment.getsApplication()).saveObject("key_wx_env_detail", wxEnvDetail);
+        SharedUtil.instance(UWXApplication.getsApplication()).saveObject("key_wx_env_detail", wxEnvDetail);
     }
 
     public String getPort() {

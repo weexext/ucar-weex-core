@@ -2,12 +2,12 @@ package com.ucar.weex.init.utils;
 
 import android.content.Context;
 import android.util.Log;
-import com.ucar.weex.UWXEnvironment;
+import com.ucar.weex.UWXApplication;
 
 import java.util.Calendar;
 
 public final class UWLog {
-    public static boolean isDebug = UWXEnvironment.isDebug();
+    public static boolean isDebug = UWXApplication.isDebug();
 
     /**
      * @param tag Used to identify the source of a log message. It usually identifies the class or activity where the

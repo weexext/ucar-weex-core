@@ -14,6 +14,7 @@ import java.io.Serializable;
 
 public class UWXBundleInfo implements Serializable {
     public static final String KEY_PARAM = "param";
+    public static final String KEY_URL= "url";
     public static final String KEY_NAV_BAR = "navBar";
     public static final String KEY_SCENE_CONFIGS = "animated";
     public static final String SCENE_CONFIGS_VERTICAL = "vertical";
@@ -120,5 +121,25 @@ public class UWXBundleInfo implements Serializable {
         public String backgroundColor = "#ffffff";
         public boolean hasBack = true;
         public float height = 100;
+        public String backColor = "#ffffff";
+
+        public void setBackColor(String backColor) {
+            this.backColor = backColor;
+        }
+
+        public void setHasBack(boolean hasBack) {
+            this.hasBack = hasBack;
+        }
+
+        public void setBackgroundColor(String backgroundColor) {
+            this.backgroundColor = backgroundColor;
+        }
+
+        /**
+         * @param height
+         */
+        public void setHeight(float height) {
+            this.height = height;
+        }
     }
 }

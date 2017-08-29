@@ -11,8 +11,10 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ucar.weex.appfram.navigator.UWXNavBar;
 import com.ucar.weex.devsup.UWXEnvManager;
 import com.ucar.weex.init.fragment.UWXBaseFragment;
+import com.ucar.weex.init.model.UWXBundleInfo;
 import com.ucar.weex.init.utils.ArgumentsUtil;
 
 /**
@@ -45,6 +47,29 @@ public class UWXPageManger {
         if (!TextUtils.isEmpty(encodeParam)) {
             bundle.putString("params", encodeParam);
         }
+//        UWXBundleInfo.NavBar navBar = new UWXBundleInfo.NavBar();
+//        navBar.backColor = "#bcbcbc";
+//        navBar.backgroundColor = "#ffffff";
+//        bundle.putString(UWXBundleInfo.KEY_NAV_BAR, Uri.encode(JSON.toJSONString(navBar)));
+        UWXNative.startWXActivity(activity, bundle);
+    }
+
+    public static void openPage(Activity activity, String url, JSONObject param, JSONObject navBar, boolean animated) {
+        Bundle bundle = new Bundle();
+        bundle.putString("url", url);
+        JSONObject jsonObject = new JSONObject();
+        if (url != null) {
+            jsonObject.put(UWXBundleInfo.KEY_URL, url);
+        }
+        if (navBar != null) {
+            jsonObject.put(UWXBundleInfo.KEY_NAV_BAR, navBar);
+        }
+        if (param != null) {
+            jsonObject.put(UWXBundleInfo.KEY_PARAM, param);
+        }
+        jsonObject.put(UWXBundleInfo.KEY_SCENE_CONFIGS, animated ? UWXBundleInfo.SCENE_CONFIGS_HORIZONTAL : UWXBundleInfo.SCENE_CONFIGS_DEFALT);
+        String encodeParams = Uri.encode(JSON.toJSONString(jsonObject));
+        bundle.putString("params", encodeParams);
         UWXNative.startWXActivity(activity, bundle);
     }
 
