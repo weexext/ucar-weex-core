@@ -1,6 +1,5 @@
 package com.ucar.weex;
 
-import com.taobao.weex.InitConfig;
 import com.ucar.weex.commons.adapter.NavBarAdapter;
 
 /**

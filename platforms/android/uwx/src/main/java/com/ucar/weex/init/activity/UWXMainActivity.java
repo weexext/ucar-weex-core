@@ -7,8 +7,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.ucar.weex.UWXPageManger;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ucar.weex.UWXPageManager;
 import com.ucar.weex.init.utils.UWLog;
+import com.ucar.weex.utils.ArrayUtils;
+
+import java.util.Map;
 
 /**
  * Created by chenxi.cui on 2017/7/12.
@@ -31,9 +36,18 @@ public class UWXMainActivity extends Activity {
             } else {
                 String scheme = uri.getScheme();
                 String host = uri.getHost();
+                String uriQuery = uri.getQuery();
+                JSONObject jsonParam = null;
+                if (!TextUtils.isEmpty(uriQuery)) {
+                    String[] split = uriQuery.split("&");
+                    Map<Object, Object> queryParam = ArrayUtils.toMap(split);
+                    if (queryParam != null) {
+                        jsonParam = (JSONObject) JSON.toJSON(queryParam);
+                    }
+                }
                 UWLog.v("url=" + uri.toString());
                 if (!TextUtils.isEmpty(scheme)) {
-                    UWXPageManger.openPageByUrl(this, uri.toString(), null);
+                    UWXPageManager.openPageByUrl(this, uri.toString(), jsonParam);
                 } else {
                     Toast.makeText(this, "scheme err!", Toast.LENGTH_SHORT).show();
                 }

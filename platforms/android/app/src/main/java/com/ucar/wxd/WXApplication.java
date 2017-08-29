@@ -26,7 +26,6 @@ public class WXApplication extends Application {
         instance = this;
 
         UWXInit.init(this);
-//        UWXSDKManager.initialize(this ,);
         /**
          * assets/weex/ucar-weex_3_20170828123442
          */

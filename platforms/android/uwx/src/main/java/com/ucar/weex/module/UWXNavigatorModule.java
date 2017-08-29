@@ -1,21 +1,18 @@
 package com.ucar.weex.module;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.taobao.weex.WXGlobalEventReceiver;
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
 import com.taobao.weex.utils.WXLogUtils;
-import com.ucar.weex.UWXPageManger;
-import com.ucar.weex.UWXSDKManager;
-import com.ucar.weex.init.activity.UWXFrameBaseActivity;
+import com.ucar.weex.UWXPageManager;
 import com.ucar.weex.init.manager.WXActivityManager;
 import com.ucar.weex.init.model.UWXBundleInfo;
 import com.ucar.weex.init.utils.UWLog;
@@ -37,26 +34,35 @@ public class UWXNavigatorModule extends WXModule {
             return;
         }
         try {
-            com.alibaba.fastjson.JSONObject options = JSON.parseObject(encodeParam);
+            JSONObject options = JSON.parseObject(encodeParam);
             String url = "";
-            if (options.containsKey("url")) {
-                url = options.getString("url");
+            UWXBundleInfo.NavBar navBar = null;
+            JSONObject param = null;
+            boolean animated = false;
+            if (options.containsKey(UWXBundleInfo.KEY_URL)) {
+                url = options.getString(UWXBundleInfo.KEY_URL);
             }
-            UWLog.v("url=" + url + "params=" + encodeParam);
-
-            if (!TextUtils.isEmpty(url)) {
-                if (UWXSDKManager.getActivityNavBarSetter() != null) {
-                    if (UWXSDKManager.getActivityNavBarSetter().push(url, encodeParam)) {
-                        if (callback != null) {
-                            callback.invoke(MSG_SUCCESS);
-                        }
-                        return;
-                    }
+            if (options.containsKey(UWXBundleInfo.KEY_NAV_BAR)) {
+                String _navBar = options.getString(UWXBundleInfo.KEY_NAV_BAR);
+                if (!TextUtils.isEmpty(_navBar)) {
+                    navBar = JSON.parseObject(_navBar, UWXBundleInfo.NavBar.class);
                 }
-                UWXPageManger.openPageByUrl((Activity) mWXSDKInstance.getContext(), url, encodeParam);
+            }
+            if (options.containsKey(UWXBundleInfo.KEY_PARAM)) {
+                param = options.getJSONObject(UWXBundleInfo.KEY_PARAM);
+            }
+
+            if (options.containsKey(UWXBundleInfo.KEY_SCENE_CONFIGS)) {
+                animated = options.getBoolean(UWXBundleInfo.KEY_SCENE_CONFIGS);
+            }
+            UWLog.v("params=" + encodeParam);
+            if (!TextUtils.isEmpty(url)) {
+                UWXPageManager.openPageByUrl((Activity) mWXSDKInstance.getContext(), url, param, navBar, animated ? UWXBundleInfo.ANIMATION_HORIZONTAL : UWXBundleInfo.ANIMATION_DEFAULT);
                 if (callback != null) {
                     callback.invoke(MSG_SUCCESS);
                 }
+            } else {
+                callback.invoke(MSG_FAILED);
             }
         } catch (Exception e) {
             WXLogUtils.eTag(TAG, e);
@@ -84,15 +90,6 @@ public class UWXNavigatorModule extends WXModule {
         if (options.containsKey("param")) {
             param = options.getString("param");
         }
-
-        if (UWXSDKManager.getActivityNavBarSetter() != null) {
-            if (UWXSDKManager.getActivityNavBarSetter().pop(index, tagCode, encodeParam)) {
-                if (callback != null) {
-                    callback.invoke(MSG_SUCCESS);
-                }
-                return;
-            }
-        }
         Activity activity = (Activity) mWXSDKInstance.getContext();
         if (mWXSDKInstance.getContext() instanceof Activity) {
             if (TextUtils.isEmpty(param)) {
@@ -116,14 +113,6 @@ public class UWXNavigatorModule extends WXModule {
 
     @JSMethod
     public void home(String params, JSCallback callback) {
-        if (UWXSDKManager.getActivityNavBarSetter() != null) {
-            if (UWXSDKManager.getActivityNavBarSetter().home(params)) {
-                if (callback != null) {
-                    callback.invoke(MSG_SUCCESS);
-                }
-                return;
-            }
-        }
 
         if (callback != null) {
             callback.invoke(MSG_SUCCESS);
@@ -132,45 +121,11 @@ public class UWXNavigatorModule extends WXModule {
 
     @JSMethod
     public void quit(JSCallback callback) {
-        if (UWXSDKManager.getActivityNavBarSetter() != null) {
-            if (UWXSDKManager.getActivityNavBarSetter().quit()) {
-                if (callback != null) {
-                    callback.invoke(MSG_SUCCESS);
-                }
-                return;
-            }
-        }
         AppExitUtil.quitApp(mWXSDKInstance.getContext());
         if (callback != null) {
             callback.invoke(MSG_SUCCESS);
         }
     }
 
-    @JSMethod
-    public void setNavBar(String navBarParam, JSCallback callback) {
-        if (!TextUtils.isEmpty(navBarParam)) {
-            Context context = mWXSDKInstance.getContext();
-            if (context instanceof UWXFrameBaseActivity) {
-                UWXFrameBaseActivity baseActivity = (UWXFrameBaseActivity) context;
-                FrameLayout flNavBar = baseActivity.getFlNavBar();
-                if (flNavBar != null) {
-                    UWXBundleInfo.NavBar navBar = JSON.parseObject(navBarParam, UWXBundleInfo.NavBar.class);
-                    boolean b = UWXSDKManager.getActivityNavBarSetter().setNavBar(flNavBar, navBar);
-                    if (callback != null) {
-                        if (b) {
-                            callback.invoke(MSG_SUCCESS);
-                        } else {
-                            callback.invoke(MSG_FAILED);
-                        }
-                    }
-                    return;
-                }
-            }
-
-        }
-        if (callback != null) {
-            callback.invoke(MSG_FAILED);
-        }
-    }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "ucar-weex",
-  "version": "0.2.0",
+  "version": "0.2.6",
   "description": "Weex expand",
   "main": "lib/index.js",
   "scripts": {

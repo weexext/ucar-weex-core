@@ -6,16 +6,13 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.ucar.weex.UWXPageManger;
-import com.ucar.weex.init.manager.WXActivityManager;
+import com.ucar.weex.UWXPageManager;
+import com.ucar.weex.init.model.UWXBundleInfo;
 import com.ucar.weex.init.utils.UWLog;
 import com.ucar.weex.update.FileUtils;
 import com.ucar.weex.update.UWXResManager;
 import com.ucar.weex.update.WXPackageInfo;
-import com.ucar.weex.utils.ArrayUtils;
 import com.ucar.wex.R;
-
-import java.io.IOException;
 
 public class MainActivity extends FragmentActivity {
 
@@ -60,11 +57,11 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void startWeexPage() {
-        UWXPageManger.openPage(this, "index.js");
+        UWXPageManager.openPage(this, "index.js", new UWXBundleInfo.NavBar("#ff99cc00", "#ffff4444"));
 //        Bundle bundle = new Bundle();
 //        bundle.putString("key", "value");
 //        bundle.putString("name", "zhangsan");
-//        UWXPageManger.createWXPage(this, R.id.container, "index.js", bundle );
+//        UWXPageManager.createWXPage(this, R.id.container, "index.js", bundle );
 //        finish();
     }
 }

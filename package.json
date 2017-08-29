@@ -23,7 +23,7 @@
         "react-native-linear-gradient": "^1.6.2",
         "save": "^2.3.1",
         "serve": "^5.2.4",
-        "ucar-weex": "^0.2.0",
+        "ucar-weex": "^0.2.5",
         "vue": "^2.1.8",
         "vue-router": "^2.1.1",
         "vuex": "^2.1.1",

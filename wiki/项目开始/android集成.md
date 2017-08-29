@@ -34,7 +34,7 @@ allprojects {
 compile 'com.ucar:weex_sdk:1.6@aar'
 
 // ucar weexsdk 拓展
-compile 'com.ucar:weexext_sdk:1.0.8@aar'
+compile 'com.ucar:weexext_sdk:1.0.9@aar'
 
 ```
 最后，还需要在 app 的 build.gradle 中对 ndk 进行配置：
@@ -96,6 +96,13 @@ public class WXApplication extends Application {
         return weexFileName;
     }
 }
+
+```
+##打开weex页面
+```
+ private void startWeexPage() {
+        UWXPageManager.openPage(this, "index.js", new UWXBundleInfo.NavBar("#ff99cc00", "#ffff4444"));
+ }
 
 ```
 
