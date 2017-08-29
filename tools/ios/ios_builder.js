@@ -61,9 +61,9 @@ function build(src,target) {
 module.exports = build
 
 //图片资源 & JS文件
-const imgSrc ='dist/ucar-weex/*'
-const imgTarget = 'platforms/ios/Example/assets/'
-build(imgSrc,imgTarget)
+const jsSrc ='dist/package/*'
+const jsTarget = 'platforms/ios/Example/assets/weex'
+build(jsSrc,jsTarget)
 
 
 

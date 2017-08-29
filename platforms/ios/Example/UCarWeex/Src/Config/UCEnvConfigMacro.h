@@ -18,8 +18,8 @@
 //========================== DEBUG模式:  默认加载远程js ===========================
 //========================== RELEASE模式:默认加载本地js ===========================
 #ifdef DEBUG
-#define UC_JS_LOAD_TYPE 0  // 本地
-//#define UC_JS_LOAD_TYPE 1  // 远程
+//#define UC_JS_LOAD_TYPE 0  // 本地
+#define UC_JS_LOAD_TYPE 1  // 远程
 #else
 #define UC_JS_LOAD_TYPE 0  // 本地
 #endif

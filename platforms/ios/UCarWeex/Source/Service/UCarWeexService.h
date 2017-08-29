@@ -21,7 +21,7 @@
  */
 + (void)hotUpdate;
 /**
- *
+ *  
  */
 + (void)hotUpdate:(UCXHotUpdateType)type options:(NSDictionary *)options callback:(void (^)(NSError *error))callback;
 
