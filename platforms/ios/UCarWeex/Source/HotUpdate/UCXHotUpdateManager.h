@@ -11,6 +11,8 @@
 @interface UCXHotUpdateManager : NSObject
 
 - (BOOL)createDir:(NSString *)dir;
+- (BOOL)deleteDir:(NSString *)dir;
+
 
 - (void)unzipFileAtPath:(NSString *)path
           toDestination:(NSString *)destination
