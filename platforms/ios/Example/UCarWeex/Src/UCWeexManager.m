@@ -23,6 +23,9 @@
 @implementation UCWeexManager
 
 + (void)setup {
+    //自定义全局环境变量
+//    NSDictionary *customEnvironmentDict = @{@"url":@"http://xxx.com",@"debugState":@"false"};
+//    [WXSDKEngine setCustomEnvironment:customEnvironmentDict];
     // 初始化UCARWEEX的可设置项
     [UCXAppConfiguration setAppGroup:@"ucarinc"];
     [UCXAppConfiguration setAppName:APP_NAME];
@@ -30,13 +33,14 @@
 #ifdef DEBUG
     [UCarWeexService setLogLevel:WXLogLevelLog];
     [WXDevTool setDebug:UC_WEEX_DEBUG_MODE];
-    [WXDevTool launchDevToolDebugWithUrl:[NSString stringWithFormat:@"ws://%@:8088/debugProxy/native",LOCAL_IP]];
+    [WXDevTool launchDevToolDebugWithUrl:[NSString stringWithFormat:@"ws://%@:%@/debugProxy/native",UC_LOCAL_IP,UC_LOCAL_WEEX_PORT]];
 #else
     [UCarWeexService setLogLevel:WXLogLevelError];
 #endif
     [UCarWeexService initUCarWeexService];
     //
     [UCarWeexService registerHandler:[UCImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
+    
     //启动时默认从以下指定位置解压 本地JS & 图片资源
     // url:::assets/weex/，若未赋值，则使用默认地址：assets/weex/
     NSDictionary *dict = @{@"url":@"assets/weex/"};

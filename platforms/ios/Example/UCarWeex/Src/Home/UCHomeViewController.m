@@ -21,7 +21,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationItem.title = @"首页";
-    
     [self createSubviews];
 }
 
@@ -79,7 +78,7 @@
     // 1:远程 0：本地
     NSString *urlStr = relativePath;
     if (UC_JS_LOAD_TYPE) {
-        urlStr = [NSString stringWithFormat:@"http://%@:12588/dist/native/%@",LOCAL_IP, relativePath];
+        urlStr = [NSString stringWithFormat:@"http://%@:%@/dist/native/%@",UC_LOCAL_IP,UC_LOCAL_WEB_PORT, relativePath];
     }else {
 //        urlStr = [NSString stringWithFormat:@"file://%@/bundlejs/views/%@",[NSBundle mainBundle].bundlePath, relativePath];
         urlStr = [NSString stringWithFormat:@"file://%@/%@",[UCXAppConfiguration jsBundlePath], relativePath];

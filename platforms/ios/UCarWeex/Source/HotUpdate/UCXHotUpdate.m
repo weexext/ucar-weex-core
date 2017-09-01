@@ -354,7 +354,7 @@
     // 获取的版本时间高于应用中版本的时间
     NSString *lastTime = [self.lastOptions objectForKey:@"time"];
     NSString *currentTime = [options objectForKey:@"time"];
-    if(lastTime && currentTime && [currentTime compare:lastTime]==NSOrderedAscending) {
+    if(lastTime && currentTime && [currentTime compare:lastTime]==NSOrderedDescending) {
         return YES;
     }
     
