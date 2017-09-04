@@ -12,9 +12,12 @@
 
 @interface UCarWeexService : NSObject
 
+#pragma mark -
+/** 初始化
+ *
+ */
 + (void)initUCarWeexService;
 
-#pragma mark - 热更新相关
 
 #pragma mark - 注册模块相关
 /**
@@ -47,24 +50,6 @@
  */
 + (void)registerHandler:(id)handler withProtocol:(Protocol *)protocol;
 
-#pragma mark - 业务配置相关
-/**
- * @abstract Group or organization of your app, default value is nil.
- */
-+ (NSString *)appGroup;
-+ (void)setAppGroup:(NSString *) appGroup;
-
-/**
- * @abstract Name of your app, default is value for CFBundleDisplayName in main bundle.
- */
-+ (NSString *)appName;
-+ (void)setAppName:(NSString *)appName;
-
-/**
- * @abstract Version of your app, default is value for CFBundleShortVersionString in main bundle.
- */
-+ (NSString *)appVersion;
-+ (void)setAppVersion:(NSString *)appVersion;
 
 #pragma mark - 日志相关
 /**

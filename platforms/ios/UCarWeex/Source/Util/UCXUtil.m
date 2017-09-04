@@ -35,6 +35,13 @@
     return dateStr;
 }
 
+// 异常信息封装
++ (NSError *)errorWithMessage:(NSString *)errorMessage {
+    return [NSError errorWithDomain:@"weex.ucar.error"
+                               code:-1
+                           userInfo:@{ NSLocalizedDescriptionKey: errorMessage}];
+}
+
 #pragma mark -
 //字典转json格式字符串
 + (NSString*)dictionaryToJson:(NSDictionary *)dict {

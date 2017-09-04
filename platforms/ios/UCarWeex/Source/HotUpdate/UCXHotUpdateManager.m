@@ -26,28 +26,40 @@
     return self;
 }
 
-- (BOOL)createDir:(NSString *)dir
-{
+- (BOOL)deleteDir:(NSString *)dir {
     __block BOOL success = false;
     
     dispatch_sync(_opQueue, ^{
-        BOOL isDir;
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:dir isDirectory:&isDir]) {
-            if (isDir) {
-                success = true;
-                return;
-            }
-        }
         
         NSError *error;
-        [fileManager createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:&error];
+        [fileManager removeItemAtPath:dir error:&error];
         if (!error) {
             success = true;
             return;
         }
     });
     
+    return success;
+}
+
+- (BOOL)createDir:(NSString *)dir
+{
+    BOOL success = false;
+    
+    BOOL isDir;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:dir isDirectory:&isDir]) {
+        if (isDir) {
+            success = true;
+        }
+    }else {
+        NSError *error;
+        [fileManager createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:&error];
+        if (!error) {
+            success = true;
+        }
+    }
     return success;
 }
 

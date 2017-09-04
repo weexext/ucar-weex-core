@@ -68,6 +68,9 @@ import uweex from 'ucar-weex'
             uweex.bridge.addEventListener('PAGE_INDEX',(event)=>{
 
           });
+            //
+          let env = weex.config.env
+          console.log('env:::'+env)
         },
         methods:{
             onItemClick(item){

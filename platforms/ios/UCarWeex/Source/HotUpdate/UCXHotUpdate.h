@@ -7,48 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-
-// error def
-static NSString * const UCX_ERROR_OPTIONS = @"options error";
-static NSString * const UCX_ERROR_FILE_OPERATION = @"file operation error";
-static NSString * const UCX_ERROR_FILE_VALIDATE = @"file validate error";
-static NSString * const UCX_ERROR_JSON_PARSE = @"json parse error";
-
-typedef NS_ENUM(NSInteger, UCXHotUpdateType) {
-    UCXHotUpdateTypeRemote = 1,  // 远程下载
-    UCXHotUpdateTypeLocal = 2,   // 本地获取
-};
-
-/** 请求成功的Block */
-typedef void(^UCXRequestSuccess)(NSDictionary *responseObj);
-/** 请求失败的Block */
-typedef void(^UCXRequestFailure)(NSError *error);
+#import "UCXDefine.h"
 
 @interface UCXHotUpdate : NSObject
 
-
-/**
- *  POST请求
- *
- *  @param URL        请求地址
- *  @param parameters 请求参数
- *  @param success    请求成功的回调
- *  @param failure    请求失败的回调
- *
- *  @return NSURLSessionTask
- */
-+ (__kindof NSURLSessionTask *)POST:(NSString *)URL
-                         parameters:(id)parameters
-                            success:(UCXRequestSuccess)success
-                            failure:(UCXRequestFailure)failure;
++ (instancetype)shared;
 
 /** 更新包下载解压校验
  *  options:
-        url:更新包下载地址
+        url:更新包信息url
  */
-+ (void)hotUpdate:(UCXHotUpdateType)type
-          options:(NSDictionary *)options
++ (void)hotUpdate:(NSDictionary *)options
          callback:(void (^)(NSError *error))callback;
 
+/** 解析本地包
+ *   options:预留字段，可传 nil or @{}
+ */
++ (void)unpack:(NSDictionary *)options callback:(void (^)(NSError *error))callback;
 
 @end
