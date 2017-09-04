@@ -36,7 +36,7 @@
     }
 </style>
 <script>
-    import uweex from 'ucar-weex'
+    import uweex from '../../packages/weex-vue-expand'
     export default {
         components:{
           navpage:require("../include/navpage.vue")

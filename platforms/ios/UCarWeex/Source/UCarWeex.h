@@ -25,6 +25,7 @@
 #import "UCXHotUpdate.h"
 #import "UCXUtil.h"
 #import "UCXAppConfiguration.h"
+#import "UCXDebugTool.h"
 
 #import <WeexSDK/WeexSDK.h>
 

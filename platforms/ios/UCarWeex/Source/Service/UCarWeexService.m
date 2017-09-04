@@ -8,13 +8,16 @@
 
 #import "UCarWeexService.h"
 #import <WeexSDK/WeexSDK.h>
+#import <TBWXDevTool/TBWXDevTool.h>
+
 #import "UCXNavigatorModule.h"
 #import "UCXGlobalEventModule.h"
 #import "UCXHotUpdate.h"
+#import "UCXDebugTool.h"
 
 @interface UCarWeexService ()
 
-@property (nonatomic, assign) NSUInteger logLevel; ///< logLevel
+@property (nonatomic, assign) NSUInteger logLevel;  ///< logLevel
 
 @end
 
@@ -38,6 +41,8 @@
 }
 
 + (void)initUCarWeexService {
+    //set debug
+    [UCXDebugTool initDebugInfo];
     //init sdk enviroment
     [WXSDKEngine initSDKEnvironment];
     //register custom module and component
@@ -47,7 +52,6 @@
     
     //set the log level
     [WXLog setLogLevel:[UCarWeexService shared].logLevel];
-    
 }
 
 

@@ -18,7 +18,6 @@
  */
 + (void)initUCarWeexService;
 
-
 #pragma mark - 注册模块相关
 /**
  *  @abstract Register a module for a given name
@@ -56,5 +55,6 @@
  *  log level
  */
 + (void)setLogLevel:(WXLogLevel)level;
+
 
 @end

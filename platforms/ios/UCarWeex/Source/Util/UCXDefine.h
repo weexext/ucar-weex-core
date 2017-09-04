@@ -30,6 +30,9 @@
 //////////////////////////////////////////////////////////////
 // userdefauts 存储 ucarweex 每次更新包信息 key
 #define UCX_US_UCAR_WEEX_KEY @"UCX_US_UCAR_WEEX_KEY"
+// 存储debug相关信息
+#define UCX_US_UCAR_WEEX_DEBUG_KEY @"UCX_US_UCAR_WEEX_DEBUG_KEY"
+
 #define UCX_UNZIP_FILE_PATH  @"unzipFilePath"
 
 

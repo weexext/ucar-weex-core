@@ -21,6 +21,7 @@
 #import <SDWebImage/SDWebImageManager.h>
 
 #import "UCImgLocalLoader.h"
+#import <UCarWeex/UCarWeex.h>
 
 @interface UCImgLoaderDefaultImpl()
 
@@ -34,8 +35,17 @@
 #pragma mark WXImgLoaderProtocol
 
 - (id<WXImageOperationProtocol>)downloadImageWithURL:(NSString *)url imageFrame:(CGRect)imageFrame userInfo:(NSDictionary *)userInfo completed:(void(^)(UIImage *image,  NSError *error, BOOL finished))completedBlock {
-
+    NSString *URLPrefix = @"assets:///image/";
+    // 若是处于调试状态
+    if ([UCXDebugTool isDebug]) {
+        if ([url hasPrefix:URLPrefix]) {
+            NSString *imgName = [url substringFromIndex:URLPrefix.length];
+            NSString *imgPath = [NSString stringWithFormat:@"%@/%@",[UCXAppConfiguration imagePath],imgName];
+            url = imgPath;
+        }
+    }
     if ([url hasPrefix:@"file:///"] || [url hasPrefix:@"assets:///image/"]) { //处理本地图片
+        
         return [UCImgLocalLoader loadLocalImge:url completed:^(UIImage *image, NSError *error, BOOL finished) {
             completedBlock(image, error, finished);
         }];
