@@ -16,33 +16,46 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-exports.getBaseURL = function (vm) {
-  var bundleUrl = weex.config.bundleUrl;
-  var nativeBase;
-  var isAndroidAssets = bundleUrl.indexOf('your_current_IP') >= 0 || bundleUrl.indexOf('file://assets/')>=0;
-  var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
-  if (isAndroidAssets) {
-    nativeBase = 'file://assets/';
-  }
-  else if (isiOSAssets) {
-    // file:///var/mobile/Containers/Bundle/Application/{id}/WeexDemo.app/
-    // file:///Users/{user}/Library/Developer/CoreSimulator/Devices/{id}/data/Containers/Bundle/Application/{id}/WeexDemo.app/
-    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
-  }
-  else {
-    var host = 'localhost:12580';
-    var matches = /\/\/([^\/]+?)\//.exec(weex.config.bundleUrl);
-    if (matches && matches.length >= 2) {
-      host = matches[1];
+exports.getBaseURL = function (jsURL) {
+  let bundleUrl = weex.config.bundleUrl
+  let baseURL = bundleUrl.substring(0, bundleUrl.lastIndexOf("/"))
+  //是否在同级目录，若不在，则需要以下处理
+  let flag = jsURL.indexOf('../') !== -1
+  if (flag) {
+    let arr = jsURL.split('../')
+    for (let index = 0; index < arr.length - 1; index++) {
+      baseURL = baseURL.substring(0, baseURL.lastIndexOf('/'))
     }
-    nativeBase = 'http://' + host + '/' + vm.dir + '/build/';
+    jsURL = arr[arr.length - 1]
   }
-  var h5Base = './vue.html?page=./' + vm.dir + '/build/';
-  // in Native
-  var base = nativeBase;
-  if (typeof window === 'object') {
-    // in Browser or WebView
-    base = h5Base;
-  }
-  return base
+  return baseURL + '/' + jsURL
+
+  // var bundleUrl = weex.config.bundleUrl;
+  // var nativeBase;
+  // var isAndroidAssets = bundleUrl.indexOf('your_current_IP') >= 0 || bundleUrl.indexOf('file://assets/')>=0;
+  // var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+  // if (isAndroidAssets) {
+  //   nativeBase = 'file://assets/';
+  // }
+  // else if (isiOSAssets) {
+  //   // file:///var/mobile/Containers/Bundle/Application/{id}/WeexDemo.app/
+  //   // file:///Users/{user}/Library/Developer/CoreSimulator/Devices/{id}/data/Containers/Bundle/Application/{id}/WeexDemo.app/
+  //   nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+  // }
+  // else {
+  //   var host = 'localhost:12580';
+  //   var matches = /\/\/([^\/]+?)\//.exec(weex.config.bundleUrl);
+  //   if (matches && matches.length >= 2) {
+  //     host = matches[1];
+  //   }
+  //   nativeBase = 'http://' + host + '/' + vm.dir + '/build/';
+  // }
+  // var h5Base = './vue.html?page=./' + vm.dir + '/build/';
+  // // in Native
+  // var base = nativeBase;
+  // if (typeof window === 'object') {
+  //   // in Browser or WebView
+  //   base = h5Base;
+  // }
+  // return base
 }

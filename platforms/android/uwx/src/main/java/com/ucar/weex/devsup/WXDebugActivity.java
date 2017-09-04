@@ -23,7 +23,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKEngine;
 import com.taobao.weex.utils.LogLevel;
-import com.ucar.weex.UWXPageManger;
+import com.ucar.weex.UWXPageManager;
 import com.ucar.weex.utils.AppExitUtil;
 import com.ucar.weex.R;
 import com.ucar.weex.utils.ArrayUtils;
@@ -159,7 +159,7 @@ public class WXDebugActivity extends Activity implements View.OnClickListener {
             AppExitUtil.restart(this);
         } else if (btnOpen.equals(v)) {
             String page = editOpen.getText().toString().trim();
-            UWXPageManger.openPage(this, page);
+            UWXPageManager.openPage(this, page);
         }
     }
 

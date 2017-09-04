@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXRenderErrorCode;
 import com.taobao.weex.WXSDKInstance;
@@ -27,11 +28,13 @@ import com.taobao.weex.dom.WXEvent;
 import com.taobao.weex.ui.component.WXComponent;
 import com.ucar.weex.R;
 import com.ucar.weex.UWXSDKManager;
+import com.ucar.weex.appfram.navigator.UWXNavBar;
 import com.ucar.weex.commons.util.ShakeDetector;
 import com.ucar.weex.constants.UConstants;
 import com.ucar.weex.devsup.WXDebugActivity;
 import com.ucar.weex.init.model.UWXBundleInfo;
 import com.ucar.weex.init.utils.UWLog;
+import com.ucar.weex.utils.ArrayUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +48,7 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
     private TextView btnReload;
     private TextView tvErr;
     private FrameLayout flNavBar;
+    private FrameLayout flRoot;
     private boolean isHasNavBar;
     private boolean mIsDevSupportEnabled = WXEnvironment.isApkDebugable();
     private ShakeDetector mShakeDetector;
@@ -69,22 +73,17 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
         }
     }
 
-
-    public FrameLayout getFlNavBar() {
-        return flNavBar;
-    }
-
     private void initView() {
         this.setContentView(R.layout.wx_base_activity);
         mContainer = (ViewGroup) findViewById(R.id.wx_root);
         flNavBar = (FrameLayout) findViewById(R.id.fl_nav_bar);
+        flRoot = (FrameLayout) findViewById(R.id.fl_root);
         if (rlErr != null) {
             rlErr.setVisibility(View.GONE);
         }
     }
 
     private void initData(Bundle saveInstanceState) {
-        this.wxInfo = new UWXBundleInfo();
         Bundle bundle;
         if (saveInstanceState != null) {
             bundle = saveInstanceState;
@@ -94,13 +93,12 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
         if (bundle == null) {
             bundle = new Bundle();
         }
-        this.wxInfo.setModule(bundle.getString("module"));
-        this.wxInfo.setUrl(bundle.getString("url"));
-        this.wxInfo.setParams(bundle.getString("params"));
-        isHasNavBar = UWXSDKManager.getActivityNavBarSetter() != null && this.wxInfo.getNavBar() != null;
+        this.wxInfo = (UWXBundleInfo) bundle.getSerializable(UWXBundleInfo.TAG);
+        isHasNavBar = this.wxInfo.getNavBar() != null;
         setTheme(R.style.wx_theme_app);
 //        setTheme(isHasNavBar ? R.style.wx_theme_app : R.style.wx_theme_translucent);
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -117,15 +115,10 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
                     WXEvent events = comp.getDomObject().getEvents();
                     boolean hasActive = events.contains(UConstants.Event.ACTIVED);
                     if (hasActive) {
-//                        JSONObject jsonObject = JSON.parseObject(params);
-//                        Object param = null;
-//                        if (jsonObject.containsKey("param")) {
-//                            param = jsonObject.get("param");
-                            Map<String, Object> data = new HashMap<>();
-                            data.put("param",params);
-                            data.put("tagCode", backTag);
-                            WXBridgeManager.getInstance().fireEvent(mInstance.getInstanceId(), comp.getRef(), UConstants.Event.ACTIVED, data, null);
-//                        }
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("param", params);
+                        data.put("tagCode", backTag);
+                        WXBridgeManager.getInstance().fireEvent(mInstance.getInstanceId(), comp.getRef(), UConstants.Event.ACTIVED, data, null);
                     }
                 }
             }
@@ -133,7 +126,7 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
     }
 
     private void setData() {
-        setNavBar(this.wxInfo);
+        setNavBar(this.wxInfo.getNavBar());
         if (!TextUtils.isEmpty(this.wxInfo.getUrlParam())) {
             renderPageByURL(this.wxInfo.getUrlParam(), "");
         } else {
@@ -217,6 +210,7 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
             mIsShakeDetectorStarted = false;
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -225,7 +219,6 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
             mIsShakeDetectorStarted = true;
         }
     }
-
 
 
     private void setTranslateAnimation(View view) {
@@ -253,10 +246,7 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
     }
 
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString("module", this.wxInfo.getModule());
-        outState.putString("params", this.wxInfo.getParams());
-        outState.putString("url", this.wxInfo.getUrl());
-//        outState.putBundle("initProps", this.wxInfo.initProps);
+        outState.putSerializable(UWXBundleInfo.TAG, this.wxInfo);
         super.onSaveInstanceState(outState);
     }
 
@@ -269,7 +259,7 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
             if (hasBack) {
                 WXBridgeManager.getInstance().fireEvent(mInstance.getInstanceId(), comp.getRef(), UConstants.Event.ONANDROIDBACK, null, null);
                 return;
-            }else {
+            } else {
                 super.onBackPressed();
             }
         }
@@ -277,10 +267,16 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
     }
 
 
-    public void setNavBar(UWXBundleInfo wxInfo) {
+    public void setNavBar(UWXBundleInfo.NavBar navBar) {
         if (isHasNavBar) {
+            if (!TextUtils.isEmpty(navBar.backgroundColor)) {
+                flRoot.setBackgroundColor(Color.parseColor(navBar.backgroundColor));
+            }
             flNavBar.setVisibility(View.VISIBLE);
-            UWXSDKManager.getActivityNavBarSetter().setNavBar(flNavBar, wxInfo.getNavBar());
+            UWXNavBar uNavBar = new UWXNavBar(this);
+            uNavBar.setData(navBar);
+            flNavBar.removeAllViews();
+            flNavBar.addView(uNavBar);
         } else {
             flNavBar.setVisibility(View.GONE);
         }
@@ -293,20 +289,17 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
             mShakeDetector.stop();
         }
     }
+
     private void showDevOptionsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("UCAR-WEEX");
-//        builder.setIcon(R.drawable.ic_launcher);
-//        builder.setTitle("调试");
         //    指定下拉列表的显示数据
-        final String[] cities = {"设置调试","页面刷新"};
+        final String[] cities = {"设置调试", "页面刷新"};
         //    设置一个下拉的列表选择项
-        builder.setItems(cities, new DialogInterface.OnClickListener()
-        {
+        builder.setItems(cities, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                switch (which){
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
                     case 0:
                         startActivity(new Intent(UWXFrameBaseActivity.this, WXDebugActivity.class));
                         break;
