@@ -56,6 +56,9 @@
             uweex.bridge.addEventListener('test', (e)=> {
                 console.log('registerBroadcast=' + e);
             })
+            var ctHeight = weex.config.env.scheme;
+//            var ss = window.global;
+            var sss = this.$getConfig()
 
         },
         beforeMount: function () {
@@ -81,7 +84,7 @@
             //
             ready(param){
                 console.log(this.pageName + ':ready')
-
+               let config = weex.config;
             },
 
             actived(e){

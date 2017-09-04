@@ -15,13 +15,18 @@ public class UWXEnvManager {
     public static String getJSBundleHost() {
         WXEnvDetailHelper instance = WXEnvDetailHelper.getInstance();
         if (instance.isLocalServer() || !UWXApplication.isDebug()) {
-            return "file://"+UWXResManager.getInstance().getWXResPath()+"jsBundle/views/";
+            return "file://" + UWXResManager.getInstance().getWXResPath() + "jsBundle/views/";
 //            return "file://assets/weex/jsbundle/views/";
         }
         return "http://" + instance.getHost() + ":" + instance.getPort() + "/dist/native/views/";
     }
+
     public static String getWXResHost() {
-        return "file://" + UWXResManager.getInstance().getWXResPath() + "res";
+        WXEnvDetailHelper instance = WXEnvDetailHelper.getInstance();
+        if (instance.isLocalServer() || !UWXApplication.isDebug()) {
+            return "file://" + UWXResManager.getInstance().getWXResPath() + "res";
+        }
+        return "http://" + instance.getHost() + ":" + instance.getPort() + "/src/assets";
     }
 
     public static void initDebugEnvironment(Context context) {
