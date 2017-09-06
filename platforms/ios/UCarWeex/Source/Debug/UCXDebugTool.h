@@ -28,6 +28,9 @@
  **/
 + (BOOL)isDebug;
 
+/**
+ *
+ */
 + (void)setDebugIP:(NSString *)ip;
 
 /**

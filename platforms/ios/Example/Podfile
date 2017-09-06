@@ -16,12 +16,12 @@ target 'UCarWeex_Example' do
 
 ###########################################################
   # UCarWeex依赖库
-  pod 'UCarWeex',  :path => '../../../'
-  pod 'WXDevtool', '~>0.15.3', :configurations => ['Debug']
   pod 'SSZipArchive', '~>2.0.3'
-  
+  pod 'WeexSDK', :git => 'https://github.com/weexext/incubator-weex.git', :branch => 'ucarweex-dev'
+  pod 'WXDevtool', '~>0.15.3', :configurations => ['Debug']
+  pod 'UCarWeex',  :path => '../../../'
+
 ###########################################################
-  
 
   target 'UCarWeex_Tests' do
     inherit! :search_paths
