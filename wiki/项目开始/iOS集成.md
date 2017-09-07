@@ -1,9 +1,13 @@
 ## iOS集成
 
 #### 通过cocoaPods 集成 UCarWeex 到你的项目
-	
-	pod 'UCarWeex', :git=>'http://10.3.4.127:8888/mat/ucar-weex.git'
+
+```
+	pod 'SSZipArchive', '~>2.0.3'
+  pod 'WeexSDK', :git => 'https://github.com/weexext/incubator-weex.git', :branch => 'ucarweex-dev'
 	pod 'WXDevtool', '~>0.15.3', :configurations => ['Debug']
+	pod 'UCarWeex', :git=>'http://10.3.4.127:8888/mat/ucar-weex.git'
+```
 	
 
   换到你已有项目 Podfile 这个文件存在的目录，执行如下命令，

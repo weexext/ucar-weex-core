@@ -77,12 +77,8 @@
 - (NSString *)routerWithRelativePath:(NSString *)relativePath {
     // 1:远程 0：本地
     NSString *urlStr = relativePath;
-//    if (UC_JS_LOAD_TYPE) {
-//        urlStr = [NSString stringWithFormat:@"http://%@:%@/dist/native/%@",UC_LOCAL_IP,UC_LOCAL_WEB_PORT, relativePath];
-//    }else {
-        urlStr = [NSString stringWithFormat:@"%@/%@",[UCXAppConfiguration jsBundlePath], relativePath];
-//    }
-    
+    urlStr = [NSString stringWithFormat:@"%@/%@",[UCXAppConfiguration jsBundlePath], relativePath];
+
     return urlStr;
 }
 
