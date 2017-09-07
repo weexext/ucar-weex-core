@@ -1,18 +1,15 @@
 package com.ucar.wxd;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.ucar.weex.UWXInit;
-import com.ucar.weex.UWXSDKManager;
+import com.ucar.weex.init.activity.UWXTheme;
+import com.ucar.weex.init.activity.UWXThemeManager;
 import com.ucar.weex.init.utils.UWLog;
 import com.ucar.weex.update.FileUtils;
 import com.ucar.weex.update.UWXResManager;
 import com.ucar.weex.update.WXPackageInfo;
-import com.ucar.weex.utils.ArrayUtils;
-
-import java.io.IOException;
 
 /**
  * weex 初始化
@@ -26,6 +23,8 @@ public class WXApplication extends Application {
         instance = this;
 
         UWXInit.init(this);
+        //设置主题 过场动画 statusBar natBar 默认背景 是否有返回 ..
+        UWXThemeManager.getInstance().setPageTheme(new UWXTheme(new UWXTheme.NavBar("#ffffff", "#000000"), com.ucar.weex.R.style.wx_theme_app));
         /**
          * assets/weex/ucar-weex_3_20170828123442
          */

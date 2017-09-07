@@ -20,12 +20,12 @@ public class WXActivityManager extends WXBaseActivityManager {
     }
 
     public void backToActivity(Activity activity, int index) {
-        this.backToActivity(activity, index, (Bundle)null);
+        this.backToActivity(activity, index, (Bundle) null);
     }
 
     public void backToActivity(Activity activity, int index, Bundle bundle) {
-        Class aClass = WXContextManager.getInstance().solveReactHybridIDAndIndex(index);
-        Assertions.assertNotNull(aClass, "Can not find this activity in activity stack");
-        super.backToActivity(activity, aClass, bundle);
+        ContentInfo contentInfo = WXContextManager.getInstance().getContextByIndex(index);
+        Assertions.assertNotNull(contentInfo, "Can not find this activity in activity stack");
+        super.backToActivity(activity, contentInfo.mClass, bundle);
     }
 }

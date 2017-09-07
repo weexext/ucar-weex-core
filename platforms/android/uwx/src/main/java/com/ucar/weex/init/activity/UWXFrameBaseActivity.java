@@ -12,14 +12,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXRenderErrorCode;
 import com.taobao.weex.WXSDKInstance;
@@ -27,14 +25,12 @@ import com.taobao.weex.bridge.WXBridgeManager;
 import com.taobao.weex.dom.WXEvent;
 import com.taobao.weex.ui.component.WXComponent;
 import com.ucar.weex.R;
-import com.ucar.weex.UWXSDKManager;
 import com.ucar.weex.appfram.navigator.UWXNavBar;
 import com.ucar.weex.commons.util.ShakeDetector;
 import com.ucar.weex.constants.UConstants;
 import com.ucar.weex.devsup.WXDebugActivity;
 import com.ucar.weex.init.model.UWXBundleInfo;
 import com.ucar.weex.init.utils.UWLog;
-import com.ucar.weex.utils.ArrayUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +49,7 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
     private boolean mIsDevSupportEnabled = WXEnvironment.isApkDebugable();
     private ShakeDetector mShakeDetector;
     private boolean mIsShakeDetectorStarted = false;
+    private UWXTheme theme;
 
     public UWXFrameBaseActivity() {
 
@@ -94,9 +91,9 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
             bundle = new Bundle();
         }
         this.wxInfo = (UWXBundleInfo) bundle.getSerializable(UWXBundleInfo.TAG);
-        isHasNavBar = this.wxInfo.getNavBar() != null;
-        setTheme(R.style.wx_theme_app);
-//        setTheme(isHasNavBar ? R.style.wx_theme_app : R.style.wx_theme_translucent);
+        this.theme = this.wxInfo.getTheme() == null ? UWXThemeManager.getInstance().getPageTheme() : this.wxInfo.getTheme();
+        isHasNavBar = theme.getNavBar() != null;
+        setTheme(theme.getTheme());
     }
 
     @Override
@@ -126,7 +123,7 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
     }
 
     private void setData() {
-        setNavBar(this.wxInfo.getNavBar());
+        setNavBar(this.theme.getNavBar());
         if (!TextUtils.isEmpty(this.wxInfo.getUrlParam())) {
             renderPageByURL(this.wxInfo.getUrlParam(), "");
         } else {
@@ -267,7 +264,7 @@ public class UWXFrameBaseActivity extends UWXBaseActivity {
     }
 
 
-    public void setNavBar(UWXBundleInfo.NavBar navBar) {
+    public void setNavBar(UWXTheme.NavBar navBar) {
         if (isHasNavBar) {
             if (!TextUtils.isEmpty(navBar.backgroundColor)) {
                 flRoot.setBackgroundColor(Color.parseColor(navBar.backgroundColor));

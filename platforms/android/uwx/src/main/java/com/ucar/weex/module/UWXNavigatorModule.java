@@ -12,7 +12,9 @@ import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
 import com.taobao.weex.utils.WXLogUtils;
-import com.ucar.weex.UWXPageManager;
+import com.ucar.weex.UWXJumpUtil;
+import com.ucar.weex.init.activity.UWXTheme;
+import com.ucar.weex.init.activity.UWXThemeManager;
 import com.ucar.weex.init.manager.WXActivityManager;
 import com.ucar.weex.init.model.UWXBundleInfo;
 import com.ucar.weex.init.utils.UWLog;
@@ -36,7 +38,7 @@ public class UWXNavigatorModule extends WXModule {
         try {
             JSONObject options = JSON.parseObject(encodeParam);
             String url = "";
-            UWXBundleInfo.NavBar navBar = null;
+            UWXTheme.NavBar navBar = null;
             JSONObject param = null;
             boolean animated = false;
             if (options.containsKey(UWXBundleInfo.KEY_URL)) {
@@ -45,7 +47,7 @@ public class UWXNavigatorModule extends WXModule {
             if (options.containsKey(UWXBundleInfo.KEY_NAV_BAR)) {
                 String _navBar = options.getString(UWXBundleInfo.KEY_NAV_BAR);
                 if (!TextUtils.isEmpty(_navBar)) {
-                    navBar = JSON.parseObject(_navBar, UWXBundleInfo.NavBar.class);
+                    navBar = JSON.parseObject(_navBar, UWXTheme.NavBar.class);
                 }
             }
             if (options.containsKey(UWXBundleInfo.KEY_PARAM)) {
@@ -56,8 +58,16 @@ public class UWXNavigatorModule extends WXModule {
                 animated = options.getBoolean(UWXBundleInfo.KEY_SCENE_CONFIGS);
             }
             UWLog.v("params=" + encodeParam);
+            UWXTheme theme = null;
+            if (navBar == null) {
+                theme = UWXThemeManager.getInstance().getPageTheme();
+            } else {
+                UWXThemeManager.getInstance().getPageTheme().setNavBar(navBar);
+                theme = UWXThemeManager.getInstance().getPageTheme();
+            }
             if (!TextUtils.isEmpty(url)) {
-                UWXPageManager.openPageByUrl((Activity) mWXSDKInstance.getContext(), url, param, navBar, animated ? UWXBundleInfo.ANIMATION_HORIZONTAL : UWXBundleInfo.ANIMATION_DEFAULT);
+
+                UWXJumpUtil.openPageByUrl((Activity) mWXSDKInstance.getContext(), url, param, theme);
                 if (callback != null) {
                     callback.invoke(MSG_SUCCESS);
                 }
@@ -77,7 +87,7 @@ public class UWXNavigatorModule extends WXModule {
         if (TextUtils.isEmpty(encodeParam)) {
             return;
         }
-        com.alibaba.fastjson.JSONObject options = JSON.parseObject(encodeParam);
+        JSONObject options = JSON.parseObject(encodeParam);
         int index = 0;
         String tagCode = "";
         String param = "";

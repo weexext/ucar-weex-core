@@ -4,7 +4,6 @@ import android.app.Application;
 import android.os.Build;
 
 import com.ucar.weex.init.manager.ActivityLifecycleListener;
-import com.ucar.weex.init.manager.WXActivityManagerHelper;
 
 /**
  * Created by chenxi.cui on 2017/7/13.

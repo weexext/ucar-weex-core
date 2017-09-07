@@ -12,15 +12,12 @@ import com.ucar.weex.init.manager.WXActivityManager;
  */
 
 public class UWXNative {
-    public static void startWXActivity(Activity mActivity ,String module, Bundle bundle) {
-        if(TextUtils.isEmpty(module)) {
-            module = UWXConstant.MODULE_NAME;
-        }
-        bundle.putString("module", module);
-        WXActivityManager.getInstance().startActivity(mActivity, bundle);
+    public static void startWXActivity(Activity mActivity, Bundle bundle) {
+        startWXActivity(mActivity, bundle, -1);
     }
-    public static void startWXActivity(Activity mActivity , Bundle bundle) {
+
+    public static void startWXActivity(Activity mActivity, Bundle bundle, int requestCode) {
         bundle.putString("module", UWXConstant.MODULE_NAME);
-        WXActivityManager.getInstance().startActivity(mActivity, bundle);
+        WXActivityManager.getInstance().startActivityForResult(mActivity, bundle, requestCode);
     }
 }

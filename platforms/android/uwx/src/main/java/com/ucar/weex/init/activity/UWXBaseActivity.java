@@ -23,7 +23,6 @@ import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.common.IWXDebugProxy;
 import com.taobao.weex.common.WXRenderStrategy;
 import com.ucar.weex.commons.util.CommonUtils;
-import com.ucar.weex.init.manager.WXActivityManagerHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -164,7 +163,6 @@ public class UWXBaseActivity extends FragmentActivity implements IWXRenderListen
         if (mInstance != null) {
             mInstance.onActivityDestroy();
         }
-        WXActivityManagerHelper.onActivityDestroy(this);
         unregisterBroadcastReceiver();
     }
 

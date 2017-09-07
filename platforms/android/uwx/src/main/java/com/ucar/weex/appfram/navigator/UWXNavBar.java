@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.taobao.weex.utils.WXViewUtils;
 import com.ucar.weex.R;
 import com.ucar.weex.UWXApplication;
-import com.ucar.weex.init.model.UWXBundleInfo;
+import com.ucar.weex.init.activity.UWXTheme;
 import com.ucar.weex.init.utils.UWLog;
 import com.ucar.weex.utils.DensityUtil;
 
@@ -39,7 +39,7 @@ public class UWXNavBar extends FrameLayout {
         textBack.setText(R.string.icon_back);
     }
 
-    public void setData(UWXBundleInfo.NavBar navBar) {
+    public void setData(UWXTheme.NavBar navBar) {
 //        float weexPxByReal = WXViewUtils.getWeexPxByReal(navBar.height)/2;
         LayoutParams layoutParams = new LayoutParams(WXViewUtils.getScreenWidth(getContext()),
                 DensityUtil.dip2px(getContext(), navBar.height / 2 - 5));

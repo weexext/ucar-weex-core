@@ -22,9 +22,9 @@ import com.ucar.weex.module.UWXSchemeModule;
 public class UWXInit {
     public static void init(Application context) {
         UWXSDKManager.initialize(context);
-        WXSDKEngine.addCustomOptions("scheme", "portal");
-        WXSDKEngine.addCustomOptions(WXConfig.appGroup, "portal");
-        WXSDKEngine.addCustomOptions(WXConfig.appName, "portal");
+//        WXSDKEngine.addCustomOptions("scheme", "portal");
+//        WXSDKEngine.addCustomOptions(WXConfig.appGroup, "portal");
+//        WXSDKEngine.addCustomOptions(WXConfig.appName, "portal");
         WXSDKEngine.initialize(context,
                 new InitConfig.Builder()
                         .setImgAdapter(new FrescoImageAdapter())

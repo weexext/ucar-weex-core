@@ -19,6 +19,7 @@ import com.facebook.imagepipeline.image.CloseableStaticBitmap;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.taobao.weex.common.WXImageStrategy;
+import com.ucar.weex.devsup.UWXEnvManager;
 
 /**
  * Created by chenxi.cui on 2017/8/15.
@@ -31,8 +32,9 @@ public class FrescoImageHelper {
             return;
         }
         String temp = url;
-        if (url.startsWith("//")) {
-            temp = "http:" + url;
+        if (url.startsWith("assets:///")) {
+//            temp = "http:" + url;
+            temp = temp.replace("assets://", UWXEnvManager.getWXResHost());
         }
         Uri uri = Uri.parse(temp);
         ImageDecodeOptions decodeOptions = ImageDecodeOptions.newBuilder()

@@ -4,7 +4,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.ucar.weex.init.utils.UWLog;
 
 /**
  * Created by chenxi.cui on 2017/7/13.
@@ -12,45 +13,60 @@ import android.util.Log;
 
 @TargetApi(14)
 public class ActivityLifecycleListener implements Application.ActivityLifecycleCallbacks {
-    private WXActivityManager wxActivityManager = WXActivityManager.getInstance();
+
+    public static final String TAG = "ActivityLifecycleTAG";
     private boolean isNewActivity;
+    private boolean isDisActivity = true;
 
     public ActivityLifecycleListener() {
     }
 
+
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         this.isNewActivity = false;
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             this.isNewActivity = true;
-            this.wxActivityManager.onStartNewActivity(activity);
-        } else {
-            this.wxActivityManager.onBackToExistActivity(activity, true);
+            WXContextManager.getInstance().recordContext(activity.getClass());
         }
-
-        Log.e("wt>activityLifecycle", "onActivityCreated:" + activity.getLocalClassName());
+        UWLog.v(TAG, activity.getClass().getSimpleName() + "\nonActivityCreated\n" + isNewActivity);
     }
 
+    @Override
     public void onActivityStarted(Activity activity) {
+//        UWLog.v(TAG, activity.getClass().getSimpleName() + "\nonActivityStarted");
     }
 
     public void onActivityResumed(Activity activity) {
-        if(!this.isNewActivity) {
-            this.wxActivityManager.onBackToExistActivity(activity, false);
+        if (!isNewActivity) {
+            isDisActivity = true;
+            WXContextManager.getInstance().receiveBack(activity);
         }
-
-        this.isNewActivity = false;
-        Log.e("wt>activityLifecycle", "onActivityResumed");
+        UWLog.v(TAG, activity.getClass().getSimpleName() + "\nonActivityResumed");
     }
 
+    @Override
     public void onActivityPaused(Activity activity) {
+        this.isNewActivity = false;
+        UWLog.v(TAG, activity.getClass().getSimpleName() + "onActivityPaused");
     }
 
+    @Override
     public void onActivityStopped(Activity activity) {
+//        UWLog.v(TAG, activity.getClass().getSimpleName() + "onActivityStopped");
     }
 
+    @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+        UWLog.v(TAG, activity.getClass().getSimpleName() + "\nonActivitySaveInstanceState\n" + (outState == null));
+        isDisActivity = false;
     }
 
+    @Override
     public void onActivityDestroyed(Activity activity) {
+        UWLog.v(TAG, activity.getClass().getSimpleName() + "\nonActivityDestroyed");
+        if (isDisActivity) {
+            WXContextManager.getInstance().removeContext(activity.getClass());
+        }
+        isDisActivity = true;
     }
 }

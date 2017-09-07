@@ -1,124 +1,109 @@
 package com.ucar.weex.init.manager;
 
-import android.app.Application;
+import android.app.Activity;
+import android.content.Intent;
 import android.text.TextUtils;
-import android.util.SparseArray;
 
-import com.ucar.weex.init.activity.UWXFrameBaseActivity;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ucar.weex.init.UWXPageDataCallback;
 import com.ucar.weex.init.utils.Assertions;
+import com.ucar.weex.init.utils.UWLog;
+import com.ucar.weex.utils.ArrayUtils;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by chenxi.cui on 2017/7/12.
  */
 
 public class WXContextManager {
-    private static WXContextManager ourInstance = new WXContextManager();
-    private Application mApplication;
-    private static AtomicInteger sInstanceId = new AtomicInteger(0);
-    private Map<String, ContextInfo> mContextMap;
-    private String hybridID = "def";
+    private static WXContextManager instance = null;
+    private LinkedList<ContentInfo> mStack;
+    private UWXPageDataCallback callback;
+
+    public void addPageDataCallback(UWXPageDataCallback callback) {
+        this.callback = callback;
+    }
+
 
     public static WXContextManager getInstance() {
-        return ourInstance;
-    }
-
-    private WXContextManager() {
-    }
-
-    void init(Application application) {
-        Assertions.assertNotNull(application);
-        this.mContextMap = new HashMap(15);
-        this.mApplication = application;
-        WXActivityManager.getInstance().addOnActivityDestroyListener(new WXBaseActivityManager.OnActivityLifeListener() {
-            public boolean onDestroy(Class activityClass) {
-                WXContextManager.this.removeContext(activityClass);
-                return false;
-            }
-
-            @Override
-            public boolean onCreate(Class var1) {
-                WXContextManager.this.recordContextInfoWhenApplicationRun(sInstanceId.incrementAndGet(), var1);
-                return false;
-            }
-        });
-        this.mContextMap.put(hybridID, new ContextInfo());
-    }
-
-
-    int resolveContextTag(Class restoreActivityClass) {
-        Assertions.assertNotNull(restoreActivityClass);
-        if (!TextUtils.isEmpty(hybridID)) {
-            SparseArray tagToActivityClass = ((ContextInfo) this.mContextMap.get(hybridID)).tagToActivityClass;
-            int info = tagToActivityClass.indexOfValue(restoreActivityClass);
-            if (info != -1) {
-                return tagToActivityClass.keyAt(info);
-            }
-        } else {
-            Iterator iterator = this.mContextMap.values().iterator();
-
-            while (iterator.hasNext()) {
-                ContextInfo info1 = (ContextInfo) iterator.next();
-                int index;
-                if ((index = info1.tagToActivityClass.indexOfValue(restoreActivityClass)) != -1) {
-                    return info1.tagToActivityClass.keyAt(index);
+        if (instance == null) {
+            synchronized (WXContextManager.class) {
+                if (instance == null) {
+                    instance = new WXContextManager();
                 }
             }
         }
+        return instance;
+    }
 
-        return -1;
+    private WXContextManager() {
+        mStack = new LinkedList<>();
+    }
+
+    public void recordContext(Class activityClass) {
+        Assertions.assertNotNull(activityClass);
+        ContentInfo contentInfo = new ContentInfo(activityClass);
+        this.mStack.add(contentInfo);
+    }
+
+    public void removeContext(Class activityClass) {
+        Assertions.assertNotNull(activityClass);
+        ContentInfo contentInfo = getContentInfoByClass(activityClass);
+        this.mStack.remove(contentInfo);
+        WXActivityManager.getInstance().removeContext(contentInfo);
+    }
+
+    public ContentInfo getContentInfoByClass(Class activityClass) {
+        if (!ArrayUtils.isEmpty(mStack)) {
+            Iterator<ContentInfo> iterator = mStack.iterator();
+            while (iterator.hasNext()) {
+                ContentInfo next = iterator.next();
+                if (next.getActivityStr().equals(activityClass.getName())) {
+                    return next;
+                }
+            }
+        }
+        return null;
     }
 
     public int getIndexByClass(Class activityClass) {
-        return activityClass != null && !TextUtils.isEmpty(hybridID) ? ((ContextInfo) this.mContextMap.get(hybridID)).tagToActivityClass.indexOfValue(activityClass) : -1;
-    }
-
-
-    void recordContextInfoWhenApplicationRun(int rootViewTag, Class activityClass) {
         Assertions.assertNotNull(activityClass);
-        ContextInfo contextInfo = (ContextInfo) this.mContextMap.get(hybridID);
-        if (UWXFrameBaseActivity.class.isAssignableFrom(activityClass)) {
-            contextInfo.tagToActivityClass.put(rootViewTag, activityClass);
-        }
+        return mStack.indexOf(activityClass);
     }
 
-    /**
-     * @param index 偏移量-2...暂时使用
-     * @return
-     */
-    Class solveReactHybridIDAndIndex(int index) {
-        ContextInfo contextInfo = (ContextInfo) this.mContextMap.get(hybridID);
-        int size = contextInfo.tagToActivityClass.size();
-        //// TODO: 2017/7/18  目前js传的是偏移量
-        index = size - Math.abs(index) - 1;
-        return contextInfo != null && index >= 0 ? (Class) contextInfo.tagToActivityClass.valueAt(index) : null;
+    public int getStackCount() {
+        return mStack.size();
+    }
+
+    public ContentInfo getContextByIndex(int index) {
+        index = getStackCount() - Math.abs(index) - 1;
+        return getStackCount() > index && index >= 0 ? mStack.get(index) : mStack.get(0);
     }
 
 
-    private void removeContext(Class activityClass) {
-        Iterator iterator = this.mContextMap.values().iterator();
-        SparseArray tagToActivityClass;
-        int i;
-        do {
-            if (!iterator.hasNext()) {
-                return;
+    public void receiveBack(Activity activity) {
+        if (activity != null) {
+            if (callback != null) {
+                Intent intent = activity.getIntent();
+                if (intent != null) {
+                    String params = intent.getStringExtra("params");
+                    JSONObject jsonObject = null;
+                    if (!TextUtils.isEmpty(params)) {
+                        try {
+                            jsonObject = JSON.parseObject(params);
+                        } catch (Exception e) {
+                            UWLog.e("WXC", e.getMessage());
+                        }
+                    }
+                    String backTag = intent.getStringExtra("backTag");
+                    callback.callBack(backTag, jsonObject);
+                }
             }
-            ContextInfo contextInfo = (ContextInfo) iterator.next();
-            tagToActivityClass = contextInfo.tagToActivityClass;
-            i = tagToActivityClass.indexOfValue(activityClass);
-        } while (i == -1);
-        tagToActivityClass.removeAt(i);
-    }
-
-    protected static class ContextInfo {
-        private SparseArray<Class> tagToActivityClass;
-
-        public ContextInfo() {
-            this.tagToActivityClass = new SparseArray(25);
         }
     }
 }

@@ -23,6 +23,7 @@ import com.taobao.weex.common.WXRenderStrategy;
 import com.ucar.weex.R;
 import com.ucar.weex.commons.util.CommonUtils;
 import com.ucar.weex.commons.util.ShakeDetector;
+import com.ucar.weex.devsup.UWXEnvManager;
 import com.ucar.weex.devsup.WXDebugActivity;
 import com.ucar.weex.init.utils.ArgumentsUtil;
 
@@ -32,7 +33,7 @@ import com.ucar.weex.init.utils.ArgumentsUtil;
 
 public class UWXBaseFragment extends Fragment implements IWXRenderListener {
     private FrameLayout rootView;
-    private Bundle myBundle;
+    public Bundle myBundle;
     private WXSDKInstance mWXSDKInstance;
     private ShakeDetector mShakeDetector;
     private boolean mIsDevSupportEnabled = WXEnvironment.isApkDebugable();
@@ -40,7 +41,6 @@ public class UWXBaseFragment extends Fragment implements IWXRenderListener {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-//        myBundle.putSerializable(WXUriBean.TAG, wxUriBean);
         super.onSaveInstanceState(outState);
     }
 
@@ -53,6 +53,9 @@ public class UWXBaseFragment extends Fragment implements IWXRenderListener {
         }
     }
 
+    public void setUrl(String url) {
+        myBundle.putString("_jsBundle", UWXEnvManager.getJSBundleHost() + url);
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

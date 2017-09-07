@@ -4,6 +4,7 @@ import android.net.Uri;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ucar.weex.init.activity.UWXTheme;
 
 import java.io.Serializable;
 
@@ -20,15 +21,20 @@ public class UWXBundleInfo implements Serializable {
     public static final String ANIMATION_VERTICAL = "vertical";
     public static final String ANIMATION_HORIZONTAL = "horizontal";
     public static final String ANIMATION_DEFAULT = "horizontal";
-    public static NavBar defaultNavBar = new NavBar();
-
 
     private String module;
     private String url;
-    private NavBar navBar;
+
+    private UWXTheme theme;
     private JSONObject param;
     private String animation;
+    public UWXTheme getTheme() {
+        return theme;
+    }
 
+    public void setTheme(UWXTheme theme) {
+        this.theme = theme;
+    }
     public JSONObject getParam() {
         return param;
     }
@@ -49,9 +55,6 @@ public class UWXBundleInfo implements Serializable {
         this.param = param;
     }
 
-    public void setNavBar(NavBar navBar) {
-        this.navBar = navBar;
-    }
 
     public void setModule(String module) {
         this.module = module;
@@ -61,9 +64,6 @@ public class UWXBundleInfo implements Serializable {
         return module;
     }
 
-    public NavBar getNavBar() {
-        return navBar;
-    }
 
     public String getUrl() {
         return url;
@@ -87,42 +87,4 @@ public class UWXBundleInfo implements Serializable {
         this.animation = animation;
     }
 
-    /**
-     * //导航栏是否显示返回按钮
-     * hasBack: true,
-     * // 导航栏返回按钮颜色
-     * backColor: '#ffffff',
-     * // 导航栏背景
-     * navBarColor: '3e50b5',
-     * // [全局/页面]背景色，默认 蓝
-     * backgroundColor: '#3e50b5',
-     * // [全局/页面]左侧按钮文字，默认 '返回'
-     * leftButtonText: '返回',
-     * // 导航栏高度
-     * height: weex.config.env.platform == 'android' ? 100.0 : 64.0
-     */
-    public static class NavBar implements Serializable {
-        public boolean hasBack = true;
-        public String backColor = "#ffffff";
-        public String leftButtonText = "返回";
-        public String navBarColor = "#3e50b5";
-        public String backgroundColor = "#ffffff";
-        public float height = 100;
-
-        public NavBar(boolean hasBack, String backColor, String leftButtonText, String navBarColor, String backgroundColor, float height) {
-            this.hasBack = hasBack;
-            this.backColor = backColor;
-            this.leftButtonText = leftButtonText;
-            this.navBarColor = navBarColor;
-            this.backgroundColor = backgroundColor;
-            this.height = height;
-        }
-
-        public NavBar() {
-        }
-
-        public NavBar(String backColor, String navBarColor) {
-            this(true, backColor, "返回", navBarColor, "#ffffff", 100);
-        }
-    }
 }

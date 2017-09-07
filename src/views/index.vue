@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-        <navpage title="UCAR-WEEX" />
+    <div @onAndroidBack="onAndroidBack" @ready="ready" class="container">
+        <navpage title="UCAR-WEEX"/>
         <list>
             <cell v-for="item in items" @click="onItemClick(item)">
                 <div class="row">
@@ -12,10 +12,11 @@
 </template>
 <style scoped>
     .container {
-        flex:1;
+        flex: 1;
         background-color: #f3f3f3;
     }
-    .row{
+
+    .row {
         flex-direction: row;
         width: 750px;
         height: 100px;
@@ -27,7 +28,8 @@
         padding-left: 30px;
         padding-right: 30px;
     }
-    .row-name{
+
+    .row-name {
         margin-left: 20px;
         align-self: center;
         flex: 1;
@@ -37,9 +39,10 @@
 </style>
 <script>
     import uweex from 'ucar-weex'
+    const modal = weex.requireModule('modal')
     export default {
-        components:{
-          navpage:require("../include/navpage.vue")
+        components: {
+            navpage: require("../include/navpage.vue")
         },
         data() {
             return {
@@ -52,21 +55,35 @@
             }
         },
         created () {
-
-          console.log('views/index.vue created')
-            uweex.bridge.addEventListener('test',(e)=>{
-                console.log('registerBroadcast='+JSON.stringify(e));
+            console.log('views/index.vue created')
+            uweex.bridge.addEventListener('test', (e)=> {
+                console.log('registerBroadcast=' + JSON.stringify(e));
             });
         },
-        methods:{
-          onItemClick(item) {
-            let options = {
-              url:item.page
-            }
-            uweex.router.push(options,()=>{
-                console.log('uweex')
-            })
-          }
+        methods: {
+
+            ready(e){
+                let p = JSON.stringify(e.param)
+                console.log('pageA页面传参数=' + p);
+                modal.toast({
+                    message: p,
+                    duration: 0.3
+                });
+            },
+
+            onItemClick(item) {
+                let options = {
+                    url: item.page
+                }
+                uweex.router.push(options, ()=> {
+                    console.log('uweex')
+                })
+            },
+
+            onAndroidBack(){
+                uweex.router.popTo({index: -1, tagCode: "pageb", param: {test: 'testB'}}, () => {
+                });
+            },
         },
     }
 </script>

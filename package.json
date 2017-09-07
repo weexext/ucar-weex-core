@@ -30,7 +30,9 @@
         "vuex": "^2.1.1",
         "vuex-router-sync": "^4.0.1",
         "weex-html5": "^0.4.1",
-        "weex-vue-render": "^0.11.2"
+        "weex-vue-render": "^0.11.2",
+        "weex-image-picker": "1.0.1",
+        "weex-action-sheet": "2.0.7"
     },
     "devDependencies": {
         "babel-core": "^6.26.0",

@@ -9,10 +9,10 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ucar.weex.UWXPageManager;
+import com.ucar.weex.UWXJumpUtil;
 import com.ucar.weex.init.utils.UWLog;
-import com.ucar.weex.utils.ArrayUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,20 +39,34 @@ public class UWXMainActivity extends Activity {
                 String uriQuery = uri.getQuery();
                 JSONObject jsonParam = null;
                 if (!TextUtils.isEmpty(uriQuery)) {
-                    String[] split = uriQuery.split("&");
-                    Map<Object, Object> queryParam = ArrayUtils.toMap(split);
+                    Map<String, Object> queryParam = getUrlParams(uriQuery);
                     if (queryParam != null) {
                         jsonParam = (JSONObject) JSON.toJSON(queryParam);
                     }
                 }
                 UWLog.v("url=" + uri.toString());
                 if (!TextUtils.isEmpty(scheme)) {
-                    UWXPageManager.openPageByUrl(this, uri.toString(), jsonParam);
+                    UWXJumpUtil.openPageByUrl(this, uri.toString(), jsonParam);
                 } else {
                     Toast.makeText(this, "scheme err!", Toast.LENGTH_SHORT).show();
                 }
                 this.finish();
             }
         }
+    }
+
+    public static Map<String, Object> getUrlParams(String param) {
+        Map<String, Object> map = new HashMap<String, Object>(0);
+        if (TextUtils.isEmpty(param)) {
+            return map;
+        }
+        String[] params = param.split("&");
+        for (int i = 0; i < params.length; i++) {
+            String[] p = params[i].split("=");
+            if (p.length == 2) {
+                map.put(p[0], p[1]);
+            }
+        }
+        return map;
     }
 }
