@@ -9,7 +9,7 @@ PODS:
   - UCarWeex (0.1.0):
     - WeexSDK
   - UIColor-HexString (1.3.0)
-  - WeexSDK (0.15.1):
+  - WeexSDK (0.15.0):
     - SocketRocket
   - WXDevtool (0.15.3):
     - WeexSDK
@@ -21,11 +21,20 @@ DEPENDENCIES:
   - SSZipArchive (~> 2.0.3)
   - UCarWeex (from `../../../`)
   - UIColor-HexString
+  - WeexSDK (from `https://github.com/weexext/incubator-weex.git`, branch `ucarweex-dev`)
   - WXDevtool (~> 0.15.3)
 
 EXTERNAL SOURCES:
   UCarWeex:
     :path: ../../../
+  WeexSDK:
+    :branch: ucarweex-dev
+    :git: https://github.com/weexext/incubator-weex.git
+
+CHECKOUT OPTIONS:
+  WeexSDK:
+    :commit: e83b0de20898fc470047925fd404f413fb88a76f
+    :git: https://github.com/weexext/incubator-weex.git
 
 SPEC CHECKSUMS:
   CYLTabBarController: 97f6b486f9e6c613d69e9c111cc9c2c5db7000ce
@@ -35,9 +44,9 @@ SPEC CHECKSUMS:
   SSZipArchive: b6648b70a36303ca5be9f0351174b347e1886236
   UCarWeex: 23b8b4b35588dcc6651be6551e05ccb88b9b75c5
   UIColor-HexString: fadc2e1389db19147ac99dee92222d3bd8bfec4a
-  WeexSDK: 5282685df6d7279213a51a3142b915759f6e3413
+  WeexSDK: e2992f6d56b5aff7ca451263fe7874438392eaf5
   WXDevtool: 6c837383e778a9442ee500db4069a95be321dac6
 
-PODFILE CHECKSUM: 4cf4bc6b658c06ecbc7366a46e9ce8e92e56341b
+PODFILE CHECKSUM: b920107132567b4afe12b2f14924ca67f9377d4a
 
 COCOAPODS: 1.2.1

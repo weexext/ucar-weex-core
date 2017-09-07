@@ -11,7 +11,6 @@
 
 #import "UCXGlobalEventModule.h"
 
-
 @implementation UCXGlobalEventModule
 @synthesize weexInstance;
 

@@ -22,6 +22,8 @@
 #import "UCXBaseViewController.h"
 #import "UCXUtil.h"
 #import "UCXSDKInstance.h"
+#import "UCXDebugTool.h"
+#import "UCXDebugViewController.h"
 
 @interface UCXBaseViewController ()
 
@@ -29,10 +31,11 @@
 @property (nonatomic, strong) UIView *weexView;
 @property (nonatomic, strong) NSURL *sourceURL;
 
-/***/
+//==========================================
 @property (nonatomic, strong) NSString *tagCode;
-@property (nonatomic, strong) NSMutableDictionary *param; //页面传参
+@property (nonatomic, strong) NSMutableDictionary *param;        //页面传参
 @property (nonatomic, strong) NSMutableDictionary *paramWrapper; // 页面传参封装
+//==========================================
 
 @end
 
@@ -87,21 +90,27 @@
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
     
+    //=====================================================
     // 处理数据
     [self configCustomData];
     // 模拟导航栏
     [self addFakeNavBar];
     //
-    [self receiveNoti:self.tagCode];
-    //
-//    [self ucx_updateInstanceState:UCXWeexInstanceReady];
+    if (self.tagCode) {
+        [self receiveNoti:self.tagCode];
+    }
+    // 设置允许摇一摇功能
+    BOOL isDebug = [UCXDebugTool isDebug];
+    [UIApplication sharedApplication].applicationSupportsShakeToEdit = isDebug;
+    //=====================================================
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self _updateInstanceState:WeexInstanceAppear];
-    
+
+    //=====================================================
     //接收参数
     __weak typeof(self) weakSelf = self;
     _callback = ^(NSDictionary *dict) {
@@ -110,8 +119,9 @@
             weakSelf.paramWrapper = [dict mutableCopy];
         }
     };
-    //
     [self ucx_updateInstanceState:UCXWeexInstanceActived];
+    [self becomeFirstResponder];
+    //=====================================================
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -119,8 +129,10 @@
     [super viewDidDisappear:animated];
     [self _updateInstanceState:WeexInstanceDisappear];
     
-    //
+    //=====================================================
     [self ucx_updateInstanceState:UCXWeexInstanceDeactived];
+    [self resignFirstResponder];
+    //=====================================================
 }
 
 - (void)didReceiveMemoryWarning
@@ -174,8 +186,9 @@
     
     _instance.renderFinish = ^(UIView *view) {
         [weakSelf _updateInstanceState:WeexInstanceAppear];
-        //
+        //=====================================================
         [weakSelf ucx_updateInstanceState:UCXWeexInstanceReady];
+        //=====================================================
     };
     
     if([WXPrerenderManager isTaskExist:[self.sourceURL absoluteString]]){
@@ -226,8 +239,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
-#pragma mark -
+//=============================================================
+#pragma mark - custom extent
 
 - (void)configCustomData {
     // param
@@ -243,14 +256,20 @@
     NSDictionary *navBarDict = [self.options objectForKey:@"navBar"];
     if ([navBarDict count]>0) {
         CGFloat height = [[navBarDict objectForKey:@"height"] floatValue];
+        NSString *navBarColor = [navBarDict objectForKey:@"navBarColor"];
         NSString *backgroundColor = [navBarDict objectForKey:@"backgroundColor"];
+        //
+        if (backgroundColor) {
+            [self.view setBackgroundColor:[UCXUtil colorWithHexString:backgroundColor]];
+        }
         //
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
         height = height>0.f ? height: 64.f;
         UIView *fakeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-        if (backgroundColor) {
-            [fakeView setBackgroundColor:[UCXUtil colorWithHexString:backgroundColor]];
+        if (navBarColor) {
+            [fakeView setBackgroundColor:[UCXUtil colorWithHexString:navBarColor]];
         }
+        
         [self.view addSubview:fakeView];
     }
 }
@@ -284,7 +303,19 @@
 }
 
 - (void)handleNoti:(NSNotification *)noti {
-    
+    UCXLog(@"[UCARWEEX]:::noti:::%@",noti);
 }
+
+#pragma mark - 
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    if (event.subtype == UIEventSubtypeMotionShake) { // 判断是否是摇动结束
+        UCXLog(@"UIEventSubtypeMotionShake");
+        UCXDebugViewController *debugVC = [[UCXDebugViewController alloc] init];
+        [self.navigationController pushViewController:debugVC animated:YES];
+    }
+    return;
+}
+
+//=============================================================
 
 @end

@@ -10,10 +10,6 @@
 
 #import <UCarWeex/UCarWeex.h>
 
-#ifdef DEBUG
-#import <TBWXDevTool/TBWXDevTool.h>
-#endif
-
 #import "UCImgLoaderDefaultImpl.h"
 
 @interface UCWeexManager ()
@@ -32,8 +28,11 @@
     [UCXAppConfiguration setAppVersion:APP_VERSION];
 #ifdef DEBUG
     [UCarWeexService setLogLevel:WXLogLevelLog];
-    [WXDevTool setDebug:UC_WEEX_DEBUG_MODE];
-    [WXDevTool launchDevToolDebugWithUrl:[NSString stringWithFormat:@"ws://%@:%@/debugProxy/native",UC_LOCAL_IP,UC_LOCAL_WEEX_PORT]];
+//    [WXDevTool setDebug:UC_WEEX_DEBUG_MODE];
+//    [WXDevTool launchDevToolDebugWithUrl:[NSString stringWithFormat:@"ws://%@:%@/debugProxy/native",UC_LOCAL_IP,UC_LOCAL_WEEX_PORT]];
+    [UCXDebugTool setDebug:UC_WEEX_DEBUG_MODE];
+    [UCXDebugTool setDebugIP:@"10.99.21.32"];
+    
 #else
     [UCarWeexService setLogLevel:WXLogLevelError];
 #endif

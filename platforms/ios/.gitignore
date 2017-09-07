@@ -24,8 +24,7 @@ xcuserdata
 
 # Bundler
 .bundle
-Example/assets/
-Example/bundlejs/
+Example/assets/weex/*
 
 Carthage
 # We recommend against adding the Pods directory to your .gitignore. However

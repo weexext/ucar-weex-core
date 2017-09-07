@@ -18,7 +18,7 @@
 + (id<WXImageOperationProtocol>)loadLocalImge:(NSString *)imgURL completed:(void(^)(UIImage *image,  NSError *error, BOOL finished))completedBlock {
     UCImgLocalLoader *imgLocalLoader = [UCImgLocalLoader new];
     //
-    UIImage *img = nil;
+    __block UIImage *img = nil;
     NSString *URLPrefix = @"file:///";
     NSString *UCURLPrefix = @"assets:///image/";
     if ([imgURL hasPrefix:UCURLPrefix] ) {

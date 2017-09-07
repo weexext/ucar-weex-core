@@ -7,9 +7,10 @@
 //
 
 #import "UCXAppConfiguration.h"
-#import "UCXUtil.h"
-
 #import <WeexSDK/WXAppConfiguration.h>
+
+#import "UCXUtil.h"
+#import "UCXDebugTool.h"
 
 @interface UCXAppConfiguration ()
 
@@ -65,7 +66,10 @@
 + (NSString *)jsBundlePath {
     NSString *cachePath = [UCXAppConfiguration cachePath];
     //cachepath+jsBundle
-    NSString *jsBundlePath = [NSString stringWithFormat:@"%@/%@",cachePath,@"jsBundle"];
+    NSString *jsBundlePath = [NSString stringWithFormat:@"file://%@/%@",cachePath,@"jsBundle"];
+    if ([UCXDebugTool isDebug]) {
+        jsBundlePath = [UCXDebugTool webUrl];
+    }
     return jsBundlePath;
 }
 
@@ -73,6 +77,11 @@
     NSString *cachePath = [UCXAppConfiguration cachePath];
     //cachepath+res+image
     NSString *jsBundlePath = [NSString stringWithFormat:@"%@/%@/%@",cachePath,@"res",@"image"];
+    if ([UCXDebugTool isDebug]) {
+        jsBundlePath = [UCXDebugTool webUrl];
+        //直接访问资源文件目录
+        jsBundlePath = [jsBundlePath stringByReplacingOccurrencesOfString:@"/dist/native" withString:@"/src/assets/image"];
+    }
     return jsBundlePath;
 }
 

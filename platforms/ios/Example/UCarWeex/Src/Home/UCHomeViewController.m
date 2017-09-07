@@ -67,7 +67,7 @@
     NSURL *url = [NSURL URLWithString:[self routerWithRelativePath:relativePath]];
     
     UCXBaseViewController *vc = [[UCXBaseViewController alloc] initWithSourceURL:url];
-    NSDictionary *dict = @{@"height":@"64",@"backgroundColor":@"#3e50b5"};
+    NSDictionary *dict = @{@"height":@"64",@"navBarColor":@"#3e50b5",@"backgroundColor":@"#ffffff"};
     NSDictionary *options = @{@"navBar":dict};
     vc.options = options;
     [self.navigationController pushViewController:vc animated:YES];
@@ -77,12 +77,12 @@
 - (NSString *)routerWithRelativePath:(NSString *)relativePath {
     // 1:远程 0：本地
     NSString *urlStr = relativePath;
-    if (UC_JS_LOAD_TYPE) {
-        urlStr = [NSString stringWithFormat:@"http://%@:%@/dist/native/%@",UC_LOCAL_IP,UC_LOCAL_WEB_PORT, relativePath];
-    }else {
-//        urlStr = [NSString stringWithFormat:@"file://%@/bundlejs/views/%@",[NSBundle mainBundle].bundlePath, relativePath];
-        urlStr = [NSString stringWithFormat:@"file://%@/%@",[UCXAppConfiguration jsBundlePath], relativePath];
-    }
+//    if (UC_JS_LOAD_TYPE) {
+//        urlStr = [NSString stringWithFormat:@"http://%@:%@/dist/native/%@",UC_LOCAL_IP,UC_LOCAL_WEB_PORT, relativePath];
+//    }else {
+        urlStr = [NSString stringWithFormat:@"%@/%@",[UCXAppConfiguration jsBundlePath], relativePath];
+//    }
+    
     return urlStr;
 }
 
