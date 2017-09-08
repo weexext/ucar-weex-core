@@ -34,7 +34,7 @@ allprojects {
 compile 'com.ucar:weex_sdk:1.6@aar'
 
 // ucar weexsdk 拓展
-compile 'com.ucar:weexext_sdk:1.0.9@aar'
+compile 'com.ucar:weexext_sdk:2.0.2@aar'
 
 ```
 最后，还需要在 app 的 build.gradle 中对 ndk 进行配置：
@@ -64,6 +64,9 @@ public class WXApplication extends Application {
         instance = this;
 
         UWXInit.init(this);
+        //设置主题 过场动画 statusBar natBar 默认背景 是否有返回 ..
+        UWXThemeManager.getInstance().setPageTheme(new UWXTheme(new UWXTheme.NavBar("#ffffff", "#000000"), com.ucar.weex.R.style.wx_theme_app));
+
         /**
          * assets/weex/ucar-weex_3_20170828123442
          */
@@ -101,7 +104,16 @@ public class WXApplication extends Application {
 ##打开weex页面
 ```
  private void startWeexPage() {
-        UWXPageManager.openPage(this, "index.js", new UWXBundleInfo.NavBar("#ff99cc00", "#ffff4444"));
+       UWXTheme theme = new UWXTheme(new UWXTheme.NavBar("#ff99cc00", "#ffff4444"));
+              Bundle bundle = new Bundle();
+              bundle.putString("mainkey", "mainValue");
+              UWXJumpUtil.openPage(this, "index.js", bundle, theme, new UWXPageDataCallback() {
+                  @Override
+                  public void callBack(String backTag, JSONObject jsonObject) {
+                      UWLog.v("MainActivity", "backTag=" + backTag);
+                      UWLog.v("MainActivity", "jsonObject=" + JSON.toJSON(jsonObject));
+                  }
+              });
  }
 
 ```
