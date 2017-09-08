@@ -26,9 +26,8 @@
     [UCXAppConfiguration setAppGroup:@"ucarinc"];
     [UCXAppConfiguration setAppName:APP_NAME];
     [UCXAppConfiguration setAppVersion:APP_VERSION];
-#ifdef DEBUG
-    [UCarWeexService setLogLevel:WXLogLevelLog];
 
+    //====================调试相关设置:::须在代码 [UCarWeexService initUCarWeexService] 前执行~================================
     /**
      * 设置是否处于调试状态
      * YES, 则 setWeexDebug && setRemote 才会生效，NO，则以下不生效
@@ -51,6 +50,9 @@
      */
     [UCXDebugTool setRemote:UC_JS_LOAD_TYPE];
     [UCXDebugTool setWebIP:@"10.99.21.32"];
+    //==========================================================================================================================
+#ifdef DEBUG
+    [UCarWeexService setLogLevel:WXLogLevelLog];
 #else
     [UCarWeexService setLogLevel:WXLogLevelError];
 #endif

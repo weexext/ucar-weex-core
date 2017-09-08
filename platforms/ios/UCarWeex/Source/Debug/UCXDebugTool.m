@@ -49,12 +49,12 @@
 }
 
 + (void)initDebugInfo {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = [userDefaults objectForKey:UCX_US_UCAR_WEEX_DEBUG_KEY];
-    if (dict && [dict count]>0) { //若已有设置，则使用本地设置
-        NSString *isDebug = [dict objectForKey:@"isDebug"];
-        if (isDebug && [isDebug isEqualToString:@"true"]) {
-            [UCXDebugTool setDebug:YES];
+    //
+    BOOL isDebug = [UCXDebugTool shared].isDebug;
+    if (isDebug) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict = [userDefaults objectForKey:UCX_US_UCAR_WEEX_DEBUG_KEY];
+        if (dict && [dict count]>0) { //若已有设置，则使用本地设置
             NSString *isWeexDebug = [dict objectForKey:@"isWeexDebug"];
             if (isWeexDebug && [isWeexDebug isEqualToString:@"true"]) {
                 NSString *weexDebugIP = [dict objectForKey:@"weexDebugIP"];
@@ -63,7 +63,6 @@
                 [UCXDebugTool setWeexDebugIP:weexDebugIP];
                 [UCXDebugTool setWeexDebugUrl:weexDebugUrl];
                 
-//                [WXDevTool setDebug:YES];
                 [WXDevTool launchDevToolDebugWithUrl:weexDebugUrl];
             }
             NSString *isRemote = [dict objectForKey:@"isRemote"];
@@ -74,12 +73,8 @@
                 [UCXDebugTool setWebIP:webIP];
                 [UCXDebugTool setWebUrl:webUrl];
             }
-        }
-    }else { //若无，则使用代码设置
-        NSMutableDictionary *debugInfo = [NSMutableDictionary dictionary];
-        BOOL isDebug = [UCXDebugTool isDebug];
-        if (isDebug) {
-            [debugInfo setObject:@"true" forKey:@"isDebug"];
+        }else { //若无，则使用代码设置
+            NSMutableDictionary *debugInfo = [NSMutableDictionary dictionary];
             BOOL isWeexDebug = [UCXDebugTool shared].isWeexDebug;
             if (isWeexDebug) {
                 NSString *weexDebugIP = [UCXDebugTool shared].weexDebugIP;
@@ -109,12 +104,13 @@
             [userDefaults setObject:debugInfo forKey:UCX_US_UCAR_WEEX_DEBUG_KEY];
             [userDefaults synchronize];
         }
-        
+    }else {
+        [UCXDebugTool setWeexDebug:NO];
+        [UCXDebugTool setRemote:NO];
     }
 }
 
 #pragma mark - debug
-
 + (void)setDebug:(BOOL)isDebug {
     [UCXDebugTool shared].isDebug = isDebug;
 }

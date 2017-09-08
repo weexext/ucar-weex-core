@@ -14,7 +14,6 @@
 
 @interface UCXDebugViewController ()<UITextFieldDelegate>
 
-@property (nonatomic, strong) UIView *debugView;
 @property (nonatomic, strong) UIView *weexDebugView;
 @property (nonatomic, strong) UIView *weexDebugIPView;
 
@@ -119,41 +118,17 @@
 }
 
 - (void)configViews {
-    [self configDebugView];
     [self configWeexDebugView];
     [self configRemoteDebugView];
 }
 
-- (void)configDebugView {
-    //调试模式...
-    UIView *debugView = [[UIView alloc] init];
-    self.debugView = debugView;
-    [self.view addSubview:debugView];
-    CGFloat yPosition = 74.f;
-    debugView.frame = CGRectMake(0, yPosition, self.view.frame.size.width, 45);
-    debugView.backgroundColor = [UIColor whiteColor];
-    //
-    UILabel *titleLabel = [self configLabelWithParent:debugView text:@"调试模式"];
-    //
-    UISwitch *theSwitch = [[UISwitch alloc] init];
-    
-    CGFloat switchOriginY = round((debugView.frame.size.height - theSwitch.frame.size.height) / 2.0);
-    CGFloat switchOriginX = CGRectGetMaxX(debugView.frame) - theSwitch.frame.size.width-8;
-    theSwitch.frame = CGRectMake(switchOriginX, switchOriginY, theSwitch.frame.size.width, theSwitch.frame.size.height);
-    [debugView addSubview:theSwitch];
-    
-    [theSwitch addTarget:self action:@selector(oneSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-    theSwitch.tag = 101;
-    BOOL isDebug = [self.debugInfoDict objectForKey:@"isDebug"] && [[self.debugInfoDict objectForKey:@"isDebug"] isEqualToString:@"true"];
-    theSwitch.on = isDebug;
-}
 
 - (void)configWeexDebugView {
     //weex调试模式
     UIView *weexDebugView = [[UIView alloc] init];
     self.weexDebugView = weexDebugView;
     [self.view addSubview:weexDebugView];
-    CGFloat yPosition = self.debugView.frame.origin.y+self.debugView.frame.size.height+8;
+    CGFloat yPosition = 74.f;
     weexDebugView.frame = CGRectMake(0, yPosition, self.view.frame.size.width, 45);
     weexDebugView.backgroundColor = [UIColor whiteColor];
     
@@ -166,7 +141,7 @@
     [weexDebugView addSubview:theSwitch];
     
     [theSwitch addTarget:self action:@selector(oneSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-    theSwitch.tag = 102;
+    theSwitch.tag = 101;
     BOOL isWeexDebug = [self.debugInfoDict objectForKey:@"isWeexDebug"] && [[self.debugInfoDict objectForKey:@"isWeexDebug"] isEqualToString:@"true"];
     theSwitch.on = isWeexDebug;
     
@@ -203,7 +178,7 @@
     [remoteDebugView addSubview:theSwitch];
     
     [theSwitch addTarget:self action:@selector(oneSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
-    theSwitch.tag = 103;
+    theSwitch.tag = 102;
     BOOL isRemoteDebug = [self.debugInfoDict objectForKey:@"isRemote"] && [[self.debugInfoDict objectForKey:@"isRemote"] isEqualToString:@"true"];
     theSwitch.on = isRemoteDebug;
     
@@ -226,17 +201,11 @@
     switch (sender.tag) {
         case 101:
         {
-            NSString *isDebugStr = isOn ? @"true":@"false";
-            [self.debugInfoDict setObject:isDebugStr forKey:@"isDebug"];
-        }
-            break;
-        case 102:
-        {
             NSString *isWeexDebugStr = isOn ? @"true":@"false";
             [self.debugInfoDict setObject:isWeexDebugStr forKey:@"isWeexDebug"];
         }
             break;
-        case 103:
+        case 102:
         {
             NSString *isRemoteStr = isOn ? @"true":@"false";
             [self.debugInfoDict setObject:isRemoteStr forKey:@"isRemote"];

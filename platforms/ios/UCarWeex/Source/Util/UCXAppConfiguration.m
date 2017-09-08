@@ -67,7 +67,7 @@
     NSString *cachePath = [UCXAppConfiguration cachePath];
     //cachepath+jsBundle
     NSString *jsBundlePath = [NSString stringWithFormat:@"file://%@/%@",cachePath,@"jsBundle"];
-    if ([UCXDebugTool isRemote]) {
+    if ([UCXDebugTool isDebug] && [UCXDebugTool isRemote]) {
         jsBundlePath = [UCXDebugTool webUrl];
     }
     return jsBundlePath;
@@ -77,7 +77,7 @@
     NSString *cachePath = [UCXAppConfiguration cachePath];
     //cachepath+res+image
     NSString *jsBundlePath = [NSString stringWithFormat:@"%@/%@/%@",cachePath,@"res",@"image"];
-    if ([UCXDebugTool isRemote]) {
+    if ([UCXDebugTool isDebug] && [UCXDebugTool isRemote]) {
         jsBundlePath = [UCXDebugTool webUrl];
         //直接访问资源文件目录
         jsBundlePath = [jsBundlePath stringByReplacingOccurrencesOfString:@"/dist/native" withString:@"/src/assets/image"];
