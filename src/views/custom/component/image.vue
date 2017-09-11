@@ -2,16 +2,10 @@
     <div @onAndroidBack="onAndroidBack"  class="container">
         <navpage backgroundColor="#3e50b5" title="Image" @naviBarLeftItemClick="naviBarLeftItemClick"/>
         <div class="img-wraper">
-            <div class="img-item" v-for="(item,index) in imgArr">
+            <div class="img-item" v-for="(item,index) in imgArr" @click="clickImage(index)">
                 <image class="img"  :src="item"></image>
             </div>
         </div>
-        <image style="width: 560px;height: 200px;" src="assets:///image/test.jpg"
-               placeholder="assets:///image/1test.jpg"
-        ></image>
-        <image style="width: 560px;height: 200px;" src="assets:///image/test.jpg"
-               placeholder="file:///sdcard../../1test.jpg"
-        ></image>
     </div>
 </template>
 
@@ -37,6 +31,7 @@
 </style>
 
 <script>
+    const imageBrowser = weex.requireModule('imageBrowser')
     import config from '../../../config/index'
 
     export default {
@@ -61,6 +56,9 @@
         naviBarLeftItemClick(e) {
             console.log(e)
         },
+        clickImage(index) {
+          imageBrowser.browserImages(this.imageArr, index)
+        }
       },
     }
 </script>

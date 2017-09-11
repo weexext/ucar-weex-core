@@ -1,6 +1,12 @@
 PODS:
   - CYLTabBarController (1.13.1)
+  - DACircularProgress (2.3.1)
+  - IDMPhotoBrowser (1.10.2):
+    - DACircularProgress
+    - pop
+    - SDWebImage
   - Masonry (1.0.2)
+  - pop (1.0.10)
   - SDWebImage (4.1.0):
     - SDWebImage/Core (= 4.1.0)
   - SDWebImage/Core (4.1.0)
@@ -16,6 +22,7 @@ PODS:
 
 DEPENDENCIES:
   - CYLTabBarController (~> 1.13.1)
+  - IDMPhotoBrowser
   - Masonry
   - SDWebImage (~> 4.1.0)
   - SSZipArchive (~> 2.0.3)
@@ -38,7 +45,10 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   CYLTabBarController: 97f6b486f9e6c613d69e9c111cc9c2c5db7000ce
+  DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  IDMPhotoBrowser: 4bb459b1faffc228e92bccdf7c54ad6d6b7e8c37
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
+  pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
   SDWebImage: 0e435c14e402a6730315a0fb79f95e68654d55a4
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   SSZipArchive: b6648b70a36303ca5be9f0351174b347e1886236
@@ -47,6 +57,6 @@ SPEC CHECKSUMS:
   WeexSDK: e2992f6d56b5aff7ca451263fe7874438392eaf5
   WXDevtool: 6c837383e778a9442ee500db4069a95be321dac6
 
-PODFILE CHECKSUM: b920107132567b4afe12b2f14924ca67f9377d4a
+PODFILE CHECKSUM: 079c438b727ce8bba9f4fda8812db9ff8d65c809
 
 COCOAPODS: 1.2.1

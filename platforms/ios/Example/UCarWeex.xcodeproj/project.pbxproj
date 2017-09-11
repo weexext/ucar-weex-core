@@ -14,6 +14,7 @@
 		2C8A199C1F3D575700F23ABE /* UCHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C8A199B1F3D575700F23ABE /* UCHomeViewController.m */; };
 		2C8A199F1F3D576800F23ABE /* UCMineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C8A199E1F3D576800F23ABE /* UCMineViewController.m */; };
 		2C8A19A21F3D584200F23ABE /* UCBaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C8A19A11F3D584200F23ABE /* UCBaseNavigationController.m */; };
+		2C9E11731F666F6B00502D35 /* UCImageBrowserModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C9E11721F666F6B00502D35 /* UCImageBrowserModule.m */; };
 		2CE12F561F3D93DC00417AA3 /* UCImgLoaderDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE12F521F3D93DC00417AA3 /* UCImgLoaderDefaultImpl.m */; };
 		2CE12F571F3D93DC00417AA3 /* UCImgLocalLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE12F531F3D93DC00417AA3 /* UCImgLocalLoader.m */; };
 		2CF4931A1F3C59C000084466 /* UCarWeex.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 2CF493191F3C59C000084466 /* UCarWeex.podspec */; };
@@ -61,6 +62,8 @@
 		2C8A199E1F3D576800F23ABE /* UCMineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCMineViewController.m; sourceTree = "<group>"; };
 		2C8A19A01F3D584200F23ABE /* UCBaseNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCBaseNavigationController.h; sourceTree = "<group>"; };
 		2C8A19A11F3D584200F23ABE /* UCBaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCBaseNavigationController.m; sourceTree = "<group>"; };
+		2C9E11711F666F6B00502D35 /* UCImageBrowserModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCImageBrowserModule.h; sourceTree = "<group>"; };
+		2C9E11721F666F6B00502D35 /* UCImageBrowserModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCImageBrowserModule.m; sourceTree = "<group>"; };
 		2CE12F521F3D93DC00417AA3 /* UCImgLoaderDefaultImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCImgLoaderDefaultImpl.m; sourceTree = "<group>"; };
 		2CE12F531F3D93DC00417AA3 /* UCImgLocalLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UCImgLocalLoader.m; sourceTree = "<group>"; };
 		2CE12F541F3D93DC00417AA3 /* UCImgLocalLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UCImgLocalLoader.h; sourceTree = "<group>"; };
@@ -218,6 +221,8 @@
 		2CE12F511F3D939200417AA3 /* Module */ = {
 			isa = PBXGroup;
 			children = (
+				2C9E11711F666F6B00502D35 /* UCImageBrowserModule.h */,
+				2C9E11721F666F6B00502D35 /* UCImageBrowserModule.m */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -527,6 +532,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C8A199C1F3D575700F23ABE /* UCHomeViewController.m in Sources */,
+				2C9E11731F666F6B00502D35 /* UCImageBrowserModule.m in Sources */,
 				2C8A19951F3D562600F23ABE /* UCTabBarManager.m in Sources */,
 				2C8A199F1F3D576800F23ABE /* UCMineViewController.m in Sources */,
 				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,

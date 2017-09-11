@@ -12,6 +12,7 @@
         </div>
     </div>
 </template>
+
 <style scoped>
     .body {
         background-color: #f3f3f3;
@@ -38,7 +39,6 @@
     }
 </style>
 <script>
-//    import uweex from '../../../packages/weex-vue-expand';
 import uweex from 'ucar-weex'
     export default {
         components:{
@@ -67,10 +67,7 @@ import uweex from 'ucar-weex'
             console.log('uweex=' + uweex.utils.isString(5));
             uweex.bridge.addEventListener('PAGE_INDEX',(event)=>{
 
-          });
-            //
-          let env = weex.config.env
-          console.log('env:::'+env)
+            })
         },
         methods:{
             onItemClick(item){
@@ -79,14 +76,11 @@ import uweex from 'ucar-weex'
                     url: item.page,
                     param: {
                         'KEY_INDEX': 'VALUE_INDEX'
-                    },
-                    navBar:{
-                        backgroundColor: '#000000',
                     }
                 };
-              uweex.router.push(options,()=> {
-                  console.log(uweex.appName)
-              })
+                uweex.router.push(options,()=> {
+                    console.log(uweex.appName)
+                })
             }
         },
 

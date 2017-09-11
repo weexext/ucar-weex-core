@@ -82,14 +82,13 @@
         },
         methods: {
             //
-            ready(param){
+            ready(e){
                 console.log(this.pageName + ':ready')
-               let config = weex.config;
+
             },
 
             actived(e){
                 console.log(this.pageName + ':actived')
-                //                let p = JSON.stringify(e.param)
                 console.log('pageB回传参数=' + e.tagCode + e.param);
             },
 

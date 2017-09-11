@@ -11,6 +11,7 @@
 #import <UCarWeex/UCarWeex.h>
 
 #import "UCImgLoaderDefaultImpl.h"
+#import "UCImageBrowserModule.h"
 
 @interface UCWeexManager ()
 
@@ -57,13 +58,17 @@
     [UCarWeexService setLogLevel:WXLogLevelError];
 #endif
     [UCarWeexService initUCarWeexService];
-    //
+    
+    //register custom module and component，optional
+    [UCarWeexService registerModule:@"imageBrowser" withClass:[UCImageBrowserModule class]];
+    //register the implementation of protocol, optional
     [UCarWeexService registerHandler:[UCImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
     
     //启动时默认从以下指定位置解压 本地JS & 图片资源
     // url:::assets/weex/，若未赋值，则使用默认地址：assets/weex/
     NSDictionary *dict = @{@"url":@"assets/weex/"};
     [UCXHotUpdate unpack:dict callback:^(NSError *error) {}];
+    
 //    //若使用热更新，则使用如下代码：：url为拉取指定更新信息的远程地址
 //    NSDictionary *options = @{@"url":@"http://10.99.21.32:3000/ucarweex"};
 //    [UCXHotUpdate hotUpdate:options callback:^(NSError *error) {
