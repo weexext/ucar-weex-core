@@ -2,7 +2,7 @@
     <div @onAndroidBack="onAndroidBack"  class="container">
         <navpage backgroundColor="#3e50b5" title="Image" @naviBarLeftItemClick="naviBarLeftItemClick"/>
         <div class="img-wraper">
-            <div class="img-item" v-for="(item,index) in imgArr" @click="clickImage(index)">
+            <div class="img-item" v-for="(item,index) in imageArr" @click="clickImage(index)">
                 <image class="img"  :src="item"></image>
             </div>
         </div>
@@ -40,14 +40,14 @@
       },
       data() {
         return {
-          imgArr:[],
+          imageArr:[],
         }
       },
       computed: {
       },
       created() {
         console.log("image.vue created")
-        this.imgArr = [
+        this.imageArr = [
             'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
             config.image('test.jpg'),
         ]
