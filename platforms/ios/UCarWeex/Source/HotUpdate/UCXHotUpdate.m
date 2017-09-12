@@ -333,8 +333,10 @@
         [weexDataArr enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSDictionary *dict, NSUInteger idx, BOOL * _Nonnull stop) {
             count++;
             if (count>maxCacheVersionNumber) {
+                
                 NSString *unzipPath = [dict objectForKey:UCX_UNZIP_FILE_PATH];
                 unzipPath = [UCXDownloadDir stringByAppendingPathComponent:unzipPath];
+                
                 if (unzipPath) {
                     [self.fileManager deleteDir:unzipPath];
                 }
