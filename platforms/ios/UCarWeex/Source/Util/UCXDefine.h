@@ -33,7 +33,7 @@
 // 存储debug相关信息
 #define UCX_US_UCAR_WEEX_DEBUG_KEY @"UCX_US_UCAR_WEEX_DEBUG_KEY"
 
-#define UCX_UNZIP_FILE_PATH  @"unzipFilePath"
+#define UCX_UNZIP_FILE_PATH  @"path"
 
 
 //////////////////////////////////////////////////////////////
