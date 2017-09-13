@@ -86,16 +86,12 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self _renderWithURL:_sourceURL];
-    if ([self.navigationController isKindOfClass:[WXRootViewController class]]) {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-    }
     
     //=====================================================
     // 处理数据
     [self configCustomData];
     // 模拟导航栏
     [self addFakeNavBar];
-    //
     if (self.tagCode) {
         [self receiveNoti:self.tagCode];
     }
@@ -103,6 +99,10 @@
     BOOL isDebug = [UCXDebugTool isDebug];
     [UIApplication sharedApplication].applicationSupportsShakeToEdit = isDebug;
     //=====================================================
+    
+    if ([self.navigationController isKindOfClass:[WXRootViewController class]]) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -310,12 +310,63 @@
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (event.subtype == UIEventSubtypeMotionShake) { // 判断是否是摇动结束
         UCXLog(@"UIEventSubtypeMotionShake");
-        UCXDebugViewController *debugVC = [[UCXDebugViewController alloc] init];
-        [self.navigationController pushViewController:debugVC animated:YES];
+        [self handleAlertView];
     }
     return;
 }
 
+- (void)handleAlertView {
+    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(window.frame.origin.x, window.frame.origin.y, window.frame.size.width, window.frame.size.height)];
+    [window addSubview:view];
+    view.backgroundColor = [UIColor colorWithWhite:0.5 alpha:0.3];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeView:)];
+    [view addGestureRecognizer:tap];
+    //
+    UIButton *firstBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [view addSubview:firstBtn];
+    firstBtn.backgroundColor = [UIColor whiteColor];
+    firstBtn.frame = CGRectMake(0, 0, view.frame.size.width/2, 45.f);
+    firstBtn.center = [view convertPoint:view.center fromView:view.superview];
+
+    [firstBtn setTitle:@"刷新页面" forState:UIControlStateNormal];
+    [firstBtn setTitleColor:[UIColor colorWithRed:0/255.f green:191/255.f  blue:255/255.f  alpha:1.f] forState:UIControlStateNormal];
+    [firstBtn addTarget:self action:@selector(ucx_refreshPage:) forControlEvents:UIControlEventTouchUpInside];
+    //
+    UIButton *secondBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [view addSubview:secondBtn];
+    secondBtn.backgroundColor = [UIColor whiteColor];
+    CGFloat yPosition = firstBtn.frame.origin.y + firstBtn.frame.size.height;
+    secondBtn.frame = CGRectMake(firstBtn.frame.origin.x, yPosition+0.5f, view.frame.size.width/2, 45.f);
+    [secondBtn setTitle:@"调试设置" forState:UIControlStateNormal];
+    [secondBtn setTitleColor:[UIColor colorWithRed:0/255.f green:191/255.f  blue:255/255.f  alpha:1.f] forState:UIControlStateNormal];
+    [secondBtn addTarget:self action:@selector(ucx_debugInfo:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+/**
+ * 刷新WEEX页面
+ */
+- (void)ucx_refreshPage:(UIButton *)sender {
+    [sender.superview removeFromSuperview];
+    [self refreshWeex];
+}
+/**
+ * 跳转调试页面
+ */
+- (void)ucx_debugInfo:(UIButton *)sender {
+    [sender.superview removeFromSuperview];
+    //
+    UCXDebugViewController *debugVC = [[UCXDebugViewController alloc] init];
+    [self.navigationController pushViewController:debugVC animated:YES];
+}
+/**
+ * 关闭当前view
+ */
+- (void)closeView:(UIGestureRecognizer *)recognizer {
+    UIView *view = recognizer.view;
+    [view removeFromSuperview];
+
+}
 //=============================================================
 
 @end
