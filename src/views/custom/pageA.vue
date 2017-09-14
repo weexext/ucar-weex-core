@@ -82,9 +82,9 @@
         },
         methods: {
             //
-            ready(param){
+            ready(e){
                 console.log(this.pageName + ':ready')
-               let config = weex.config;
+
             },
 
             actived(e){

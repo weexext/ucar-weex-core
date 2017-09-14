@@ -13,6 +13,8 @@ target 'UCarWeex_Example' do
   pod 'Masonry'
   # color category
   pod 'UIColor-HexString'
+  # 图片浏览器
+  pod 'IDMPhotoBrowser'
 
 ###########################################################
   # UCarWeex依赖库

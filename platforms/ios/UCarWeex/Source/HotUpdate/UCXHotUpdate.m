@@ -3,7 +3,6 @@
 //  Pods
 //
 //  Created by huyujin on 2017/8/23.
-//  Copyright © 2017年 ucarinc. All rights reserved.
 //
 
 /**
@@ -171,7 +170,7 @@
         return;
     }
     //解压完成，保存本次更新的必要信息到本地存储
-    [self savePackageInfo:unzipFilePath];
+    [self savePackageInfo];
 }
 
 #pragma mark - 下载更新包
@@ -245,7 +244,7 @@
                                     callback(error);
                                 } else {
                                     //解压完成，保存本次更新的必要信息到本地存储
-                                    [self savePackageInfo:path];
+                                    [self savePackageInfo];
                                     callback(nil);
                                 }
                             });
@@ -286,8 +285,8 @@
  ]
  
  */
-- (void)savePackageInfo:(NSString *)unzipFilePath {
-    if ([self.currentOptions count]>0 && unzipFilePath) {
+- (void)savePackageInfo {
+    if ([self.currentOptions count]>0) {
         //
         NSString *url = [self.currentOptions objectForKey:@"url"];
         //重组新的数据结构:结构如上注释
@@ -299,9 +298,9 @@
         }else { //若是加载本地json，则结构不存在url
             [newPackageInfo addEntriesFromDictionary:self.currentOptions];
         }
-        if (unzipFilePath) {
-            [newPackageInfo setObject:unzipFilePath forKey:@"unzipFilePath"];
-        }
+//        if (unzipFilePath) {
+//            [newPackageInfo setObject:unzipFilePath forKey:@"unzipFilePath"];
+//        }
         //
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSArray *weexDataArr = [userDefaults objectForKey:UCX_US_UCAR_WEEX_KEY];
@@ -334,7 +333,10 @@
         [weexDataArr enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSDictionary *dict, NSUInteger idx, BOOL * _Nonnull stop) {
             count++;
             if (count>maxCacheVersionNumber) {
+                
                 NSString *unzipPath = [dict objectForKey:UCX_UNZIP_FILE_PATH];
+                unzipPath = [UCXDownloadDir stringByAppendingPathComponent:unzipPath];
+                
                 if (unzipPath) {
                     [self.fileManager deleteDir:unzipPath];
                 }

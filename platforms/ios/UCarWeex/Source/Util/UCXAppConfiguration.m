@@ -54,8 +54,10 @@
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSArray *weexArr = [userDefaults objectForKey:UCX_US_UCAR_WEEX_KEY];
         if (weexArr && weexArr.count>0) {
+            
             NSDictionary *packageInfo = [weexArr lastObject];
             tmpPath = [packageInfo objectForKey:UCX_UNZIP_FILE_PATH];
+            tmpPath = [UCXDownloadDir stringByAppendingPathComponent:tmpPath];
             //赋值内存
             instance.cachePath = tmpPath;
         }
@@ -66,9 +68,9 @@
 + (NSString *)jsBundlePath {
     NSString *cachePath = [UCXAppConfiguration cachePath];
     //cachepath+jsBundle
-    NSString *jsBundlePath = [NSString stringWithFormat:@"file://%@/%@",cachePath,@"jsBundle"];
-    if ([UCXDebugTool isDebug]) {
-        jsBundlePath = [UCXDebugTool webUrl];
+    NSString *jsBundlePath = [NSString stringWithFormat:@"file://%@/%@",cachePath,@"jsBundle/views/"];
+    if ([UCXDebugTool isDebug] && [UCXDebugTool isRemote]) {
+        jsBundlePath = [[UCXDebugTool webUrl] stringByAppendingPathComponent:@"views/"];
     }
     return jsBundlePath;
 }
@@ -77,10 +79,10 @@
     NSString *cachePath = [UCXAppConfiguration cachePath];
     //cachepath+res+image
     NSString *jsBundlePath = [NSString stringWithFormat:@"%@/%@/%@",cachePath,@"res",@"image"];
-    if ([UCXDebugTool isDebug]) {
+    if ([UCXDebugTool isDebug] && [UCXDebugTool isRemote]) {
         jsBundlePath = [UCXDebugTool webUrl];
         //直接访问资源文件目录
-        jsBundlePath = [jsBundlePath stringByReplacingOccurrencesOfString:@"/dist/native" withString:@"/src/assets/image"];
+        jsBundlePath = [jsBundlePath stringByReplacingOccurrencesOfString:@"/dist/native" withString:@"/src/assets/image/"];
     }
     return jsBundlePath;
 }

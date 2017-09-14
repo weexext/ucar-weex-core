@@ -14,7 +14,7 @@
 // 本地IP
 #define UC_LOCAL_IP @"10.99.21.32"
 // 本地web服务对应端口
-#define UC_LOCAL_WEB_PORT @"12570"
+#define UC_LOCAL_WEB_PORT @"12588"
 // 本地 weexdebug服务对应端口
 #define UC_LOCAL_WEEX_PORT @"8088"
 
