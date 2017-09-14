@@ -8,11 +8,13 @@
         "build_plugin": "webpack --config ./tools/webpack.config.plugin.js --color",
         "dev": "webpack -w --config webpack.native.config.js & serve -p 12588",
         "serve": "serve -p 12588",
-        "packzip": "node tools/packzip.js",
-        "copy:android": "node tools/android/android_builder.js",
-        "copy:ios": "node tools/ios/ios_builder.js",
+        "zip:ios": "node tools/zip.js ios",
+        "zip:android": "node tools/zip.js android",
+        "zip": "node tools/zip.js",
+        "copy:android": "node tools/copy.js android",
+        "copy:ios": "node tools/copy.js ios",
         "copy": "npm run copy:android && npm run copy:ios",
-        "pack:ios": "npm run packzip && npm run copy:ios"
+        "pack:ios": "npm run zip:ios && npm run copy:ios"
     },
     "keywords": [
         "weex"

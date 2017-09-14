@@ -3,7 +3,7 @@ const chalk = require('chalk')
 const child_process = require('child_process')
 // const inquirer = require('inquirer')
 const fs = require('fs')
-const utils = require('./utils')
+// const utils = require('./utils')
 
 /**
  * Remove directory recursively
@@ -58,12 +58,21 @@ function build(src,target) {
     exec(command)
 }
 
-module.exports = build
+// build specific package
+if (process.argv[2]) {
 
-//图片资源 & JS文件
-const jsSrc ='dist/package/*'
-const jsTarget = 'platforms/ios/Example/assets/weex'
-build(jsSrc,jsTarget)
+  if (process.argv[2] === 'ios') { // ios
+    let jsSrc ='dist/package/*'
+    let jsTarget = 'platforms/ios/Example/assets/weex'
+    build(jsSrc,jsTarget)
+  } else if(process.argv[2] === 'android') { // android
+    let jsSrc ='dist/package/*'
+    let jsTarget = 'platforms/android/app/src/main/assets/weex'
+    build(jsSrc,jsTarget)
+  }
+} else {
+  console.log('\nPlease specify the package you want to copy. [ios,android]')
+}
 
 
 
