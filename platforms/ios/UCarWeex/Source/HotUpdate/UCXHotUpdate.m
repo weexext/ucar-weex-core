@@ -205,19 +205,19 @@
         if (code && code.intValue==1) {
             NSDictionary *content = [responseObj objectForKey:@"content"];
             if (content && [content count]>0) {
-                //
-                NSString *versionName = [content objectForKey:@"versionName"];
-                if (versionName) {
-                    [self.currentOptions setObject:versionName forKey:@"versionNameIos"];
-                }
-                NSString *versionCode = [content objectForKey:@"versionCode"];
-                if (versionCode) {
-                    [self.currentOptions setObject:versionCode forKey:@"versionCodeIos"];
-                }
                 
                 NSNumber *upgrade = [content objectForKey:@"upgrade"];
                 NSNumber *totalUpgrade = [content objectForKey:@"totalUpgrade"];
                 if (upgrade && upgrade.boolValue==true && totalUpgrade && totalUpgrade.boolValue==false) {
+                    //更新升级信息
+                    NSString *versionName = [content objectForKey:@"versionName"];
+                    if (versionName) {
+                        [self.currentOptions setObject:versionName forKey:@"versionNameIos"];
+                    }
+                    NSString *versionCode = [content objectForKey:@"versionCode"];
+                    if (versionCode) {
+                        [self.currentOptions setObject:versionCode forKey:@"versionCodeIos"];
+                    }
                     //若是需要升级 && 并且是增量升级时，根据更新包地址下载更新包
                     NSString *updateUrl = [content objectForKey:@"downloadUrl"];
                     if (updateUrl.length<=0) {
@@ -416,6 +416,14 @@
 }
 
 - (NSDictionary *)buildParameters {
+    // 读取应用最后使用的配置信息
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *optionsArr = [userDefaults objectForKey:UCX_US_UCAR_WEEX_KEY];
+    if (optionsArr && optionsArr.count>0) {
+        NSDictionary *options = [optionsArr lastObject];
+        self.currentOptions = [NSMutableDictionary dictionaryWithDictionary:options];
+    }
+    //
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     if (self.currentOptions && [self.currentOptions count]>0) {
         [parameters setObject:@(2) forKey:@"appType"];
