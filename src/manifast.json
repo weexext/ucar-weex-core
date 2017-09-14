@@ -1,8 +1,11 @@
 {
-  "appName":"ucar-weex",
-  "versionCode":4,
-  "versionName":"1.0",
-  "versionDes":"新版说明",
-  "androidMinVersion":1,
-  "iosMinVersion":1
+  "appName": "ucarweex",
+  "appIdAndroid": "ab134cd1-da99-456b-8238-5fb034d7b4d8",
+  "appIdIos": "ab134cd1-da99-456b-8238-5fb034d7b4d8",
+  "versionNameAndroid": "1.0.2",
+  "versionNameIos": "1.0.2",
+  "versionCodeAndroid": "3",
+  "versionCodeIos": "3",
+  "versionDes": "1.0.3"
 }
+

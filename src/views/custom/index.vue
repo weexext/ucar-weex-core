@@ -53,11 +53,11 @@ import uweex from 'ucar-weex'
                     {name: 'Text', page: 'component/text.js'},
                     {name: 'Image', page: 'component/image.js'},
                     // module
-                    {name: 'module/instance-api', page: 'Instance API'},
+                    {name: 'weex -> weex ', page: 'wxtonavtive.js'},
                     // showcase
                     {name: 'showcase/new-fashion/index', page: 'Activity'},
                     // market
-                    {name: 'market/gcanvas', page: 'Gcanvas'},
+                    {name: 'yyy3', page: 'Gcanvas'},
                 ]
             }
         },
@@ -81,14 +81,14 @@ import uweex from 'ucar-weex'
                         'KEY_INDEX': 'VALUE_INDEX'
                     },
                     navBar:{
-                        backgroundColor: '#000000',
-                    }
+                        height:180,
+                        navBarColor:"#3e50b5"
+                    },
                 };
               uweex.router.push(options,()=> {
                   console.log(uweex.appName)
               })
             }
         },
-
     }
 </script>

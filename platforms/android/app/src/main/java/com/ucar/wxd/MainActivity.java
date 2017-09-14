@@ -25,13 +25,12 @@ public class MainActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-
         new Handler(getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-//                startWeexPage();
+//               startWeexPage();
             }
-        }, 1000);
+        }, 10);
         findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +80,6 @@ public class MainActivity extends FragmentActivity {
 //        bundle.putString("key", "value");
 //        bundle.putString("name", "zhangsan");
 //        UWXJumpUtil.createWXPage(this, R.id.container, "index.js", bundle );
-//        finish();
+          finish();
     }
 }

@@ -44,7 +44,7 @@ public class UWXMainActivity extends Activity {
                         jsonParam = (JSONObject) JSON.toJSON(queryParam);
                     }
                 }
-                UWLog.v("url=" + uri.toString());
+                UWLog.v("downloadUrl=" + uri.toString());
                 if (!TextUtils.isEmpty(scheme)) {
                     UWXJumpUtil.openPageByUrl(this, uri.toString(), jsonParam);
                 } else {
@@ -53,6 +53,12 @@ public class UWXMainActivity extends Activity {
                 this.finish();
             }
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     public static Map<String, Object> getUrlParams(String param) {

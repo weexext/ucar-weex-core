@@ -38,6 +38,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:name="com.ucar.wxd.NativeActivity"/>
+        <activity
+            android:name="com.ucar.wxd.SchemaActivity"
+            android:hardwareAccelerated="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/wx_theme_translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.alibaba.weex.protocol.openurl" />
+
+                <data android:scheme="ucar" />
+                <data android:host="portal" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

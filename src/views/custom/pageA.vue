@@ -1,7 +1,7 @@
 <template>
     <div @onAndroidBack="onAndroidBack" @ready="ready" @actived="actived" @deactived="deactived" class="container">
-        <navpage leftItemTitle="返回" backgroundColor="#3e50b5" title="pageA"
-                 @naviBarLeftItemClick="naviBarLeftItemClick"/>
+        <navpage leftItemTitle="返回" backgroundColor="#3e50b5"
+                 @naviBarLeftItemClick="naviBarLeftItemClick" title="title1"/>
 
         <div class="button" @click="onClick">
             打开PageA
@@ -20,7 +20,7 @@
     }
 
     .container {
-        background-color: #f3f3f3;
+        background-color: #ffffff;
         flex-direction: column;
         flex: 1;
         justify-content: center;
@@ -89,8 +89,12 @@
 
             actived(e){
                 console.log(this.pageName + ':actived')
-                //                let p = JSON.stringify(e.param)
+                                let p = JSON.stringify(e.param)
                 console.log('pageB回传参数=' + e.tagCode + e.param);
+                modal.toast({
+                    message: p,
+                    duration: 0.3
+                });
             },
 
             deactived(){
@@ -115,13 +119,18 @@
             },
             onClick(){
                 uweex.router.push({
+                    navBar:{
+                        height:180,
+                        navBarColor:"#3e50b5"
+                    },
                     url: 'pageB.js',
                     param: {
-                        api: "push",
+                        api: "3e50b5",
                     }
                 }, () => {
                 })
             }
         },
     };
+
 </script>

@@ -47,7 +47,9 @@ if (month >= 1 && month <= 9) {
 if (strDate >= 0 && strDate <= 9) {
     strDate = "0" + strDate;
 }
-var currentdate = date.getFullYear() + month + strDate + date.getHours() + date.getMinutes() + date.getSeconds();
+var currentdate = date.getFullYear() + month + strDate;
+
+    //+ date.getHours() + date.getMinutes() + date.getSeconds();
 
 console.log(currentdate);
 
@@ -60,10 +62,11 @@ var manifast = JSON.parse(data);
 console.log('manifast= ' + manifast.appName)
 
 //------------------------
+manifast.versionCode =Number(manifast.versionNameAndroid.replace(/\./g,''));
 
 var fileName = manifast.appName + "_" + manifast.versionCode + "_" + currentdate;
 
-var zipFile = tagetPath + '/' + fileName + ".so";
+var zipFile = tagetPath + '/' + fileName + ".zip";
 var zipFileSize = 0;
 
 function packZip() {
@@ -110,10 +113,10 @@ function packZip() {
     console.log(assets)
     archive.directory(assets, "/res");
 
-// const manifastpath = rootpath +'/src/manifast.json'
-// console.log(manifastpath)
-// //打入 清单文件
-// archive.file(manifastpath, { name: 'manifast.json' });
+const manifastpath = rootpath +'/src/manifast.json'
+console.log(manifastpath)
+//打入 清单文件
+archive.file(manifastpath, { name: 'manifast.json' });
 // //打入签名校验META-INF
 // archive.append('签名!', { name: '/META-INF/rst.txt' });
 

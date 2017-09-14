@@ -48,7 +48,7 @@
             return {
                 items: [
                     // common
-                    {name: 'common', page: 'vue/index.js'},
+//                    {name: 'common', page: 'vue/index.js'},
                     // custom
                     {name: 'custom', page: 'custom/index.js'},
                 ]

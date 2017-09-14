@@ -23,6 +23,7 @@ import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.common.IWXDebugProxy;
 import com.taobao.weex.common.WXRenderStrategy;
 import com.ucar.weex.commons.util.CommonUtils;
+import com.ucar.weex.devsup.DebugUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,7 +110,7 @@ public class UWXBaseActivity extends FragmentActivity implements IWXRenderListen
         if (mInstance != null) {
             mInstance.onActivityResume();
         }
-//        DebugUtil.onResume(this);
+        DebugUtil.onResume(this);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class UWXBaseActivity extends FragmentActivity implements IWXRenderListen
         if (mInstance != null) {
             mInstance.onActivityPause();
         }
-//        DebugUtil.onPause(this);
+        DebugUtil.onPause(this);
     }
 
     @Override

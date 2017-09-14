@@ -1,12 +1,12 @@
 <template>
 
     <div @onAndroidBack="onAndroidBack" @ready="ready" @actived="actived" @deactived="deactived" class="container">
-        <navpage backgroundColor="#3e50b5" title="pageB" :leftItemSiblingSrc="imgClose"
+        <navpage backgroundColor="#3e50b5" title="weex页面" :leftItemSiblingSrc="imgClose"
                  @naviBarLeftSiblingItemClick="naviBarLeftSiblingItemClick"
                  @naviBarLeftItemClick="naviBarLeftItemClick">
         </navpage>
         <div class="button" @click="onClick">
-            返回PageA
+            跳转native带参数
         </div>
     </div>
 
@@ -15,11 +15,7 @@
 <style scoped>
 
     .button {
-        width: 200px;
-        height: 80px;
         background-color: #3e50b5;
-        justify-content: center;
-        align-items: center;
     }
 
     .container {
@@ -34,9 +30,10 @@
 
 <script>
     const modal = weex.requireModule('modal')
+    const nativeRouter = weex.requireModule('nativeRouter')
 
     import uweex from 'ucar-weex'
-//    import uweex from '../../../packages/weex-vue-expand';
+    //    import uweex from '../../../packages/weex-vue-expand';
     export default {
         components: {
             navpage: require('../../include/navpage.vue'),
@@ -77,10 +74,6 @@
             ready(e){
                 console.log(this.pageName + ':ready')
                 let p = JSON.stringify(e.param)
-                modal.toast({
-                    message: p,
-                    duration: 0.3
-                });
                 console.log('pageA页面传参数=' + p);
             },
 
@@ -102,7 +95,10 @@
                 uweex.router.pop();
             },
             onClick(){
-                uweex.router.popTo({index:-1,tagCode:"pageb",param:{test:'testB'}},() => {} );
+//                http://10.99.44.54:8088/debugger.html?sessionId=j7fm0joc22fz2pf4t7d#
+//                        uweex.bridge.sendScheme('ucar://portal/nativeA', {param: 'weex页面传参数'}, ()=> {
+//                        });
+                nativeRouter.push('nativeA',{param: 'weex页面传参数'});
             }
         },
 
