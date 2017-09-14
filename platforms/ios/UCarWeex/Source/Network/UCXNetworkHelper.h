@@ -33,4 +33,20 @@ typedef void(^UCXRequestFailure)(NSError *error);
                             success:(UCXRequestSuccess)success
                             failure:(UCXRequestFailure)failure;
 
+
+/**
+ *  GET请求
+ *
+ *  @param URL        请求地址
+ *  @param parameters 请求参数
+ *  @param success    请求成功的回调
+ *  @param failure    请求失败的回调
+ *
+ *  @return 返回的对象可取消请求,调用cancel方法
+ */
+- (__kindof NSURLSessionTask *)GET:(NSString *)URL
+                        parameters:(NSDictionary *)parameters
+                           success:(UCXRequestSuccess)success
+                           failure:(UCXRequestFailure)failure;
+
 @end

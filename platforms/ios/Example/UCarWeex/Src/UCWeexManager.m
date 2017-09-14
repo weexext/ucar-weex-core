@@ -69,11 +69,13 @@
     NSDictionary *dict = @{@"url":@"assets/weex/"};
     [UCXHotUpdate unpack:dict callback:^(NSError *error) {}];
     
-//    //若使用热更新，则使用如下代码：：url为拉取指定更新信息的远程地址
-//    NSDictionary *options = @{@"url":@"http://10.99.21.32:3000/ucarweex"};
-//    [UCXHotUpdate hotUpdate:options callback:^(NSError *error) {
-//        //...
-//    }];
+    //若使用热更新，则使用如下代码：：url为拉取指定更新信息的远程地址
+    NSDictionary *options = @{
+          @"mode":@"test"
+      };
+    [UCXHotUpdate hotUpdate:options callback:^(NSError *error) {
+        //...
+    }];
     
 }
 

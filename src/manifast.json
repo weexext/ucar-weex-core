@@ -1,11 +1,11 @@
 {
   "appName": "ucarweex",
   "appIdAndroid": "ab134cd1-da99-456b-8238-5fb034d7b4d8",
-  "appIdIos": "ab134cd1-da99-456b-8238-5fb034d7b4d8",
-  "versionNameAndroid": "1.0.2",
-  "versionNameIos": "1.0.2",
+  "appIdIos": "1b4e789c-8867-46aa-8f4e-f6ad2af08027",
+  "versionNameAndroid": "1.3.0",
+  "versionNameIos": "1.3.0",
   "versionCodeAndroid": "3",
-  "versionCodeIos": "3",
-  "versionDes": "1.0.3"
+  "versionCodeIos": "20",
+  "versionDes": ""
 }
 

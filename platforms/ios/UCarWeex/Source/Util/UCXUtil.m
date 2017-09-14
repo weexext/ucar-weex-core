@@ -35,6 +35,21 @@
     return dateStr;
 }
 
+/**
+ *  将 NSDate 转换成 NSString 格式
+ *
+ *  @param date
+ *  @param format 日期格式化样式字符串,如:2015-10-10 16:00:00
+ *
+ *  @return
+ */
++ (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = format;
+    return [dateFormatter stringFromDate:date];
+}
+
 // 异常信息封装
 + (NSError *)errorWithMessage:(NSString *)errorMessage {
     return [NSError errorWithDomain:@"weex.ucar.error"

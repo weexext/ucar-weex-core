@@ -12,7 +12,7 @@
         "copy:android": "node tools/android/android_builder.js",
         "copy:ios": "node tools/ios/ios_builder.js",
         "copy": "npm run copy:android && npm run copy:ios",
-        "pack": "npm run packzip && npm run copy"
+        "pack:ios": "npm run packzip && npm run copy:ios"
     },
     "keywords": [
         "weex"

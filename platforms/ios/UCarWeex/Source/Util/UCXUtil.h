@@ -17,6 +17,7 @@
 
 // 获取当前时间字符串: pattern:'YYYYMMddhhmmss'
 + (NSString *)currentDateStr;
++ (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format;
 
 //异常信息封装
 + (NSError *)errorWithMessage:(NSString *)errorMessage;

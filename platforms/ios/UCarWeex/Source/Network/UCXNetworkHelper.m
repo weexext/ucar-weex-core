@@ -76,4 +76,52 @@
     return dataTask;
 }
 
+- (__kindof NSURLSessionTask *)GET:(NSString *)URL
+                        parameters:(NSDictionary *)parameters
+                           success:(UCXRequestSuccess)success
+                           failure:(UCXRequestFailure)failure
+{
+    UCXLog(@"[UCNETWORK]:\n[URL]:%@\n[PARAMS]:%@",URL,parameters);
+    NSString *paramsStr = [[self class] buildGETParamsStr:parameters];
+    NSString *url = [NSString stringWithFormat:@"%@?%@",URL,paramsStr];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    // Create the URLSession on the default configuration
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+    
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (!error) {
+            NSError *jsonError;
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&jsonError];
+            if (dict && [dict count]>0) {
+                UCXLog(@"\n[UCNETWORK]:success\n[DATA]:%@\n",dict);
+                success(dict);
+            }else {
+                UCXLog(@"\n[UCNETWORK]:failure\n[JSONERROR]:%@\n",[jsonError localizedDescription]);
+                failure(jsonError);
+            }
+        } else {
+            UCXLog(@"\n[UCNETWORK]:failure\n[NETRROR]:%@\n",[error localizedDescription]);
+            failure(error);
+        }
+    }];
+    [dataTask resume];
+    
+    return dataTask;
+}
+
++ (NSString *)buildGETParamsStr:(NSDictionary *)params {
+    NSMutableString *mutableStr = [[NSMutableString alloc] init];
+    [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL * _Nonnull stop) {
+        NSString *keyValueFormat = [NSString stringWithFormat:@"%@=%@",key,obj];
+        [mutableStr appendFormat:@"%@&",keyValueFormat];
+    }];
+    [mutableStr deleteCharactersInRange:NSMakeRange(mutableStr.length-1, 1)];
+    //
+    NSString *paramsStr = [mutableStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    return paramsStr;
+}
+
 @end

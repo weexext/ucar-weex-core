@@ -13,8 +13,11 @@
 + (instancetype)shared;
 
 /** 更新包下载解压校验
- *  options:
-        url:更新包信息url
+        mode:
+         test[测试]
+         pre[预生产]
+         production[生产]
+ parameters:参数信息
  */
 + (void)hotUpdate:(NSDictionary *)options
          callback:(void (^)(NSError *error))callback;
