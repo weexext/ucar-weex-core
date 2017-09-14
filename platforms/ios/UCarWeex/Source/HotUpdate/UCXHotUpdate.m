@@ -365,15 +365,21 @@
     //比较版本号
     NSString *lastVersionName = [self.lastOptions objectForKey:@"versionNameIos"];
     NSString *currentVersionName = [options objectForKey:@"versionNameIos"];
-    if (lastVersionName && currentVersionName && [currentVersionName compare:lastVersionName options:NSCaseInsensitiveSearch]==NSOrderedDescending) {
+    if (lastVersionName && currentVersionName && [currentVersionName compare:lastVersionName options:NSNumericSearch]==NSOrderedDescending) {
         return YES;
     }
-    // 获取的版本时间高于应用中版本的时间
-    NSString *lastTime = [self.lastOptions objectForKey:@"time"];
-    NSString *currentTime = [options objectForKey:@"time"];
-    if(lastTime && currentTime && [currentTime compare:lastTime]==NSOrderedDescending) {
+    //比较versionCode
+    NSString *lastVersionCode = [self.lastOptions objectForKey:@"versionCodeIos"];
+    NSString *currentVersionCode = [options objectForKey:@"versionCodeIos"];
+    if (lastVersionCode && currentVersionCode && [currentVersionCode compare:lastVersionCode options:NSNumericSearch]==NSOrderedDescending) {
         return YES;
     }
+//    // 获取的版本时间高于应用中版本的时间
+//    NSString *lastTime = [self.lastOptions objectForKey:@"time"];
+//    NSString *currentTime = [options objectForKey:@"time"];
+//    if(lastTime && currentTime && [currentTime compare:lastTime]==NSOrderedDescending) {
+//        return YES;
+//    }
     return NO;
 }
 

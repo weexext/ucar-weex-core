@@ -41,7 +41,7 @@
      *   则 weex debug url::: ws://10.99.21.32:8088/debugProxy/native
      */
     [UCXDebugTool setWeexDebug:UC_WEEX_DEBUG_MODE];
-    [UCXDebugTool setWeexDebugIP:@"10.99.21.32"];
+    [UCXDebugTool setWeexDebugIP:UC_LOCAL_IP];
     
     /** YES,则 从指定IP拉取JS及资源，若NO，则 从本地拉取JS及资源
      *   若isRemote YES,则会需要设置webIP ,若isRemote NO，则无需设置webIP
@@ -50,7 +50,7 @@
      *   则      web url::: http://10.99.21.32:12588/dist/native
      */
     [UCXDebugTool setRemote:UC_JS_LOAD_TYPE];
-    [UCXDebugTool setWebIP:@"10.99.21.32"];
+    [UCXDebugTool setWebIP:UC_LOCAL_IP];
     //==========================================================================================================================
 #ifdef DEBUG
     [UCarWeexService setLogLevel:WXLogLevelLog];
