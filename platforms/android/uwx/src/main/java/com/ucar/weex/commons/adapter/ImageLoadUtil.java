@@ -115,7 +115,7 @@ public class ImageLoadUtil {
             String assetsPath = "resources/" + filePath;
             return getAssetsBitmap(context, assetsPath);
         } else if (url.startsWith("file:///sdcard")) {
-            UWLog.v("url=" + url);
+            UWLog.v("downloadUrl=" + url);
             Bitmap bitmap = getDiskBitmap(url);
             return bitmap2Drawable(bitmap);
         } else if (url.startsWith("drawable")) {
@@ -128,7 +128,7 @@ public class ImageLoadUtil {
             }
         } else if (url.startsWith("file")) {
             if (url.contains("file:///local:") && url.contains(".")) {
-//                String imgName = url.substring("file:///local:".length());
+//                String imgName = downloadUrl.substring("file:///local:".length());
 //                imgName = convertPath(imgName);
 //                UWLog.v("file:imgName=" + imgName);
 //                Drawable localDrawable = getDrawableByName(view.getContext(), imgName);

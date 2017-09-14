@@ -31,3 +31,32 @@
 -keep class com.taobao.weex.module.**{*;}
 -keep public class * extends com.taobao.weex.common.WXModule{*;}
 -keep public class com.taobao.weex.WXDebugTool{*;}
+
+#okhttp
+-dontwarn okhttp3.**
+-keep class okhttp3.**{*;}
+-keep class okio.**{*;}
+-dontwarn okio.**
+
+# FastJson
+-dontwarn com.alibaba.fastjson.**
+-keep class com.alibaba.fastjson.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
+
+# Fresco
+-keep interface com.facebook.fresco.** {*;}
+-keep enum com.facebook.fresco.** {*;}
+-keep class com.facebook.** { *; }
+-keep class com.facebook.imagepipeline.webp.* { *; }
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+@com.facebook.common.internal.DoNotStrip *;
+}
+
+-keep class javax.annotation.** { *; }
+-dontwarn javax.annotation.**
+-keep class com.ucar.weex.** { *; }
+-dontwarn com.ucar.weex.commons.adapter.**
+-dontwarn com.ucar.weex.devsup.**
+

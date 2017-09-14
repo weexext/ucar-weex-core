@@ -7,17 +7,19 @@ import java.io.Serializable;
  */
 
 public class UpdateResult implements Serializable {
-    public BStatus bstatus = new BStatus();
-    public UpdateData data;
+    public UpdateData content;
+    public int code;
+    public String msg;
 
     public static class UpdateData implements Serializable {
-        public WXPackageInfo packageInfo;
-        public String url;
+        public boolean upgrade;
+        public boolean forceUpgrade;
+        public boolean totalUpgrade;
+        public String downloadUrl;
+        public String upgradeMsg;
+        public String versionName;
+        public String upgradeDate;
+        public int versionCode;
     }
 
-    public static class BStatus implements Serializable {
-
-        public int code;
-        public String des;
-    }
 }

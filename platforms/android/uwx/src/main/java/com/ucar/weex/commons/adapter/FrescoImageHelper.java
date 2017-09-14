@@ -33,7 +33,7 @@ public class FrescoImageHelper {
         }
         String temp = url;
         if (url.startsWith("assets:///")) {
-//            temp = "http:" + url;
+//            temp = "http:" + downloadUrl;
             temp = temp.replace("assets://", UWXEnvManager.getWXResHost());
         }
         Uri uri = Uri.parse(temp);

@@ -27,7 +27,7 @@ public class Storage {
             File dir1 = context.getExternalFilesDir((String) null);
             return dir1 != null ? dir1 : context.getFilesDir();
         } else {
-            String dir = "/Android/data/" + context.getPackageName() + "/files";
+            String dir = "/Android/content/" + context.getPackageName() + "/files";
             return new File(Environment.getExternalStorageDirectory(), dir);
         }
     }

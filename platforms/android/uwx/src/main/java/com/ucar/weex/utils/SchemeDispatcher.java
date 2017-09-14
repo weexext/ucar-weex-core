@@ -59,7 +59,7 @@ public abstract class SchemeDispatcher {
                             case 2:
                                 String nodeName = parser.getName();
                                 String metadataName;
-                                if("meta-data".equals(nodeName)) {
+                                if("meta-content".equals(nodeName)) {
                                     findAppMetadata = true;
                                     metadataName = parser.getAttributeValue(ANDROID_RESOURCES, "name");
                                     if(metadataName.equals(name)) {

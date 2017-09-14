@@ -8,8 +8,8 @@ android {
         applicationId "com.ucar.wxd"
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
-        versionCode 1
-        versionName "1.1.0"
+        versionCode 3
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "x86"
@@ -43,7 +43,7 @@ android {
                     JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
             ]
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -52,8 +52,9 @@ android {
                     JPUSH_APPKEY : "88151d30044e75e5d4255525", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
             ]
-            testCoverageEnabled true
             signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     sourceSets {
@@ -91,11 +92,11 @@ repositories{
         compile "com.android.support:support-v4:23.1.1"
         compile "com.alibaba:fastjson:1.1.46.android"
         //weex chrome 调试相关 debug引入
-        debugCompile 'com.google.code.findbugs:jsr305:2.0.1'
-        debugCompile 'com.squareup.okhttp:okhttp:2.3.0'
-        debugCompile 'com.squareup.okhttp:okhttp-ws:2.3.0'
-        debugCompile 'com.taobao.android:weex_inspector:0.10.0.5'
-        debugCompile 'com.journeyapps:zxing-android-embedded:3.4.0'
+        compile 'com.google.code.findbugs:jsr305:2.0.1'
+        compile 'com.squareup.okhttp:okhttp:2.3.0'
+        compile 'com.squareup.okhttp:okhttp-ws:2.3.0'
+        compile 'com.taobao.android:weex_inspector:0.10.0.5'
+        compile 'com.journeyapps:zxing-android-embedded:3.4.0'
 //        //ucar weexsdk拓展
 //        compile 'com.ucar:weexext_sdk:1.0.9@aar'
 //        compile 'com.ucar:weex_sdk:1.6@aar'

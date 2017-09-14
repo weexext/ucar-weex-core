@@ -29,7 +29,7 @@ public class UWXSchemeModule extends WXModule {
     public void sendScheme(String url, JSONObject params, JSCallback callback) {
         this.callback = callback;
         Activity activity = (Activity) mWXSDKInstance.getContext();
-//        SchemeDispatcher.sendScheme(context, url, true);
+//        SchemeDispatcher.sendScheme(context, downloadUrl, true);
         ++this.mRequestCode;
         Uri uri = Uri.parse(url);
         Intent intent = new Intent("android.intent.action.VIEW", uri);
@@ -48,7 +48,7 @@ public class UWXSchemeModule extends WXModule {
         if (requestCode == mRequestCode) {
             if (callback != null) {
 //                Map<String, Object> result = new HashMap<>();
-//                result.put("data", ArgumentsUtil.fromBundle(data.getExtras()));
+//                result.put("content", ArgumentsUtil.fromBundle(content.getExtras()));
                 callback.invoke(ArgumentsUtil.fromBundle(data.getExtras()));
             }
         }
