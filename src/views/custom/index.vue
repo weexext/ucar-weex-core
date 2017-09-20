@@ -39,7 +39,7 @@
     }
 </style>
 <script>
-import uweex from 'ucar-weex'
+import uweex from '../../../packages/weex-vue-expand'
     export default {
         components:{
           navpage:require("../../include/navpage.vue")
@@ -58,6 +58,7 @@ import uweex from 'ucar-weex'
                     {name: 'showcase/new-fashion/index', page: 'Activity'},
                     // market
                     {name: 'yyy3', page: 'Gcanvas'},
+                    {name: 'native', page: 'mine',to:'native'},
                 ]
             }
         },
@@ -73,19 +74,24 @@ import uweex from 'ucar-weex'
             onItemClick(item){
                 uweex.bridge.postGlobalEvent('test', {key: '你好'});
                 let options = {
-                    url: item.page,
-                    param: {
-                        'KEY_INDEX': 'VALUE_INDEX'
-                    },
-                    navBar:{
-                        height:180,
-                        navBarColor:"#3e50b5"
-                    },
-                };
+                  url: item.page,
+                  param: {
+                    'KEY_INDEX': 'VALUE_INDEX'
+                  },
+                  navBar:{
+                    height:180,
+                    navBarColor:"#3e50b5"
+                  },
+                }
+                // to
+                if(item.to==='native'){
+                  options.to = item.to
+                }
                 uweex.router.push(options,()=> {
-                    console.log(uweex.appName)
+                  console.log(uweex.appName)
                 })
-            }
+
+            },
         },
     }
 </script>

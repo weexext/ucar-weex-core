@@ -8,19 +8,23 @@ let Router = {};
  * 进入下级页面
  * */
 Router.push = (options, callback) => {
-    //参数添加自定义默认数值
-    let url = config.js(options.url)
-    let param = !options.param ? {} : options.param
-    // let navBar = !options.navBar ? defaultNavBar : utils.extend({},defaultNavBar ,options.navBar);
-
-    let animated = !options.animated ? 'true' : options.animated
-    let _options = {
-        url: url,
-        param: param,
-        navBar: options.navBar,
-        animated: animated
-    }
-    _uNavigator.push(_options, callback)
+  //参数添加自定义默认数值
+  var to = !options.to? 'weex':options.to;
+  var url = options.url
+  if(to==='weex') {
+    url = config.js(options.url);
+  }
+  var param = !options.param ? {} : options.param;
+  // let navBar = !options.navBar ? defaultNavBar : utils.extend({},defaultNavBar ,options.navBar);
+  var animated = !options.animated ? 'true' : options.animated;
+  var _options = {
+    to:to,
+    url: url,
+    param: param,
+    navBar: options.navBar,
+    animated: animated
+  };
+  _uNavigator.push(_options, callback);
 }
 
 /**

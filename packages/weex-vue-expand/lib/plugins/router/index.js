@@ -24,18 +24,22 @@ var Router = {};
  * */
 Router.push = function (options, callback) {
     //参数添加自定义默认数值
-    var url = _lib2.default.js(options.url);
-    var param = !options.param ? {} : options.param;
-    // let navBar = !options.navBar ? defaultNavBar : utils.extend({},defaultNavBar ,options.navBar);
-
-    var animated = !options.animated ? 'true' : options.animated;
-    var _options = {
-        url: url,
-        param: param,
-        navBar: options.navBar,
-        animated: animated
-    };
-    _uNavigator.push(_options, callback);
+  var to = !options.to? 'weex':options.to;
+  var url = options.url
+  if(to==='weex') {
+    url = _lib2.default.js(options.url);
+  }
+  var param = !options.param ? {} : options.param;
+  // let navBar = !options.navBar ? defaultNavBar : utils.extend({},defaultNavBar ,options.navBar);
+  var animated = !options.animated ? 'true' : options.animated;
+  var _options = {
+    to:to,
+    url: url,
+    param: param,
+    navBar: options.navBar,
+    animated: animated
+  };
+  _uNavigator.push(_options, callback);
 };
 
 /**
