@@ -18,6 +18,7 @@
 @interface UCarWeexService ()
 
 @property (nonatomic, assign) NSUInteger logLevel;  ///< logLevel
+@property (nonatomic, strong) NSDictionary *route; ///< route data
 
 @end
 
@@ -68,6 +69,12 @@
     [WXSDKEngine registerHandler:handler withProtocol:protocol];
 }
 
++ (void)registerRoute:(NSDictionary *)route {
+    [[UCarWeexService shared] setRoute:route];
+}
++ (NSDictionary *)route {
+    return [UCarWeexService shared].route;
+}
 
 #pragma mark - log
 + (void)setLogLevel:(WXLogLevel)level {

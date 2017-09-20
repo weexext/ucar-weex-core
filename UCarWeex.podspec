@@ -36,7 +36,7 @@ Pod::Spec.new do |s|
 
   s.user_target_xcconfig  = { 'FRAMEWORK_SEARCH_PATHS' => "'$(PODS_ROOT)/UCarWeex'" }
 #  s.prefix_header_file = 'platforms/ios/UCarWeex/WeexSDK/Sources/Supporting Files/WeexSDK-Prefix.pch'
-#  s.xcconfig = { "OTHER_LINK_FLAG" => '$(inherited) -ObjC'}
+  s.xcconfig = { "OTHER_LINK_FLAG" => '$(inherited) -ObjC'}
   s.requires_arc = true
 
 #  s.frameworks = 'CoreMedia','MediaPlayer','AVFoundation','AVKit','JavaScriptCore', 'GLKit', 'OpenGLES', 'CoreText', 'QuartzCore', 'CoreGraphics'
@@ -45,8 +45,5 @@ Pod::Spec.new do |s|
 #  s.dependency 'SocketRocket'
    s.dependency 'WeexSDK'
 
-#  s.subspec 'Extend' do |ss|
-#    ss.source_files = 'platforms/ios/UCarWeex/Extend/**/*.{h,m,mm,c}'
-#  end
 
 end

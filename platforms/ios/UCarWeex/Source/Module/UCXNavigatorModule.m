@@ -3,13 +3,14 @@
 //  WeexDemo
 //
 //  Created by huyujin on 2017/8/4.
-//  Copyright © 2017年 ucarinc. All rights reserved.
 //
 
 #import "UCXNavigatorModule.h"
+
 #import "UCXUtil.h"
 #import "UCXBaseViewController.h"
-#import <WeexSDK/WeexSDK.h>
+#import "UIViewController+UCX.h"
+#import "UCarWeexService.h"
 
 typedef void (^UCXNavigationResultBlock)(NSString *code, NSDictionary * responseData);
 
@@ -20,13 +21,20 @@ typedef void (^UCXNavigationResultBlock)(NSString *code, NSDictionary * response
 @implementation UCXNavigatorModule
 @synthesize weexInstance;
 
+
 WX_EXPORT_METHOD(@selector(push:callback:))
 WX_EXPORT_METHOD(@selector(pop:callback:))
 WX_EXPORT_METHOD(@selector(home:callback:))
 
-
+/**
+ * options:
+ to: weex【页面】 || native【本地】
+ */
 - (void)push:(NSDictionary *)options callback:(WXModuleCallback)callback
 {
+    //
+    NSString *to = [options objectForKey:@"to"];
+    BOOL isWeex = to && [to isEqualToString:@"weex"];
     // url
     NSString *url = [options objectForKey:@"url"];
     if ([options count]==0 || !url) {
@@ -35,7 +43,7 @@ WX_EXPORT_METHOD(@selector(home:callback:))
     }
     // param
     NSDictionary *param = [options objectForKey:@"param"];
-    if ([param count]>0) {
+    if (isWeex && [param count]>0) {
         //追加到url后面 & 编码
         NSString *paramStr = [UCXUtil dictionaryToJson:param];
         paramStr = [UCXUtil urlEncode:paramStr];
@@ -43,19 +51,33 @@ WX_EXPORT_METHOD(@selector(home:callback:))
     }
     // navBar
     NSDictionary *navBarDict = [options objectForKey:@"navBar"];
-    
     // animated
     BOOL animated = YES;
     NSString *obj = [[options objectForKey:@"animated"] lowercaseString];
     if (obj && [obj isEqualToString:@"false"]) {
         animated = NO;
     }
+    
+    // 跳转本地native or weex
+    if (isWeex) {// 跳转weex
+        UIViewController *container = self.weexInstance.viewController;
+        UCXBaseViewController *vc = [[UCXBaseViewController alloc] initWithSourceURL:[NSURL URLWithString:url]];
+        vc.options = options;
+        vc.hidesBottomBarWhenPushed = YES;
+        [container.navigationController pushViewController:vc animated:animated];
+    }else { //  跳转 native
+        UIViewController *container = self.weexInstance.viewController;
+        NSDictionary *route =[UCarWeexService route];
+        NSString *clazzStr = [route objectForKey:url];
+        if (clazzStr) {
+            Class clazz = NSClassFromString(clazzStr);
+            UIViewController *vc = [[clazz alloc] init];
+            vc.ucx_options = options;
+            vc.hidesBottomBarWhenPushed = YES;
+            [container.navigationController pushViewController:vc animated:animated];
+        }
+    }
     // push
-    UIViewController *container = self.weexInstance.viewController;
-    UCXBaseViewController *vc = [[UCXBaseViewController alloc] initWithSourceURL:[NSURL URLWithString:url]];
-    vc.options = options;
-    vc.hidesBottomBarWhenPushed = YES;
-    [container.navigationController pushViewController:vc animated:animated];
     callback(MSG_SUCCESS);
 }
 

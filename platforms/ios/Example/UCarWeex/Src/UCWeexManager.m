@@ -64,6 +64,10 @@
     //register the implementation of protocol, optional
     [UCarWeexService registerHandler:[UCImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
     
+    //register router
+    NSDictionary *route = @{@"mine":@"UCMineViewController"};
+    [UCarWeexService registerRoute:route];
+    
     //启动时默认从以下指定位置解压 本地JS & 图片资源
     // url:::assets/weex/，若未赋值，则使用默认地址：assets/weex/
     NSDictionary *dict = @{@"url":@"assets/weex/"};

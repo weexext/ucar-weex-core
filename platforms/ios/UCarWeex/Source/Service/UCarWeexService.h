@@ -48,7 +48,14 @@
  *
  */
 + (void)registerHandler:(id)handler withProtocol:(Protocol *)protocol;
-
+/**
+ * @abstract Registers a handler for a given handler instance and specific protocol
+ *
+ * @param data the map
+ *
+ */
++ (void)registerRoute:(NSDictionary *)route;
++ (NSDictionary *)route;
 
 #pragma mark - 日志相关
 /**

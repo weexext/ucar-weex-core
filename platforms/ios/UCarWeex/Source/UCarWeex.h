@@ -18,6 +18,7 @@
  */
 
 #ifdef __OBJC__
+#import <WeexSDK/WeexSDK.h>
 
 #import "UCXBaseViewController.h"
 #import "UCXNavigatorModule.h"
@@ -26,7 +27,6 @@
 #import "UCXUtil.h"
 #import "UCXAppConfiguration.h"
 #import "UCXDebugTool.h"
-
-#import <WeexSDK/WeexSDK.h>
+#import "UIViewController+UCX.h"
 
 #endif /* __OBJC__ */

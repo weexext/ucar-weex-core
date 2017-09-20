@@ -7,6 +7,7 @@
 //
 
 #import "UCMineViewController.h"
+#import <UCarWeex/UIViewController+UCX.h>
 
 @interface UCMineViewController ()
 
@@ -18,6 +19,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationItem.title = @"我的";
+    NSLog(@"%@",self.ucx_options);
 }
 
 - (void)didReceiveMemoryWarning {
