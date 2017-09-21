@@ -10,8 +10,8 @@ android {
   defaultConfig {
     minSdkVersion project.minSdkVersion
     targetSdkVersion project.targetSdkVersion
-    versionCode 1
-    versionName "2.0.3"
+    versionCode 2
+    versionName "2.1.2"
   }
 //  sourceSets {
 //    main {

@@ -13,6 +13,8 @@ import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
 import com.taobao.weex.utils.WXLogUtils;
 import com.ucar.weex.UWXJumpUtil;
+import com.ucar.weex.UWXSDKManager;
+import com.ucar.weex.commons.adapter.UWXNavigatorAdapter;
 import com.ucar.weex.init.activity.UWXTheme;
 import com.ucar.weex.init.activity.UWXThemeManager;
 import com.ucar.weex.init.manager.WXActivityManager;
@@ -29,6 +31,47 @@ public class UWXNavigatorModule extends WXModule {
     public static final String MSG_SUCCESS = "WX_SUCCESS";
     public static final String MSG_FAILED = "WX_FAILED";
     private final static String TAG = "UWXNavigatorModule";
+    @JSMethod
+    public void pushNative(String encodeParam, JSCallback callback) {
+        if (TextUtils.isEmpty(encodeParam)) {
+            return;
+        }
+        try {
+            JSONObject options = JSON.parseObject(encodeParam);
+            String url = "";
+            UWXTheme.NavBar navBar = null;
+            JSONObject param = null;
+            if (options.containsKey(UWXBundleInfo.KEY_URL)) {
+                url = options.getString(UWXBundleInfo.KEY_URL);
+            }
+            if (options.containsKey(UWXBundleInfo.KEY_NAV_BAR)) {
+                String _navBar = options.getString(UWXBundleInfo.KEY_NAV_BAR);
+                if (!TextUtils.isEmpty(_navBar)) {
+                    navBar = JSON.parseObject(_navBar, UWXTheme.NavBar.class);
+                }
+            }
+            if (options.containsKey(UWXBundleInfo.KEY_PARAM)) {
+                param = options.getJSONObject(UWXBundleInfo.KEY_PARAM);
+            }
+            UWLog.v("params=" + encodeParam);
+            if (!TextUtils.isEmpty(url)) {
+                UWXNavigatorAdapter navigatorAdapter = UWXSDKManager.getInstance().getNavigatorAdapter();
+                if (navigatorAdapter != null) {
+                    navigatorAdapter.pushNative((Activity) mWXSDKInstance.getContext(),url ,param);
+                    if (callback != null) {
+                        callback.invoke(MSG_SUCCESS);
+                    }
+                }
+            } else {
+                callback.invoke(MSG_FAILED);
+            }
+        } catch (Exception e) {
+            WXLogUtils.eTag(TAG, e);
+            if (callback != null) {
+                callback.invoke(MSG_FAILED);
+            }
+        }
+    }
 
     @JSMethod
     public void push(String encodeParam, JSCallback callback) {

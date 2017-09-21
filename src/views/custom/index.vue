@@ -87,7 +87,7 @@ import uweex from '../../../packages/weex-vue-expand'
                 if(item.to==='native'){
                   options.to = item.to
                 }
-                uweex.router.push(options,()=> {
+                uweex.router.pushNative(options,()=> {
                   console.log(uweex.appName)
                 })
 

@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.taobao.weex.WXSDKEngine;
 import com.taobao.weex.common.WXException;
 import com.ucar.weex.UWXInit;
+import com.ucar.weex.UWXSDKManager;
 import com.ucar.weex.init.activity.UWXTheme;
 import com.ucar.weex.init.activity.UWXThemeManager;
 import com.ucar.weex.init.utils.UWLog;
@@ -28,6 +29,7 @@ public class WXApplication extends Application {
         } catch (WXException e) {
             e.printStackTrace();
         }
+        UWXSDKManager.getInstance().setNavigatorAdapter(new NavigatorAdapter());
         UWXInit.init(this);
         //设置主题 过场动画 statusBar natBar 默认背景 是否有返回 ..
         UWXThemeManager.getInstance().setPageTheme(new UWXTheme(new UWXTheme.NavBar("#ffffff", "#000000"), com.ucar.weex.R.style.wx_theme_app));
@@ -35,7 +37,7 @@ public class WXApplication extends Application {
          * assets/weex/ucar-weex_3_20170828123442
          */
         UWXResManager.getInstance().setServerUrl("http://fcardownloadtest.10101111.com/fcarapp/upgrade/getUpgradeInfo");
-        UWXResManager.getInstance().asynAddWXResFromAssert(this, FileUtils.getWXPackageFileName(this, "weex"), new UWXResManager.addWXResFromAssertListener() {
+        UWXResManager.getInstance().asyAddWXResFromAssert(this, FileUtils.getWXPackageFileName(this, "weex"), new UWXResManager.addWXResFromAssertListener() {
             @Override
             public void resFromAssertListener(boolean success, String des, WXPackageInfo wxPackageInfo) {
                 UWXResManager.getInstance().checkUpdate(new UWXResManager.CheckUpdateCallback() {

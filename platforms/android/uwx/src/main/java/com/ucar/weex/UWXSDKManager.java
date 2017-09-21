@@ -2,6 +2,7 @@ package com.ucar.weex;
 
 import android.app.Application;
 
+import com.ucar.weex.commons.adapter.UWXNavigatorAdapter;
 import com.ucar.weex.devsup.UWXEnvManager;
 import com.ucar.weex.init.model.UWXBundleInfo;
 import com.ucar.weex.init.activity.UWXTheme.NavBar;
@@ -15,6 +16,7 @@ public class UWXSDKManager {
     private NavBar navBar;
     private String animation;
     private int theme;
+    private UWXNavigatorAdapter navigatorAdapter;
 
     public static UWXSDKManager getInstance() {
         if (sManager == null) {
@@ -57,5 +59,13 @@ public class UWXSDKManager {
 
     public String getAnimation() {
         return animation;
+    }
+
+    public UWXNavigatorAdapter getNavigatorAdapter() {
+        return navigatorAdapter;
+    }
+
+    public void setNavigatorAdapter(UWXNavigatorAdapter navigatorAdapter) {
+        this.navigatorAdapter = navigatorAdapter;
     }
 }

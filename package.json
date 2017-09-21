@@ -26,15 +26,15 @@
         "react-native-linear-gradient": "^1.6.2",
         "save": "^2.3.1",
         "serve": "^5.2.4",
-        "ucar-weex": "^0.2.5",
+        "ucar-weex": "^0.2.7",
         "vue": "^2.1.8",
         "vue-router": "^2.1.1",
         "vuex": "^2.1.1",
         "vuex-router-sync": "^4.0.1",
+        "weex-action-sheet": "2.0.7",
         "weex-html5": "^0.4.1",
-        "weex-vue-render": "^0.11.2",
         "weex-image-picker": "1.0.1",
-        "weex-action-sheet": "2.0.7"
+        "weex-vue-render": "^0.11.2"
     },
     "devDependencies": {
         "babel-core": "^6.26.0",

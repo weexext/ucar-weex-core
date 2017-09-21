@@ -79,6 +79,10 @@ public class UWXResManager {
         }
     }
 
+    public List<WXPackageInfo> getPackageInfos() {
+        return packageInfos;
+    }
+
     private void saveWXInfo(WXPackageInfo info) {
         if (packageInfos == null) {
             packageInfos = new ArrayList<>();
@@ -112,7 +116,7 @@ public class UWXResManager {
         return checkAndCopy(context, assetFileName, null);
     }
 
-    public void asynAddWXResFromAssert(final Context context, final String assetFileName, final addWXResFromAssertListener listener) {
+    public void asyAddWXResFromAssert(final Context context, final String assetFileName, final addWXResFromAssertListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -356,7 +360,7 @@ public class UWXResManager {
                                             if (callBack != null) {
                                                 callBack.callback(0, "更新成功", _updateInfo);
                                             }
-                                            clearFile(_updateInfo.path);
+//                                            clearFile(_updateInfo.path);
                                         }else {
                                             if (callBack != null) {
                                                 callBack.callback(0, "更新失败", _updateInfo);
