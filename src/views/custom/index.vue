@@ -83,10 +83,6 @@ import uweex from '../../../packages/weex-vue-expand'
                     navBarColor:"#3e50b5"
                   },
                 }
-                // to
-                if(item.to==='native'){
-                  options.to = item.to
-                }
                 uweex.router.pushNative(options,()=> {
                   console.log(uweex.appName)
                 })

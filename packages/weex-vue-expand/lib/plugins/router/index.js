@@ -23,7 +23,7 @@ Router.pushNative = function (options, callback) {
     var param = !options.param ? {} : options.param;
     var animated = !options.animated ? 'true' : options.animated;
     var _options = {
-        url: url,
+        url: options.url,
         param: param,
         navBar: options.navBar,
         animated: animated

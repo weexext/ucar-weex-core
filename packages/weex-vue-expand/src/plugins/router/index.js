@@ -12,7 +12,7 @@ Router.pushNative = (options, callback) => {
     let param = !options.param ? {} : options.param
     let animated = !options.animated ? 'true' : options.animated
     let _options = {
-        url: url,
+        url: options.url,
         param: param,
         navBar: options.navBar,
         animated: animated
