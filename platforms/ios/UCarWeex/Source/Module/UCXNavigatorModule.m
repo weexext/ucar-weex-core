@@ -23,6 +23,7 @@ typedef void (^UCXNavigationResultBlock)(NSString *code, NSDictionary * response
 
 
 WX_EXPORT_METHOD(@selector(push:callback:))
+WX_EXPORT_METHOD(@selector(pushNative:callback:))
 WX_EXPORT_METHOD(@selector(pop:callback:))
 WX_EXPORT_METHOD(@selector(home:callback:))
 
@@ -32,9 +33,6 @@ WX_EXPORT_METHOD(@selector(home:callback:))
  */
 - (void)push:(NSDictionary *)options callback:(WXModuleCallback)callback
 {
-    //
-    NSString *to = [options objectForKey:@"to"];
-    BOOL isWeex = to && [to isEqualToString:@"weex"];
     // url
     NSString *url = [options objectForKey:@"url"];
     if ([options count]==0 || !url) {
@@ -43,8 +41,8 @@ WX_EXPORT_METHOD(@selector(home:callback:))
     }
     // param
     NSDictionary *param = [options objectForKey:@"param"];
-    if (isWeex && [param count]>0) {
-        //追加到url后面 & 编码
+    if ([param count]>0) {
+        // 追加到url后面 & 编码
         NSString *paramStr = [UCXUtil dictionaryToJson:param];
         paramStr = [UCXUtil urlEncode:paramStr];
         url = [NSString stringWithFormat:@"%@?param=%@",url,paramStr];
@@ -57,25 +55,43 @@ WX_EXPORT_METHOD(@selector(home:callback:))
     if (obj && [obj isEqualToString:@"false"]) {
         animated = NO;
     }
+    //
+    UIViewController *container = self.weexInstance.viewController;
+    UCXBaseViewController *vc = [[UCXBaseViewController alloc] initWithSourceURL:[NSURL URLWithString:url]];
+    vc.options = options;
+    vc.hidesBottomBarWhenPushed = YES;
+    [container.navigationController pushViewController:vc animated:animated];
+    // push
+    callback(MSG_SUCCESS);
+}
+
+- (void)pushNative:(NSDictionary *)options callback:(WXModuleCallback)callback
+{
+    // url
+    NSString *url = [options objectForKey:@"url"];
+    if ([options count]==0 || !url) {
+        callback(MSG_PARAM_ERR);
+        return;
+    }
+    // navBar
+    NSDictionary *navBarDict = [options objectForKey:@"navBar"];
+    // animated
+    BOOL animated = YES;
+    NSString *obj = [[options objectForKey:@"animated"] lowercaseString];
+    if (obj && [obj isEqualToString:@"false"]) {
+        animated = NO;
+    }
     
-    // 跳转本地native or weex
-    if (isWeex) {// 跳转weex
-        UIViewController *container = self.weexInstance.viewController;
-        UCXBaseViewController *vc = [[UCXBaseViewController alloc] initWithSourceURL:[NSURL URLWithString:url]];
-        vc.options = options;
+    //
+    UIViewController *container = self.weexInstance.viewController;
+    NSDictionary *route =[UCarWeexService route];
+    NSString *clazzStr = [route objectForKey:url];
+    if (clazzStr) {
+        Class clazz = NSClassFromString(clazzStr);
+        UIViewController *vc = [[clazz alloc] init];
+        vc.ucx_options = options;
         vc.hidesBottomBarWhenPushed = YES;
         [container.navigationController pushViewController:vc animated:animated];
-    }else { //  跳转 native
-        UIViewController *container = self.weexInstance.viewController;
-        NSDictionary *route =[UCarWeexService route];
-        NSString *clazzStr = [route objectForKey:url];
-        if (clazzStr) {
-            Class clazz = NSClassFromString(clazzStr);
-            UIViewController *vc = [[clazz alloc] init];
-            vc.ucx_options = options;
-            vc.hidesBottomBarWhenPushed = YES;
-            [container.navigationController pushViewController:vc animated:animated];
-        }
     }
     // push
     callback(MSG_SUCCESS);
