@@ -62,8 +62,9 @@
                 [UCXDebugTool setWeexDebug:YES];
                 [UCXDebugTool setWeexDebugIP:weexDebugIP];
                 [UCXDebugTool setWeexDebugUrl:weexDebugUrl];
-                
+#ifdef DEBUG
                 [WXDevTool launchDevToolDebugWithUrl:weexDebugUrl];
+#endif
             }
             NSString *isRemote = [dict objectForKey:@"isRemote"];
             if (isRemote && [isRemote isEqualToString:@"true"]) {
@@ -86,8 +87,11 @@
                 [debugInfo setObject:@"true" forKey:@"isWeexDebug"];
                 [debugInfo setObject:weexDebugIP forKey:@"weexDebugIP"];
                 [debugInfo setObject:weexDebugUrl forKey:@"weexDebugUrl"];
-                //
+#ifdef DEBUG
                 [WXDevTool launchDevToolDebugWithUrl:weexDebugUrl];
+#endif
+            }else {
+                [debugInfo setObject:@"false" forKey:@"isWeexDebug"];
             }
             BOOL isRemote = [UCXDebugTool isRemote];
             if (isRemote) {
@@ -100,6 +104,8 @@
                 [debugInfo setObject:@"true" forKey:@"isRemote"];
                 [debugInfo setObject:webIP forKey:@"webIP"];
                 [debugInfo setObject:webUrl forKey:@"webUrl"];
+            }else {
+                [debugInfo setObject:@"false" forKey:@"isRemote"];
             }
             [userDefaults setObject:debugInfo forKey:UCX_US_UCAR_WEEX_DEBUG_KEY];
             [userDefaults synchronize];
