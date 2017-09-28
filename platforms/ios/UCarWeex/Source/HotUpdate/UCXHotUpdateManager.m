@@ -28,7 +28,7 @@
 - (BOOL)deleteDir:(NSString *)dir {
     __block BOOL success = false;
     
-    dispatch_sync(_opQueue, ^{
+    dispatch_async(_opQueue, ^{
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
         NSError *error;
