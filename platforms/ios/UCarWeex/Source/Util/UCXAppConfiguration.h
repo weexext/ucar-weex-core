@@ -35,6 +35,11 @@
 + (NSString *)appVersion;
 + (void)setAppVersion:(NSString *)appVersion;
 
+/**
+ * @abstract Version of your weex.
+ */
++ (NSString *)weexVersion;
+
 #pragma mark - 路径相关
 /**
  * cache path

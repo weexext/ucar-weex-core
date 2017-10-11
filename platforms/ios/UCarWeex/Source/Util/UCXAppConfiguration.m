@@ -109,5 +109,19 @@
     [WXAppConfiguration setAppVersion:appVersion];
 }
 
++ (NSString *)weexVersion {
+    NSString *ver = [UCXAppConfiguration appVersion];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *weexArr = [userDefaults objectForKey:UCX_US_UCAR_WEEX_KEY];
+    if (weexArr && weexArr.count>0) {
+        NSDictionary *packageInfo = [weexArr lastObject];
+        NSString *tmp = [packageInfo objectForKey:@"versionNameIos"];
+        if (tmp) {
+            ver = tmp;
+        }
+    }
+    return ver;
+}
 
 @end
