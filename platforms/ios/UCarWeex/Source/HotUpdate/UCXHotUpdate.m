@@ -338,6 +338,8 @@
         [self savePackageInfo:fileName];
         //set cache path into memory
         [UCXAppConfiguration cachePath];
+        //校验当前存储版本历史是否超出限制，若超出限制，则只保留最近的版本
+        [self handleVersionHistory];
     }
 }
 
