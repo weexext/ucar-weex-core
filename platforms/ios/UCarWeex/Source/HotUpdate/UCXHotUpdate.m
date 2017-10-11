@@ -176,7 +176,7 @@
         return;
     }
     //解压完成，保存本次更新的必要信息到本地存储
-    [self savePackageInfo:fileName];
+    [self unpackPackageInfo:fileName];
 }
 
 #pragma mark - 下载更新包
@@ -254,7 +254,7 @@
                                             callback(error);
                                         } else {
                                             //解压完成，保存本次更新的必要信息到本地存储
-                                            [self savePackageInfo:fileName];
+                                            [self hotUpdatePackageInfo:fileName];
                                             callback(nil);
                                         }
                                     });
@@ -322,10 +322,22 @@
         [newDataArr addObject:newPackageInfo];
         [userDefaults setObject:newDataArr forKey:UCX_US_UCAR_WEEX_KEY];
         [userDefaults synchronize];
-        //set cache path into memory
-        [UCXAppConfiguration cachePath];
+    }
+}
+
+- (void)hotUpdatePackageInfo:(NSString *)fileName {
+    if ([self.currentOptions count]>0) {
+        [self savePackageInfo:fileName];
         //校验当前存储版本历史是否超出限制，若超出限制，则只保留最近的版本
         [self handleVersionHistory];
+    }
+}
+
+- (void)unpackPackageInfo:(NSString *)fileName {
+    if ([self.currentOptions count]>0) {
+        [self savePackageInfo:fileName];
+        //set cache path into memory
+        [UCXAppConfiguration cachePath];
     }
 }
 
