@@ -124,4 +124,18 @@
     return ver;
 }
 
++ (NSDictionary *)versionInfo {
+    NSDictionary *dict = [NSDictionary dictionary];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *weexArr = [userDefaults objectForKey:UCX_US_UCAR_WEEX_KEY];
+    if (weexArr && weexArr.count>0) {
+        NSDictionary *packageInfo = [weexArr lastObject];
+        if ([packageInfo count]>0) {
+            dict = [packageInfo copy];
+        }
+    }
+    return dict;
+}
+
 @end

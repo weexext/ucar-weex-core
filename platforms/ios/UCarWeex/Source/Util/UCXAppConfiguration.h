@@ -40,6 +40,8 @@
  */
 + (NSString *)jsVersion;
 
++ (NSDictionary *)versionInfo;
+
 #pragma mark - 路径相关
 /**
  * cache path
