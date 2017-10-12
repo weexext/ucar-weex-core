@@ -109,7 +109,7 @@
     [WXAppConfiguration setAppVersion:appVersion];
 }
 
-+ (NSString *)weexVersion {
++ (NSString *)jsVersion {
     NSString *ver = [UCXAppConfiguration appVersion];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

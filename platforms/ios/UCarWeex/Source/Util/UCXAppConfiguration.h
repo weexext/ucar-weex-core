@@ -38,7 +38,7 @@
 /**
  * @abstract Version of your weex.
  */
-+ (NSString *)weexVersion;
++ (NSString *)jsVersion;
 
 #pragma mark - 路径相关
 /**
