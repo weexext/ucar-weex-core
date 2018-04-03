@@ -82,7 +82,7 @@
     if ([UCXDebugTool isDebug] && [UCXDebugTool isRemote]) {
         jsBundlePath = [UCXDebugTool webUrl];
         //直接访问资源文件目录
-        jsBundlePath = [jsBundlePath stringByReplacingOccurrencesOfString:@"/dist/native" withString:@"/src/assets/image/"];
+        jsBundlePath = [jsBundlePath stringByReplacingOccurrencesOfString:@"/dist/native" withString:@"/src/assets/image"];
     }
     return jsBundlePath;
 }
