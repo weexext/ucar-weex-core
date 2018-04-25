@@ -9,8 +9,10 @@ import java.io.Serializable;
  */
 
 public class WXEnvDetail implements Serializable {
-    public String host = "10.99.44.56";
-    public String port = "12588";
+    // todo edit your iphost and port here
+    public String host = "xx.xx.xx.xx";
+    public String port = "xxxx";
+
     public boolean isLaunchLocally = true;
     public boolean debugInChrome = true;
     public boolean debugMode = false;
