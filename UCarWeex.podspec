@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
                    THIS IS A SHORT DESC OF UCARWEEX
                    DESC
 
-  s.homepage         = 'http://10.3.4.127:8888/mat/ucar-weex'
+  s.homepage         = 'https://github.com/weexext/ucar-weex-core/'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   s.platform         = :ios
   s.ios.deployment_target = '8.0'
 
-  s.source           = { :git => 'http://10.3.4.127:8888/mat/ucar-weex.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/weexext/ucar-weex-core.git', :tag => s.version.to_s }
   s.source_files     = 'platforms/ios/UCarWeex/Source/**/*.{h,m,mm,c}'
 #  s.resources = 'platforms/ios/UCarWeex/WeexSDK/pre-build/native-bundle-main.js', 'platforms/ios/UCarWeex/WeexSDK/Resources/wx_load_error@3x.png'
 
