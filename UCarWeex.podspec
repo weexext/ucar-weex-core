@@ -44,6 +44,7 @@ Pod::Spec.new do |s|
 #  s.vendored_frameworks = 'platforms/ios/UCarWeex/VendoredFrameworks/TBWXDevTool.framework'
 #  s.dependency 'SocketRocket'
    s.dependency 'WeexSDK'
+   s.dependency 'WXDevtool'
 
 
 end
